@@ -102,7 +102,7 @@ historic_data = pd.read_csv("historic_data.csv", index_col=0) / 100
 #historic_data = historic_data.drop(labels='USA_REIT',axis=1)
 
 portfolio_results = get_random_portfolios_results(
-    100, historic_data, inflation_data, 15)
+    200, historic_data, inflation_data, 15)
 
 
 max_return_portfolio = get_portfolio_where(portfolio_results, 'Return', np.max)
@@ -110,10 +110,22 @@ max_ratio_portfolio = get_portfolio_where(portfolio_results, 'Ratio', np.max)
 min_risk_portfolio = get_portfolio_where(portfolio_results, 'Risk', np.min)
 
 #TODO: output text data
+#current placeholder:
 print(max_return_portfolio)
 print(max_ratio_portfolio)
 print(min_risk_portfolio)
 
-breakpoint()
-
 #TODO: graph data
+#current placeholder:
+plt.style.use('seaborn-dark')
+portfolio_results.plot.scatter(x='Risk', y='Return', c='Ratio',
+                cmap='RdYlGn', edgecolors='black', figsize=(10, 8), grid=True)
+plt.scatter(x=max_ratio_portfolio['Risk'],
+            y=max_ratio_portfolio['Return'], c='blue', marker='+', s=200)
+
+plt.xlabel('Ulcer Index (Risk)')
+plt.ylabel('Mean Return')
+plt.title('Efficient Frontier')
+plt.show(block=False)
+
+breakpoint()
