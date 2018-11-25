@@ -84,7 +84,7 @@ def get_random_portfolios_results(num_portfolios, historic_data: pd.DataFrame, i
         portfolio_weights.append(weights)
 
     portfolio_results = {'Return': portfolio_returns,
-                         'Risk': portfolio_risks, 'Reward/Risk Ratio': portfolio_ratios}
+                         'Risk': portfolio_risks, 'Ratio': portfolio_ratios}
 
     for index, symbol in enumerate(historic_data.columns):
         portfolio_results[symbol+' Weight'] = [weight[index]
@@ -92,6 +92,17 @@ def get_random_portfolios_results(num_portfolios, historic_data: pd.DataFrame, i
 
     return pd.DataFrame(portfolio_results)
 
+def get_max_return_portfolio (portfolio_results):
+    max_return = portfolio_results['Return'].max()
+    return portfolio_results.loc[portfolio_results['Return'] == max_return]
+
+def get_max_ratio_portfolio (portfolio_results):
+    max_ratio = portfolio_results['Ratio'].max()
+    return portfolio_results.loc[portfolio_results['Ratio'] == max_ratio]
+
+def get_min_risk_portfolio (portfolio_results):
+    min_risk = portfolio_results['Risk'].min()
+    return portfolio_results.loc[portfolio_results['Risk'] == min_risk]
 
 inflation_data = pd.read_csv("usa_inf.csv", index_col=0, squeeze=True) / 100
 
@@ -102,8 +113,16 @@ historic_data = pd.read_csv("historic_data.csv", index_col=0) / 100
 portfolio_results = get_random_portfolios_results(
     100, historic_data, inflation_data, 15)
 
-breakpoint()
+
+max_return_portfolio = get_max_return_portfolio(portfolio_results)
+max_ratio_portfolio = get_max_ratio_portfolio(portfolio_results)
+min_risk_portfolio = get_min_risk_portfolio(portfolio_results)
 
 #TODO: output text data
+print(max_return_portfolio)
+print(max_ratio_portfolio)
+print(min_risk_portfolio)
+
+breakpoint()
 
 #TODO: graph data
