@@ -92,17 +92,8 @@ def get_random_portfolios_results(num_portfolios, historic_data: pd.DataFrame, i
 
     return pd.DataFrame(portfolio_results)
 
-def get_max_return_portfolio (portfolio_results):
-    max_return = portfolio_results['Return'].max()
-    return portfolio_results.loc[portfolio_results['Return'] == max_return]
-
-def get_max_ratio_portfolio (portfolio_results):
-    max_ratio = portfolio_results['Ratio'].max()
-    return portfolio_results.loc[portfolio_results['Ratio'] == max_ratio]
-
-def get_min_risk_portfolio (portfolio_results):
-    min_risk = portfolio_results['Risk'].min()
-    return portfolio_results.loc[portfolio_results['Risk'] == min_risk]
+def get_portfolio_where (portfolio_results, column, function, *args):
+    return portfolio_results.loc[portfolio_results[column] == function(portfolio_results[column], *args)]
 
 inflation_data = pd.read_csv("usa_inf.csv", index_col=0, squeeze=True) / 100
 
@@ -114,9 +105,9 @@ portfolio_results = get_random_portfolios_results(
     100, historic_data, inflation_data, 15)
 
 
-max_return_portfolio = get_max_return_portfolio(portfolio_results)
-max_ratio_portfolio = get_max_ratio_portfolio(portfolio_results)
-min_risk_portfolio = get_min_risk_portfolio(portfolio_results)
+max_return_portfolio = get_portfolio_where(portfolio_results, 'Return', np.max)
+max_ratio_portfolio = get_portfolio_where(portfolio_results, 'Ratio', np.max)
+min_risk_portfolio = get_portfolio_where(portfolio_results, 'Risk', np.min)
 
 #TODO: output text data
 print(max_return_portfolio)
