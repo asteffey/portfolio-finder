@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import math
+import progressbar
 
 ANNUALISED_RISK_FREE_RATE = 0.0178
 
@@ -40,7 +41,7 @@ def get_total_return(yearly_returns: pd.Series):
     current_value = 1
     for percent_return in yearly_returns.iteritems():
         current_value *= (1 + percent_return[1])
-    return current_value
+    return current_value - 1
 
 
 def get_returns_over_timeframe(yearly_returns: pd.Series, timeframe):
@@ -50,7 +51,7 @@ def get_returns_over_timeframe(yearly_returns: pd.Series, timeframe):
         value = 1
         for delta_year in range(timeframe):
             value *= (1 + yearly_returns.get(start_year + delta_year))
-        returns.append(value)
+        returns.append(value - 1)
     return pd.Series(returns, index=start_years_range)
 
 
@@ -67,7 +68,7 @@ def get_random_portfolios_results(num_portfolios, historic_data: pd.DataFrame, i
     portfolio_ratios = []
     portfolio_weights = []
 
-    for n in range(num_portfolios):
+    for n in progressbar.progressbar(range(num_portfolios)):
         weights = get_random_weights(len(historic_data.columns))
         yearly_returns = get_aggregate_yearly_returns(
             historic_data, inflation_data, weights)
@@ -75,11 +76,11 @@ def get_random_portfolios_results(num_portfolios, historic_data: pd.DataFrame, i
             yearly_returns, timeframe)
 
         expected_return = np.mean(returns_over_timeframe)
-        ulcer_index = get_ulcer_index(yearly_returns)
-        upi_ratio = expected_return / ulcer_index
+        risk_index = np.std(returns_over_timeframe)#get_ulcer_index(yearly_returns)
+        upi_ratio = expected_return / risk_index
 
         portfolio_returns.append(expected_return)
-        portfolio_risks.append(ulcer_index)
+        portfolio_risks.append(risk_index)
         portfolio_ratios.append(upi_ratio)
         portfolio_weights.append(weights)
 
@@ -102,7 +103,7 @@ historic_data = pd.read_csv("historic_data.csv", index_col=0) / 100
 #historic_data = historic_data.drop(labels='USA_REIT',axis=1)
 
 portfolio_results = get_random_portfolios_results(
-    200, historic_data, inflation_data, 15)
+    1000, historic_data, inflation_data, 15)
 
 
 max_return_portfolio = get_portfolio_where(portfolio_results, 'Return', np.max)
@@ -111,9 +112,9 @@ min_risk_portfolio = get_portfolio_where(portfolio_results, 'Risk', np.min)
 
 #TODO: output text data
 #current placeholder:
-print(max_return_portfolio)
-print(max_ratio_portfolio)
-print(min_risk_portfolio)
+print("\nMax Return\n", max_return_portfolio)
+print("\nMax Ratio\n", max_ratio_portfolio)
+print("\nMin Risk\n", min_risk_portfolio)
 
 #TODO: graph data
 #current placeholder:
@@ -123,7 +124,7 @@ portfolio_results.plot.scatter(x='Risk', y='Return', c='Ratio',
 plt.scatter(x=max_ratio_portfolio['Risk'],
             y=max_ratio_portfolio['Return'], c='blue', marker='+', s=200)
 
-plt.xlabel('Ulcer Index (Risk)')
+plt.xlabel('Risk')
 plt.ylabel('Mean Return')
 plt.title('Efficient Frontier')
 plt.show(block=False)
