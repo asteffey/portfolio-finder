@@ -55,7 +55,7 @@ def get_portfolios_results(portfolios, return_function: np.mean, *return_functio
         if risk_index == 0:
             risk_index = 0.01
 
-        selected_risk_ratio = selected_return / portfolios["Risk"][index]
+        selected_risk_ratio = selected_return / risk_index
 
         portfolio_selected_returns.append(selected_return) #expected_return
         portfolios_risk.append(risk_index)
@@ -123,7 +123,7 @@ full_results = []
 #percentiles = [0,10,20,30,40,50,60,70,80,90,100]
 percentiles = list(range(0,101,5))
 
-random_portfolios = pickle.load(open('random_portfolios_10E4.bin',mode='rb'))
+random_portfolios = pickle.load(open('random_portfolios_10E3.bin',mode='rb'))
 
 plt_figure_num=0
 for return_function in progressbar.progressbar(list(map(lambda p: (np.percentile, p), percentiles)) + [(np.mean, None), (gmean, None)]):
