@@ -70,7 +70,11 @@ def get_returns_over_timeframe(yearly_returns: pd.Series, timeframe):
 
 def get_random_weights(number):
     weights = np.random.random(number)
-    return weights / np.sum(weights)
+    #TODO: fix temp mod to ensure REIT is never over 20%
+    weights[4] *= 0.2
+    weights[0:4] = weights[0:4] / np.sum(weights[0:4]) * (1-weights[4])
+    return weights
+    # return weights / np.sum(weights)
 
 
 def get_random_portfolios(num_portfolios, historic_data: pd.DataFrame, inflation_data: pd.Series, risk_free_rate, timeframe, portfolio_weights = None):
@@ -103,7 +107,7 @@ def get_random_portfolios(num_portfolios, historic_data: pd.DataFrame, inflation
         risk_index = get_ulcer_index(yearly_returns)
 
         if risk_index == 0:
-            continue
+            risk_index = 0.01
 
         portfolios_yearly_returns.append(yearly_returns)
         portfolios_returns_over_timeframe.append(returns_over_risk_free_over_timeframe)
@@ -185,30 +189,10 @@ risk_free_rate = historic_financials['RISK_FREE']
 
 historic_data = pd.read_csv("historic_data.csv", index_col=0) / 100
 #historic_data = historic_data.drop(labels='USA_BILL',axis=1)
-historic_data = historic_data.drop(labels='USA_REIT',axis=1)
-NUM_PORTFOLIOS = 5000
-
-# portfolio_results = get_random_portfolios_results(
-#     NUM_PORTFOLIOS, historic_data, inflation_data, risk_free_rate, 17)
-
-# key_portfolios = {}
-# key_portfolios['Max Return'] = get_portfolio_where(
-#     portfolio_results, 'Return', np.max)
-# key_portfolios['Min Risk'] = get_portfolio_where(
-#     portfolio_results, 'Risk', np.min)
-# key_portfolios['Min Return'] = get_portfolio_where(
-#     portfolio_results, 'Return', np.min)
-
-# key_portfolios['Max Ratio'] = get_portfolio_where(
-#     portfolio_results, 'Ratio', np.max)
-
-# output_portfolios(key_portfolios)
-# efficient_frontier_portfolios = get_efficient_frontier_portfolios(portfolio_results, 50)
-# print(efficient_frontier_portfolios)
-
-# plot_results(portfolio_results, [(key_portfolios['Max Ratio'], 'blue', 'Max Ratio')])
-
-results = []
+#historic_data = historic_data.drop(labels='USA_REIT',axis=1)
+NUM_PORTFOLIOS = 1000
+max_ratio_results = []
+max_return_results = []
 full_results = []
 
 #custom_weights = [np.array([.42, .10, .48, 0]), np.array([.33, .20, .46, 0.01])]
@@ -217,22 +201,24 @@ custom_weights = None
 random_portfolios = get_random_portfolios(NUM_PORTFOLIOS, historic_data, inflation_data, risk_free_rate, 17, custom_weights)
 
 #percentiles = [0,10,20,30,40,50,60,70,80,90,100]
-percentiles = [5, 15, 50, 85, 95]
+percentiles = list(range(0,101,5))
 
 
 plt_figure_num=0
 for return_function in (list(map(lambda p: (np.percentile, p), percentiles)) + [(np.mean, None), (gmean, None)]):
-    
-
     portfolio_results = get_portfolios_results(random_portfolios, *return_function)
+    series_id = return_function[1] if return_function[1] is not None else return_function[0].__name__
 
     max_ratio = get_portfolio_where(portfolio_results, 'Ratio', np.max)
-    series_id = return_function[1] if return_function[1] is not None else return_function[0].__name__
     max_ratio.loc[:,'percentile'] = series_id
     max_ratio.set_index('percentile')
 
-    print("{}:".format(series_id))
-    print(get_efficient_frontier_portfolios(portfolio_results, 20))
+    max_return = get_portfolio_where(portfolio_results, 'Return', np.max)
+    max_return.loc[:,'percentile'] = series_id
+    max_return.set_index('percentile')
+
+    # print("{}:".format(series_id))
+    # print(get_efficient_frontier_portfolios(portfolio_results, 20))
 
     # plt.close()
     # plt.figure(plt_figure_num)
@@ -241,9 +227,16 @@ for return_function in (list(map(lambda p: (np.percentile, p), percentiles)) + [
     # plot_results(portfolio_results, [(max_ratio, 'blue', 'Max Ratio')])
 
     full_results.append(portfolio_results)
-    results.append(max_ratio)
-results = pd.concat(results)
-print(results)
+    max_ratio_results.append(max_ratio)
+    max_return_results.append(max_return)
+
+max_ratio_results = pd.concat(max_ratio_results)
+max_return_results = pd.concat(max_return_results)
+print("\nmax_ratio:")
+print(max_ratio_results)
+print("\nmax_return:")
+print(max_return_results)
+
 breakpoint()
 
 # plt.close()
