@@ -19,6 +19,20 @@ def get_cumulative_change(yearly_returns: pd.Series, start_year = None):
         cumulative_return.append(current_value)
     return pd.Series(cumulative_return, index=returns_list.axes[0])
 
+#TODO: figure out why ulcer index differs from portfoliocharts.com
+def get_ulcer_index(yearly_returns: pd.Series):
+    sum_sq = 0
+    max_value = 1
+    current_value = 1
+    for percent_return in yearly_returns.iteritems():
+        current_value *= (1 + percent_return[1])
+        if current_value > max_value:
+            max_value = current_value
+            # print(0)
+        else:
+            sum_sq += (100 * ((current_value / max_value) - 1)) ** 2
+            # print((100 * ((current_value / max_value) - 1)) ** 2)
+    return math.sqrt(sum_sq / len(yearly_returns))
 
 def get_total_return(yearly_returns: pd.Series):
     current_value = 1
@@ -29,17 +43,26 @@ def get_total_return(yearly_returns: pd.Series):
 
 def get_portfolios_results(portfolios, return_function: np.mean, *return_function_args):
     portfolio_selected_returns = []
+    portfolios_risk = []
     portfolio_ratios = []
 
     for index, returns_over_timeframe in enumerate(portfolios["returns_over_timeframe"]):
         selected_return = return_function(returns_over_timeframe, *return_function_args)
+
+        # risk_index = np.std(returns_over_timeframe) 
+        risk_index = get_ulcer_index(portfolios["yearly_returns"][index])
+
+        if risk_index == 0:
+            risk_index = 0.01
+
         selected_risk_ratio = selected_return / portfolios["Risk"][index]
 
         portfolio_selected_returns.append(selected_return) #expected_return
+        portfolios_risk.append(risk_index)
         portfolio_ratios.append(selected_risk_ratio)
 
     portfolio_results = {'Return': portfolio_selected_returns,
-                         'Risk': portfolios["Risk"], 'Ratio': portfolio_ratios}
+                         'Risk': portfolios_risk, 'Ratio': portfolio_ratios}
 
     return pd.DataFrame({**portfolio_results, **portfolios["symbol_weights"]})
 
@@ -100,7 +123,7 @@ full_results = []
 #percentiles = [0,10,20,30,40,50,60,70,80,90,100]
 percentiles = list(range(0,101,5))
 
-random_portfolios = pickle.load(open('random_portfolios.bin',mode='rb'))
+random_portfolios = pickle.load(open('random_portfolios_10E4.bin',mode='rb'))
 
 plt_figure_num=0
 for return_function in progressbar.progressbar(list(map(lambda p: (np.percentile, p), percentiles)) + [(np.mean, None), (gmean, None)]):
