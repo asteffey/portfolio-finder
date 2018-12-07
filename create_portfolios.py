@@ -6,8 +6,8 @@ import pickle
 
 def get_random_weights(number):
     weights = np.random.random(number)
-    #TODO: fix temp mod to ensure REIT is never over 20%
-    weights[4] *= 0.2
+    #TODO: fix temp mod to ensure REIT is never over 15%
+    weights[4] *= 0.15
     weights[0:4] = weights[0:4] / np.sum(weights[0:4]) * (1-weights[4])
     return weights
     # return weights / np.sum(weights)
@@ -76,10 +76,13 @@ historic_data = pd.read_csv("historic_data.csv", index_col=0) / 100
 #historic_data = historic_data.drop(labels='USA_BILL',axis=1)
 #historic_data = historic_data.drop(labels='USA_REIT',axis=1)
 
-#custom_weights = [np.array([.42, .10, .48, 0]), np.array([.33, .20, .46, 0.01])]
+# custom_weights = [np.array([.61, .12, .08, 0, .19]),
+#                   np.array([0.45, 0.23, 0.08, 0, 0.24]),
+#                   np.array([0.15, 0.23, 0.01, 0, 0.61])]
+
 custom_weights = None
 
-NUM_PORTFOLIOS = 100000
+NUM_PORTFOLIOS = 10000
 random_portfolios = get_random_portfolios(NUM_PORTFOLIOS, historic_data, risk_free_rate, 17, custom_weights)
 
-pickle.dump(random_portfolios, open('random_portfolios_10E5.bin',mode='wb'))
+pickle.dump(random_portfolios, open('random_portfolios_E4_REIT15.bin',mode='wb'))
