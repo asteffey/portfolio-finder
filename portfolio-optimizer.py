@@ -71,15 +71,15 @@ def get_random_weights(number):
     return weights / np.sum(weights)
 
 
-def get_random_portfolios_results(num_portfolios, historic_data: pd.DataFrame, inflation_data: pd.Series, risk_free_rate: pd.Series, timeframe, p = 0.5):
+def get_random_portfolios(num_portfolios, historic_data: pd.DataFrame, inflation_data: pd.Series, risk_free_rate, timeframe):
     num_funds = len(historic_data.columns)
 
-    portfolio_mean_returns = []
-    portfolio_risks = []
-    portfolio_ratios = []
-    
     portfolio_weights = [get_random_weights(
         num_funds) for n in range(num_portfolios)]
+
+    portfolios_yearly_returns = []
+    portfolios_returns_over_timeframe = []
+    portfolios_risk = []
 
     #ensure portfolios with 100% of each asset is accounted for
     for i in range(num_funds):
@@ -87,34 +87,44 @@ def get_random_portfolios_results(num_portfolios, historic_data: pd.DataFrame, i
         weights[i] = 1
         portfolio_weights.append(np.array(weights))
 
+    risk_free_returns_over_timeframe = get_returns_over_timeframe(
+        risk_free_rate, timeframe)
+
     for weights in progressbar.progressbar(portfolio_weights):
         yearly_returns = get_weighted_yearly_returns(
             historic_data, inflation_data, weights)
         returns_over_timeframe = get_returns_over_timeframe(
             yearly_returns, timeframe)
-        risk_free_return_over_timeframe = get_returns_over_timeframe(
-            risk_free_rate, timeframe)
-
-
-        expected_return = np.percentile(returns_over_timeframe, p)
-        expected_return_over_risk_free = np.percentile(returns_over_timeframe - risk_free_return_over_timeframe, p)
+        returns_over_risk_free_over_timeframe = returns_over_timeframe - risk_free_returns_over_timeframe
         risk_index = get_ulcer_index(yearly_returns)
-        #risk_index = np.std(returns_over_timeframe)
-        #risk_index = 1 / np.percentile(returns_over_timeframe,0.05)
-        upi_ratio = expected_return_over_risk_free / risk_index
 
-        portfolio_mean_returns.append(expected_return)
-        portfolio_risks.append(risk_index)
-        portfolio_ratios.append(upi_ratio)
+        portfolios_yearly_returns.append(yearly_returns)
+        portfolios_returns_over_timeframe.append(returns_over_risk_free_over_timeframe)
+        portfolios_risk.append(risk_index)
 
-    portfolio_results = {'Return': portfolio_mean_returns,
-                         'Risk': portfolio_risks, 'Ratio': portfolio_ratios}
-
+    portfolios_symbol_weights = {}
     for index, symbol in enumerate(historic_data.columns):
-        portfolio_results[symbol+' Weight'] = [weight[index]
-                                               for weight in portfolio_weights]
+        portfolios_symbol_weights[symbol] = [weight[index]
+                                             for weight in portfolio_weights]
 
-    return pd.DataFrame(portfolio_results)
+    return {"yearly_returns": portfolios_yearly_returns, "returns_over_timeframe": portfolios_returns_over_timeframe, "Risk": portfolios_risk, "symbol_weights": portfolios_symbol_weights}
+
+
+def get_portfolios_results(portfolios, return_function: np.mean, *return_function_args):
+    portfolio_selected_returns = []
+    portfolio_ratios = []
+
+    for index, returns_over_timeframe in progressbar.progressbar(enumerate(portfolios["returns_over_timeframe"])):
+        selected_return = return_function(returns_over_timeframe, *return_function_args)
+        selected_risk_ratio = selected_return / portfolios["Risk"][index]
+
+        portfolio_selected_returns.append(selected_return) #expected_return
+        portfolio_ratios.append(selected_risk_ratio)
+
+    portfolio_results = {'Return': portfolio_selected_returns,
+                         'Risk': portfolios["Risk"], 'Ratio': portfolio_ratios}
+
+    return pd.DataFrame({**portfolio_results, **portfolios["symbol_weights"]})
 
 
 def get_portfolio_where(portfolio_results, column, function, *args):
@@ -158,7 +168,7 @@ def plot_results(portfolio_results, points):
     plt.xlabel('Risk')
     plt.ylabel('Mean Return')
     plt.title('Efficient Frontier')
-    plt.show(block=False)
+    plt.show(block=True)
 
 
 #######################################################################################################
@@ -170,8 +180,8 @@ risk_free_rate = historic_financials['RISK_FREE']
 
 historic_data = pd.read_csv("historic_data.csv", index_col=0) / 100
 #historic_data = historic_data.drop(labels='USA_BILL',axis=1)
-#historic_data = historic_data.drop(labels='USA_REIT',axis=1)
-NUM_PORTFOLIOS = 5000
+historic_data = historic_data.drop(labels='USA_REIT',axis=1)
+NUM_PORTFOLIOS = 2500
 
 # portfolio_results = get_random_portfolios_results(
 #     NUM_PORTFOLIOS, historic_data, inflation_data, risk_free_rate, 17)
@@ -194,15 +204,21 @@ NUM_PORTFOLIOS = 5000
 # plot_results(portfolio_results, [(key_portfolios['Max Ratio'], 'blue', 'Max Ratio')])
 
 results = []
-for p in [0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1]:
-    portfolio_results = get_random_portfolios_results(
-        5000, historic_data, inflation_data, risk_free_rate, 17)
+full_results = []
+for return_function in (list(map(lambda p: (np.percentile, p), [15,50,85])) + [(np.mean, None)]):
+    
+
+    portfolio_results = get_portfolios_results(
+        get_random_portfolios(NUM_PORTFOLIOS, historic_data, inflation_data, risk_free_rate, 17), *return_function)
+
     max_ratio = get_portfolio_where(portfolio_results, 'Ratio', np.max)
-    max_ratio['percentile'] = p
+    max_ratio['percentile'] = return_function[1] if return_function[1] is not None else "Mean"
     max_ratio.set_index('percentile')
+    # plt.close()
+    # plot_results(portfolio_results, [(max_ratio, 'blue', 'Max Ratio')])
+
+    full_results.append(portfolio_results)
     results.append(max_ratio)
-    #print("percentile", p)
-    #output_portfolios(key_portfolios)
 results = pd.concat(results)
 print(results)
 breakpoint()
