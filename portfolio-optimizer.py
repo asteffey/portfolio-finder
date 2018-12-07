@@ -45,23 +45,37 @@ def get_portfolios_results(portfolios, return_function: np.mean, *return_functio
     portfolio_selected_returns = []
     portfolios_risk = []
     portfolio_ratios = []
+    portfolio_low_returns = []
+    portfolio_high_returns = []
+    portfolio_mean_returns = []
+    portfolio_gmean_returns = []
 
     for index, returns_over_timeframe in enumerate(portfolios["returns_over_timeframe"]):
         selected_return = return_function(returns_over_timeframe, *return_function_args)
 
         # risk_index = np.std(returns_over_timeframe) 
-        risk_index = get_ulcer_index(portfolios["yearly_returns"][index])
+        #risk_index = get_ulcer_index(portfolios["yearly_returns"][index])
+        risk_index = 1 / np.min(returns_over_timeframe) #TODO: check for dividebyzero
 
         if risk_index == 0:
             risk_index = 0.01
 
         selected_risk_ratio = selected_return / risk_index
 
+        portfolio_low_returns.append(np.min(returns_over_timeframe))
+        portfolio_high_returns.append(np.max(returns_over_timeframe))
+        portfolio_mean_returns.append(np.mean(returns_over_timeframe))
+        portfolio_gmean_returns.append(gmean(returns_over_timeframe))
+        
         portfolio_selected_returns.append(selected_return) #expected_return
         portfolios_risk.append(risk_index)
         portfolio_ratios.append(selected_risk_ratio)
 
     portfolio_results = {'Return': portfolio_selected_returns,
+                         'Low': portfolio_low_returns,
+                         'GMean': portfolio_gmean_returns,
+                         'Mean': portfolio_mean_returns,
+                         'High': portfolio_high_returns,
                          'Risk': portfolios_risk, 'Ratio': portfolio_ratios}
 
     return pd.DataFrame({**portfolio_results, **portfolios["symbol_weights"]})
@@ -123,7 +137,7 @@ full_results = []
 #percentiles = [0,10,20,30,40,50,60,70,80,90,100]
 percentiles = list(range(0,101,5))
 
-random_portfolios = pickle.load(open('random_portfolios_10E3.bin',mode='rb'))
+random_portfolios = pickle.load(open('random_portfolios_E4_0REIT_15yr.bin',mode='rb'))
 
 plt_figure_num=0
 for return_function in progressbar.progressbar(list(map(lambda p: (np.percentile, p), percentiles)) + [(np.mean, None), (gmean, None)]):
@@ -158,7 +172,7 @@ print(max_ratio_results)
 print("\nmax_return:")
 print(max_return_results)
 
-breakpoint()
+# breakpoint()
 
 # plt.close()
 # plt.style.use('seaborn-dark')
