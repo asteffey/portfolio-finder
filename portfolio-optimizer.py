@@ -1,8 +1,10 @@
 import pandas as pd
-import numpy as np
+import numpy as np 
 import matplotlib.pyplot as plt
 import math
 import progressbar
+from scipy.stats import gmean
+import cProfile
 
 #TODO: figure out why ulcer index differs from portfoliocharts.com
 
@@ -71,32 +73,37 @@ def get_random_weights(number):
     return weights / np.sum(weights)
 
 
-def get_random_portfolios(num_portfolios, historic_data: pd.DataFrame, inflation_data: pd.Series, risk_free_rate, timeframe):
+def get_random_portfolios(num_portfolios, historic_data: pd.DataFrame, inflation_data: pd.Series, risk_free_rate, timeframe, portfolio_weights = None):
     num_funds = len(historic_data.columns)
-
-    portfolio_weights = [get_random_weights(
-        num_funds) for n in range(num_portfolios)]
 
     portfolios_yearly_returns = []
     portfolios_returns_over_timeframe = []
     portfolios_risk = []
 
-    #ensure portfolios with 100% of each asset is accounted for
-    for i in range(num_funds):
-        weights = [0]*num_funds
-        weights[i] = 1
-        portfolio_weights.append(np.array(weights))
+    portfolio_weights = [get_random_weights(
+        num_funds) for n in range(num_portfolios)] if portfolio_weights is None else portfolio_weights
 
-    risk_free_returns_over_timeframe = get_returns_over_timeframe(
-        risk_free_rate, timeframe)
+    #ensure portfolios with 100% of each asset is accounted for
+    # for i in range(num_funds):
+    #     weights = [0]*num_funds
+    #     weights[i] = 1
+    #     portfolio_weights.append(np.array(weights))
+
+    # risk_free_returns_over_timeframe = get_returns_over_timeframe(
+    #     risk_free_rate, timeframe)
 
     for weights in progressbar.progressbar(portfolio_weights):
+        
         yearly_returns = get_weighted_yearly_returns(
-            historic_data, inflation_data, weights)
+            historic_data, risk_free_rate, weights)
         returns_over_timeframe = get_returns_over_timeframe(
             yearly_returns, timeframe)
-        returns_over_risk_free_over_timeframe = returns_over_timeframe - risk_free_returns_over_timeframe
+        returns_over_risk_free_over_timeframe = returns_over_timeframe# - risk_free_returns_over_timeframe
+        # risk_index = np.std(returns_over_risk_free_over_timeframe) 
         risk_index = get_ulcer_index(yearly_returns)
+
+        if risk_index == 0:
+            continue
 
         portfolios_yearly_returns.append(yearly_returns)
         portfolios_returns_over_timeframe.append(returns_over_risk_free_over_timeframe)
@@ -109,7 +116,7 @@ def get_random_portfolios(num_portfolios, historic_data: pd.DataFrame, inflation
 
     return {"yearly_returns": portfolios_yearly_returns, "returns_over_timeframe": portfolios_returns_over_timeframe, "Risk": portfolios_risk, "symbol_weights": portfolios_symbol_weights}
 
-
+#@do_cprofile
 def get_portfolios_results(portfolios, return_function: np.mean, *return_function_args):
     portfolio_selected_returns = []
     portfolio_ratios = []
@@ -131,7 +138,6 @@ def get_portfolio_where(portfolio_results, column, function, *args):
     return portfolio_results.loc[portfolio_results[column] == function(portfolio_results[column], *args)]
 
 def get_efficient_frontier_portfolios(portfolio_results, num_points):
-    #TODO: return portfolios along efficient frontier
     min_return = portfolio_results['Return'].min()
     max_return = portfolio_results['Return'].max()
     step = (max_return - min_return) / num_points
@@ -158,7 +164,6 @@ def plot_results(portfolio_results, points):
     plt.style.use('seaborn-dark')
     portfolio_results.plot.scatter(x='Risk', y='Return', c='Ratio',
                                    cmap='RdYlGn', edgecolors='black', figsize=(10, 8), grid=True)
-
     for point in points:
         plt.scatter(x=point[0]['Risk'], y=point[0]['Return'],
                     c=point[1], marker='+', s=200, label=point[2])
@@ -181,7 +186,7 @@ risk_free_rate = historic_financials['RISK_FREE']
 historic_data = pd.read_csv("historic_data.csv", index_col=0) / 100
 #historic_data = historic_data.drop(labels='USA_BILL',axis=1)
 historic_data = historic_data.drop(labels='USA_REIT',axis=1)
-NUM_PORTFOLIOS = 2500
+NUM_PORTFOLIOS = 5000
 
 # portfolio_results = get_random_portfolios_results(
 #     NUM_PORTFOLIOS, historic_data, inflation_data, risk_free_rate, 17)
@@ -205,16 +210,32 @@ NUM_PORTFOLIOS = 2500
 
 results = []
 full_results = []
-for return_function in (list(map(lambda p: (np.percentile, p), [15,50,85])) + [(np.mean, None)]):
+
+#custom_weights = [np.array([.42, .10, .48, 0]), np.array([.33, .20, .46, 0.01])]
+custom_weights = None
+
+#percentiles = [0,10,20,30,40,50,60,70,80,90,100]
+percentiles = [5, 15, 50, 85, 95]
+
+plt_figure_num=0
+for return_function in (list(map(lambda p: (np.percentile, p), percentiles)) + [(np.mean, None), (gmean, None)]):
     
 
     portfolio_results = get_portfolios_results(
-        get_random_portfolios(NUM_PORTFOLIOS, historic_data, inflation_data, risk_free_rate, 17), *return_function)
+        get_random_portfolios(NUM_PORTFOLIOS, historic_data, inflation_data, risk_free_rate, 17, custom_weights), *return_function)
 
     max_ratio = get_portfolio_where(portfolio_results, 'Ratio', np.max)
-    max_ratio['percentile'] = return_function[1] if return_function[1] is not None else "Mean"
+    series_id = return_function[1] if return_function[1] is not None else return_function[0].__name__
+    max_ratio.loc[:,'percentile'] = series_id
     max_ratio.set_index('percentile')
+
+    print("{}:".format(series_id))
+    print(get_efficient_frontier_portfolios(portfolio_results, 20))
+
     # plt.close()
+    # plt.figure(plt_figure_num)
+    # plt_figure_num += 1
+    # plt.figure().canvas.set_window_title("{} Percentile".format(series_id) if type(series_id) == int else series_id) #this is a leak abstraction
     # plot_results(portfolio_results, [(max_ratio, 'blue', 'Max Ratio')])
 
     full_results.append(portfolio_results)

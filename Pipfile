@@ -12,6 +12,7 @@ pandas = "*"
 numpy = "*"
 matplotlib = "*"
 progressbar2 = "*"
+scipy = "*"
 
 [requires]
 python_version = "3.7"
