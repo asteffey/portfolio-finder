@@ -121,7 +121,7 @@ def get_portfolios_results(portfolios, return_function: np.mean, *return_functio
     portfolio_selected_returns = []
     portfolio_ratios = []
 
-    for index, returns_over_timeframe in progressbar.progressbar(enumerate(portfolios["returns_over_timeframe"])):
+    for index, returns_over_timeframe in enumerate(portfolios["returns_over_timeframe"]):
         selected_return = return_function(returns_over_timeframe, *return_function_args)
         selected_risk_ratio = selected_return / portfolios["Risk"][index]
 
@@ -214,15 +214,17 @@ full_results = []
 #custom_weights = [np.array([.42, .10, .48, 0]), np.array([.33, .20, .46, 0.01])]
 custom_weights = None
 
+random_portfolios = get_random_portfolios(NUM_PORTFOLIOS, historic_data, inflation_data, risk_free_rate, 17, custom_weights)
+
 #percentiles = [0,10,20,30,40,50,60,70,80,90,100]
 percentiles = [5, 15, 50, 85, 95]
+
 
 plt_figure_num=0
 for return_function in (list(map(lambda p: (np.percentile, p), percentiles)) + [(np.mean, None), (gmean, None)]):
     
 
-    portfolio_results = get_portfolios_results(
-        get_random_portfolios(NUM_PORTFOLIOS, historic_data, inflation_data, risk_free_rate, 17, custom_weights), *return_function)
+    portfolio_results = get_portfolios_results(random_portfolios, *return_function)
 
     max_ratio = get_portfolio_where(portfolio_results, 'Ratio', np.max)
     series_id = return_function[1] if return_function[1] is not None else return_function[0].__name__
