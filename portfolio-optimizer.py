@@ -137,7 +137,7 @@ full_results = []
 #percentiles = [0,10,20,30,40,50,60,70,80,90,100]
 percentiles = list(range(0,101,5))
 
-random_portfolios = pickle.load(open('random_portfolios_E4_0REIT_15yr.bin',mode='rb'))
+random_portfolios = pickle.load(open('random_portfolios_custom.bin',mode='rb'))
 
 plt_figure_num=0
 for return_function in progressbar.progressbar(list(map(lambda p: (np.percentile, p), percentiles)) + [(np.mean, None), (gmean, None)]):
@@ -182,7 +182,7 @@ print(max_return_results)
 
 # plt.show()
 
-# breakpoint()
+breakpoint()
     
     
 

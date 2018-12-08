@@ -76,13 +76,19 @@ historic_data = pd.read_csv("historic_data.csv", index_col=0) / 100
 #historic_data = historic_data.drop(labels='USA_BILL',axis=1)
 #historic_data = historic_data.drop(labels='USA_REIT',axis=1)
 
-# custom_weights = [np.array([.61, .12, .08, 0, .19]),
-#                   np.array([0.45, 0.23, 0.08, 0, 0.24]),
-#                   np.array([0.15, 0.23, 0.01, 0, 0.61])]
 
-custom_weights = None
+custom_weights = [np.array([0.67, .15, .05, 0, .13]),
+                  np.array([0.46, .23, .15, .01, .15]),
+                  np.array([0.61, .12, .08, 0, .19]),
+                  np.array([.45, .23, .08, 0, .24])]
+                  #np.array([.15, .23, .01, 0, .61])
 
-NUM_PORTFOLIOS = 10000
+# custom_weights = [np.array([0.46, .23, .15, .01, .15]),
+#                   np.array([1, 0, 0, 0, 0])]
+
+# custom_weights = None
+
+NUM_PORTFOLIOS = 50000
 random_portfolios = get_random_portfolios(NUM_PORTFOLIOS, historic_data, risk_free_rate, 17, custom_weights)
 
-pickle.dump(random_portfolios, open('random_portfolios_E4_REIT15.bin',mode='wb'))
+pickle.dump(random_portfolios, open('random_portfolios_custom.bin',mode='wb'))
