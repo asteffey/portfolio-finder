@@ -31,7 +31,7 @@ def get_returns_over_timeframe(yearly_returns: pd.Series, timeframe):
     return pd.Series(returns, index=start_years_range)
 
 
-def get_random_portfolios(num_portfolios, historic_data: pd.DataFrame, risk_free_rate, timeframe, portfolio_weights = None):
+def get_random_portfolios(num_portfolios, historic_data: pd.DataFrame, inflation_data, timeframe, portfolio_weights = None):
     num_funds = len(historic_data.columns)
 
     portfolios_yearly_returns = []
@@ -49,7 +49,7 @@ def get_random_portfolios(num_portfolios, historic_data: pd.DataFrame, risk_free
     for weights in progressbar.progressbar(portfolio_weights):
         
         yearly_returns = get_weighted_yearly_returns(
-            historic_data, risk_free_rate, weights)
+            historic_data, inflation_data, weights)
         returns_over_timeframe = get_returns_over_timeframe(
             yearly_returns, timeframe)
 
@@ -71,24 +71,25 @@ def get_random_portfolios(num_portfolios, historic_data: pd.DataFrame, risk_free
 #get data from csv
 historic_financials = pd.read_csv("historic_financials.csv", index_col=0, squeeze=True) / 100
 risk_free_rate = historic_financials['RISK_FREE']
+inflation_data = historic_financials['USA_INF']
 
 historic_data = pd.read_csv("historic_data.csv", index_col=0) / 100
 #historic_data = historic_data.drop(labels='USA_BILL',axis=1)
 #historic_data = historic_data.drop(labels='USA_REIT',axis=1)
 
 
-custom_weights = [np.array([0.67, .15, .05, 0, .13]),
-                  np.array([0.46, .23, .15, .01, .15]),
-                  np.array([0.61, .12, .08, 0, .19]),
-                  np.array([.45, .23, .08, 0, .24])]
+# custom_weights = [np.array([0.67, .15, .05, 0, .13]),
+#                   np.array([0.46, .23, .15, .01, .15]),
+#                   np.array([0.61, .12, .08, 0, .19]),
+#                   np.array([.45, .23, .08, 0, .24])]
                   #np.array([.15, .23, .01, 0, .61])
 
 # custom_weights = [np.array([0.46, .23, .15, .01, .15]),
 #                   np.array([1, 0, 0, 0, 0])]
 
-# custom_weights = None
+custom_weights = None
 
 NUM_PORTFOLIOS = 50000
-random_portfolios = get_random_portfolios(NUM_PORTFOLIOS, historic_data, risk_free_rate, 17, custom_weights)
+random_portfolios = get_random_portfolios(NUM_PORTFOLIOS, historic_data, inflation_data, 17, custom_weights)
 
-pickle.dump(random_portfolios, open('random_portfolios_custom.bin',mode='wb'))
+pickle.dump(random_portfolios, open('random_portfolios_5E4_inf.bin',mode='wb'))
