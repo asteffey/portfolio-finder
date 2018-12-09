@@ -7,8 +7,8 @@ import pickle
 def get_random_weights(number):
     weights = np.random.random(number)
     #TODO: fix temp mod to ensure REIT is never over 15%
-    weights[4] *= 0.15
-    weights[0:4] = weights[0:4] / np.sum(weights[0:4]) * (1-weights[4])
+    weights[3] *= 0.15
+    weights[0:3] = weights[0:3] / np.sum(weights[0:3]) * (1-weights[3])
     return weights
     # return weights / np.sum(weights)
 
@@ -74,17 +74,17 @@ risk_free_rate = historic_financials['RISK_FREE']
 inflation_data = historic_financials['USA_INF']
 
 historic_data = pd.read_csv("historic_data.csv", index_col=0) / 100
-#historic_data = historic_data.drop(labels='USA_BILL',axis=1)
+historic_data = historic_data.drop(labels='USA_BILL',axis=1)
 #historic_data = historic_data.drop(labels='USA_REIT',axis=1)
 
 
-# custom_weights = [np.array([0.67, .15, .05, 0, .13]),
-#                   np.array([0.46, .23, .15, .01, .15]),
-#                   np.array([0.61, .12, .08, 0, .19]),
-#                   np.array([.45, .23, .08, 0, .24])]
-                  #np.array([.15, .23, .01, 0, .61])
+# custom_weights = [np.array([0.67, .15, .05, .13]),
+#                   np.array([0.46, .23, .16, .15]),
+#                   np.array([0.61, .12, .08, .19]),
+#                   np.array([.45, .23, .08, .24])]
+                  #np.array([.15, .23, .01, .61])
 
-# custom_weights = [np.array([0.46, .23, .15, .01, .15]),
+# custom_weights = [np.array([0.46, .23, .16, .15]),
 #                   np.array([1, 0, 0, 0, 0])]
 
 custom_weights = None
