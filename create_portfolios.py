@@ -4,13 +4,15 @@ import math
 import progressbar
 import pickle
 
+from combinatorics import range_of_allocations
+
 def get_random_weights(number):
     weights = np.random.random(number)
     #TODO: fix temp mod to ensure REIT is never over 15%
-    weights[3] *= 0.15
-    weights[0:3] = weights[0:3] / np.sum(weights[0:3]) * (1-weights[3])
-    return weights
-    # return weights / np.sum(weights)
+    # weights[3] *= 0.15
+    # weights[0:3] = weights[0:3] / np.sum(weights[0:3]) * (1-weights[3])
+    # return weights
+    return weights / np.sum(weights)
 
 def get_weighted_yearly_returns(historic_data, inflation_data, weights):
     aggregate_yearly_returns = []
@@ -38,7 +40,7 @@ def get_random_portfolios(num_portfolios, historic_data: pd.DataFrame, inflation
     portfolios_returns_over_timeframe = []
 
     portfolio_weights = [get_random_weights(
-        num_funds) for n in range(num_portfolios)] if portfolio_weights is None else portfolio_weights
+        num_funds) for n in range(num_portfolios)] if portfolio_weights is None else list(portfolio_weights)
 
     #ensure portfolios with 100% of each asset is accounted for
     # for i in range(num_funds):
@@ -75,14 +77,12 @@ inflation_data = historic_financials['USA_INF']
 
 historic_data = pd.read_csv("historic_data.csv", index_col=0) / 100
 historic_data = historic_data.drop(labels='USA_BILL',axis=1)
-#historic_data = historic_data.drop(labels='USA_REIT',axis=1)
+# historic_data = historic_data.drop(labels='USA_REIT',axis=1)
 
 
-# custom_weights = [np.array([0.67, .15, .05, .13]),
-#                   np.array([0.46, .23, .16, .15]),
-#                   np.array([0.61, .12, .08, .19]),
-#                   np.array([.45, .23, .08, .24])]
-                  #np.array([.15, .23, .01, .61])
+custom_weights = [np.array([0.39, .35, .11, .15]),
+                  np.array([0.29, .28, .28, .15]),
+                  np.array([0.66, .01, .18, .15])]
 
 # custom_weights = [np.array([0.46, .23, .16, .15]),
 #                   np.array([1, 0, 0, 0, 0])]
@@ -90,6 +90,11 @@ historic_data = historic_data.drop(labels='USA_BILL',axis=1)
 custom_weights = None
 
 NUM_PORTFOLIOS = 50000
-random_portfolios = get_random_portfolios(NUM_PORTFOLIOS, historic_data, inflation_data, 17, custom_weights)
 
-pickle.dump(random_portfolios, open('random_portfolios_5E4_inf.bin',mode='wb'))
+custom_weights = range_of_allocations(100,4)
+custom_weights = filter(lambda x : x[0]>=0.2 and x[1]>=0.1 and x[2]>=0.1 and x[3]<=0.15, custom_weights)
+
+random_portfolios = get_random_portfolios(NUM_PORTFOLIOS, historic_data, inflation_data, 16, custom_weights)
+
+pickle.dump(random_portfolios, open('range_of_portfolios_100.bin',mode='wb'))
+#random_portfolios_5E4_16_tbill

@@ -13,6 +13,7 @@ numpy = "*"
 matplotlib = "*"
 progressbar2 = "*"
 scipy = "*"
+itertools = "*"
 
 [requires]
 python_version = "3.7"
