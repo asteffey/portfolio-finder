@@ -2,3 +2,4 @@
 pandas/_libs/hashtable_class_helper.pxi
 .vscode/settings.json
 *.bin
+*.pyc
