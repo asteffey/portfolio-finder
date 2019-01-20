@@ -13,7 +13,7 @@ numpy = "*"
 matplotlib = "*"
 progressbar2 = "*"
 scipy = "*"
-itertools = "*"
+portfoliofinder = {path = "."}
 
 [requires]
 python_version = "3.7"
