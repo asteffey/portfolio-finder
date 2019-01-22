@@ -6,9 +6,11 @@ import progressbar
 from scipy.stats import gmean
 import pickle
 
+#not used
 def get_annualized_return(total_return, timeframe):
     return (total_return + 1) ** (1 / timeframe) - 1
 
+#not currently used - was just used for some debugging
 def get_cumulative_change(yearly_returns: pd.Series, start_year = None):
     current_value = 1
     cumulative_return = []
@@ -19,6 +21,7 @@ def get_cumulative_change(yearly_returns: pd.Series, start_year = None):
         cumulative_return.append(current_value)
     return pd.Series(cumulative_return, index=returns_list.axes[0])
 
+#not currently used - was just an option for risk
 #TODO: figure out why ulcer index differs from portfoliocharts.com
 def get_ulcer_index(yearly_returns: pd.Series):
     sum_sq = 0
@@ -34,6 +37,7 @@ def get_ulcer_index(yearly_returns: pd.Series):
             # print((100 * ((current_value / max_value) - 1)) ** 2)
     return math.sqrt(sum_sq / len(yearly_returns))
 
+#not used
 def get_total_return(yearly_returns: pd.Series):
     current_value = 1
     for percent_return in yearly_returns.iteritems():

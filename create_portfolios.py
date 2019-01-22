@@ -33,7 +33,7 @@ def get_returns_over_timeframe(yearly_returns: pd.Series, timeframe):
     return pd.Series(returns, index=start_years_range)
 
 
-def get_random_portfolios(num_portfolios, historic_data: pd.DataFrame, inflation_data, timeframe, portfolio_weights = None):
+def get_random_portfolios(num_portfolios, historic_data: pd.DataFrame, inflation_data, timeframe, portfolio_weights):
     num_funds = len(historic_data.columns)
 
     portfolios_yearly_returns = []

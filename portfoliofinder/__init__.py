@@ -1,2 +1,1 @@
-def testme():
-    return "you tested me"
+from combinatorics import count_in_bin_enumeration, range_of_allocations
