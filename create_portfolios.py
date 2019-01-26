@@ -71,11 +71,11 @@ def get_random_portfolios(num_portfolios, historic_data: pd.DataFrame, inflation
 
 
 #get data from csv
-historic_financials = pd.read_csv("historic_financials.csv", index_col=0, squeeze=True) / 100
+historic_financials = pd.read_csv("historic_financials.csv", index_col=0, squeeze=True)
 risk_free_rate = historic_financials['RISK_FREE']
 inflation_data = historic_financials['USA_INF']
 
-historic_data = pd.read_csv("historic_data.csv", index_col=0) / 100
+historic_data = pd.read_csv("historic_data.csv", index_col=0)
 historic_data = historic_data.drop(labels='USA_BILL',axis=1)
 # historic_data = historic_data.drop(labels='USA_REIT',axis=1)
 
@@ -91,10 +91,10 @@ custom_weights = None
 
 NUM_PORTFOLIOS = 50000
 
-custom_weights = range_of_allocations(100,4)
+custom_weights = range_of_allocations(20,4)
 custom_weights = filter(lambda x : x[0]>=0.2 and x[1]>=0.1 and x[2]>=0.1 and x[3]<=0.15, custom_weights)
 
 random_portfolios = get_random_portfolios(NUM_PORTFOLIOS, historic_data, inflation_data, 15, custom_weights)
 
-pickle.dump(random_portfolios, open('range_of_portfolios_100_15.bin',mode='wb'))
+pickle.dump(random_portfolios, open('test.bin',mode='wb'))
 #random_portfolios_5E4_16_tbill

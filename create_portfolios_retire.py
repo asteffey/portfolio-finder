@@ -60,11 +60,11 @@ def get_random_portfolios(historic_data: pd.DataFrame, inflation_data, timeframe
 
 
 #get data from csv
-historic_financials = pd.read_csv("historic_financials.csv", index_col=0, squeeze=True) / 100
+historic_financials = pd.read_csv("historic_financials.csv", index_col=0, squeeze=True)
 risk_free_rate = historic_financials['RISK_FREE']
 inflation_data = historic_financials['USA_INF']
 
-historic_data = pd.read_csv("historic_data_retire.csv", index_col=0) / 100
+historic_data = pd.read_csv("historic_data_retire.csv", index_col=0)
 
 #0          1           2       3           4           5   6   7
 #USA_TSM    WLDx_TSM	USA_INT	USA_BILL	USA_REIT	GLD	EM	SCB
