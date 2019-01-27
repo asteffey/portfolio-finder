@@ -1,3 +1,4 @@
+import pandas as pd
 """
 Workflow:
     - Inputs
@@ -12,7 +13,8 @@ Workflow:
         -- [optional] contributions_csv_file
 """ 
 
-#TODO fetch_all_returns_from_csv(csv_file)
+def fetch_all_returns_from_csv (csv_file):
+    return pd.read_csv(csv_file, index_col=0)
 
 
 #TODO get_returns (returns, symbols)
