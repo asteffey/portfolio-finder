@@ -11,4 +11,14 @@ def test_fetch_all_returns_from_csv():
     assert returns['GLD'].sum() == pytest.approx(5.13)
 
 
+#TODO test get_specific_returns(returns, symbols)
+    
+#TODO get_portfolio_returns (portfolio_allocation, fund_returns)
+    
+#TODO get_inflation_adjusted_returns (returns, inflation_rates)
+    
+#TODO get_portfolio_value_by_startyear
+    
+#TODO get_portfolio_timeframe_by_startyear
 
+#TODO get_statistics_for_portfolio(portfolio_timeframe_by_startyear, statistic_list)
