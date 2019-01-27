@@ -16,8 +16,8 @@ Workflow:
 def fetch_all_returns_from_csv (csv_file):
     return pd.read_csv(csv_file, index_col=0)
 
-
-#TODO get_returns (returns, symbols)
+def get_specific_returns(returns, symbols):
+    return returns[symbols]
     
 #TODO get_portfolio_returns (portfolio_allocation, fund_returns)
     
