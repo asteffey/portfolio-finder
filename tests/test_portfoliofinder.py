@@ -2,39 +2,38 @@ import pytest
 
 import portfoliofinder as pf
 import data_to_test as dtt
+from pandas.util.testing import assert_frame_equal
 
 def test_fetch_all_returns_from_csv():
     returns = pf.fetch_all_returns_from_csv("tests/test_data.csv")
-    assert all(returns.axes[1].array == dtt.ALL_FUNDS)
-    are_valid_returns(returns)
+    expected_returns = dtt.get_expected_all_returns()
+    assert_frame_equal(returns, expected_returns)
 
 def test_get_specific_returns():
-    all_returns = pf.fetch_all_returns_from_csv("tests/test_data.csv")
-    returns = pf.get_specific_returns(all_returns, dtt.SPECIFIC_FUNDS)
-    assert all(returns.axes[1].array == dtt.SPECIFIC_FUNDS)
-    are_valid_returns(returns)
-
-def are_valid_returns(returns):
-    assert all(returns.axes[0].array == list(range(1970,2018)))
-    assert returns['USA_TSM'][1970] == pytest.approx(0.009)
-    assert returns['USA_TSM'][1973] == pytest.approx(-0.177)
-    assert returns['GLD'].sum() == pytest.approx(5.13)
+    all_returns = dtt.get_expected_all_returns()
+    specific_returns = pf.get_specific_returns(all_returns, dtt.SPECIFIC_FUNDS)
+    expected_specific_returns = dtt.get_expected_specific_returns()
+    assert_frame_equal(specific_returns, expected_specific_returns)
 
 def test_create_portfolio_allocations():
     expected_allocations = dtt.get_expected_portfolio_allocation()
-    expected_allocations.sort()
-
     allocations = pf.create_portfolio_allocations(dtt.SPECIFIC_FUNDS, 0.25)
-    allocations.sort()
-
-    assert allocations == expected_allocations
+    assert sorted(allocations) == sorted(expected_allocations)
 
 def test_get_portfolio_returns ():
-    portfolio_allocation = pf.create_portfolio_allocations(dtt.SPECIFIC_FUNDS, 0.25)
-    pf.get_portfolio_returns (portfolio_allocation, dtt.SPECIFIC_FUNDS)
+    expected_portfolio_returns = dtt.get_expected_portfolio_returns()
+    portfolio_allocation = dtt.get_expected_portfolio_allocation()
+    portfolio_returns = pf.get_portfolio_returns (portfolio_allocation, dtt.SPECIFIC_FUNDS)
+    assert_frame_equal(portfolio_returns, expected_portfolio_returns)
 
     
 #TODO test get_inflation_adjusted_returns (returns, inflation_rates)
+def test_get_inflation_adjusted_returns():
+    expected_inflation_adjusted_returns = dtt.get_expected_inflation_adjusted_returns()
+    specific_returns = dtt.get_expected_specific_returns()
+    inflation_rates = pf.get_specific_returns(dtt.get_expected_all_returns(), ['USA_INF'])
+    inflation_adjusted_returns = pf.get_inflation_adjusted_returns(specific_returns, )
+    assert_frame_equal(inflation_adjusted_returns, expected_inflation_adjusted_returns)
     
 #TODO test get_portfolio_value_by_startyear
     
