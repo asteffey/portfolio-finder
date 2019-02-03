@@ -19,8 +19,11 @@ def fetch_all_returns_from_csv (csv_file):
 def get_specific_returns(returns, symbols):
     return returns[symbols]
     
+def create_portfolio_allocations(symbols, step):
+    return []
+
 #TODO get_portfolio_returns (portfolio_allocation, fund_returns)
-    
+
 #TODO get_inflation_adjusted_returns (returns, inflation_rates)
     
 #TODO get_portfolio_value_by_startyear
