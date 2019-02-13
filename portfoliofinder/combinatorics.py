@@ -1,4 +1,6 @@
 from itertools import combinations
+from math import floor
+from collections import namedtuple
 
 class count_in_bin_enumeration:
     def __init__(self, object_count, bin_count):
@@ -17,13 +19,24 @@ class count_in_bin_enumeration:
             raise StopIteration
 
 class range_of_allocations:
-    def __init__(self, precision, bin_count):
-        self._count_in_bin_enumeration = count_in_bin_enumeration(precision, bin_count)
-        self._precision = precision
+    def __init__(self, step, bin_count):
+        self._step_reciprocal = floor(1 / step)
+        self._count_in_bin_enumeration = count_in_bin_enumeration(self._step_reciprocal, bin_count)
 
     def __iter__(self):
         return self
 
     def __next__(self):
-        return tuple(map(lambda n : n / self._precision, next(self._count_in_bin_enumeration)))
+        return tuple(map(lambda n : n / self._step_reciprocal, next(self._count_in_bin_enumeration)))
+
+class named_range_of_allocations:
+    def __init__(self, step, field_names):
+        self._namedtuple_type = namedtuple('Allocation', field_names)
+        self._range_of_allocations = range_of_allocations(step, len(field_names))
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        return self._namedtuple_type(*next(self._range_of_allocations))
 

@@ -8,6 +8,7 @@ autopep8 = "*"
 pylint = "*"
 pytest = "==4.0.1"
 xlrd = "*"
+rope = "*"
 
 [packages]
 pandas = "*"
@@ -18,4 +19,4 @@ scipy = "*"
 portfoliofinder = {editable = true,path = "."}
 
 [requires]
-python_version = "3.7.0"
+python_version = "3.6.7"
