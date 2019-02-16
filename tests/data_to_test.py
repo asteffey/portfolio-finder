@@ -2,6 +2,14 @@
 Contains test inputs and expected values used throughout pytests
 """
 
+"""
+thought: this module violates SRP
+every time I add a test, I have to update both test_portfoliofinder and this
+
+TODO: create a seperate data reader class
+TODO: reorganize test_portfoliofinder and this class into seperate tests for each function
+"""
+
 from collections import namedtuple
 import pandas as pd
 from portfoliofinder.contributions import ScheduledContributions
