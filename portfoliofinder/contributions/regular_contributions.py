@@ -1,4 +1,6 @@
-class RegularContributions:
+from .contributions import Contributions
+
+class RegularContributions(Contributions):
     def __init__(self, starting_value, annual_contribution):
         self.starting_value = starting_value
         self.annual_contribution = annual_contribution

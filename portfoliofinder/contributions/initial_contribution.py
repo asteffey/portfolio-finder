@@ -1,4 +1,6 @@
-class InitialContribution:
+from .contributions import Contributions
+
+class InitialContribution(Contributions):
     def __init__(self, starting_value):
         self.starting_value = starting_value
 

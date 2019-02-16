@@ -1,4 +1,6 @@
-class ScheduledContributions:
+from .contributions import Contributions
+
+class ScheduledContributions(Contributions):
     def __init__(self, scheduled_contributions):
         self.scheduled_contributions = scheduled_contributions
 
