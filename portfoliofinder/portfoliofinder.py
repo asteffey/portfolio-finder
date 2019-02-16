@@ -1,6 +1,9 @@
 import pandas as pd
+from functools import reduce
 
 from .combinatorics import named_range_of_allocations
+from 
+
 """
 Workflow:
     - Inputs
@@ -69,6 +72,29 @@ def _get_portfolio_returns(portfolio_allocation, returns_by_symbol: pd.DataFrame
 
 
 #TODO get_portfolio_value_by_startyear (portfolio_returns, timeframe, contributions)
+def get_portfolio_value_by_startyear(portfolio_returns, timeframe):
+    first_year = portfolio_returns.index[0]
+    last_year = portfolio_returns.index[-1] - (timeframe - 1)
+    start_years = _inclusive_range(first_year, last_year)
+    
+    def reduce_to_portfolio_value(value, current_return):
+        return value * (1 + current_return)
+
+    values = []
+    for start_year in start_years:
+        investment_years = range(start_year, start_year + timeframe)
+        returns_over_timeframe = portfolio_returns.loc[investment_years]
+    
+        value = reduce(reduce_to_portfolio_value, returns_over_timeframe, 1)
+        values.append(value)
+    
+    return pd.Series(data=values,
+                     index=pd.Index(start_years, name='Year'),
+                     name="Portfolio Value")
+
+
+def _inclusive_range(start, stop, step=1):
+    return range(start, (stop + 1) if step >= 0 else (stop - 1), step)
 
 #TODO get_portfolio_timeframe_by_startyear
 

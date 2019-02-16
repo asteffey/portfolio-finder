@@ -89,35 +89,40 @@ def get_expected_portfolio_returns() -> pd.Series:
                          squeeze=True)
 
 
-def get_expected_portfolio_value_by_startyear() -> pd.DataFrame:
+def get_expected_portfolio_value_by_startyear() -> pd.Series:
     """returns expected_portfolio_value_by_startyear read from excel file"""
     return pd.read_excel(_TEST_DATA_PATH,
                          "portfolio_value_by_startyear",
                          index_col='Year',
-                         usecols=['Year', 'Value'])
+                         usecols=['Year', 'Portfolio Value'],
+                         squeeze=True)
 
+#pd.read_excel(dtt._TEST_DATA_PATH, "portfolio_value_by_startyear", index_col='Year', usecols='Value', squeeze=True)
 
-def get_expected_portfolio_value_by_startyear_with_contributions() -> pd.DataFrame:
+def get_expected_portfolio_value_by_startyear_with_contributions() -> pd.Series:
     """returns expected_portfolio_value_by_startyear_with_contributions read from excel file"""
     return pd.read_excel(_TEST_DATA_PATH,
                          "portfolio_value_by_startyear_with_contributions",
                          index_col='Year',
-                         usecols=['Year', 'Value'])
+                         usecols=['Year', 'Portfolio Value'],
+                         squeeze=True)
 
 
-def get_expected_portfolio_timeframe_by_startyear() -> pd.DataFrame:
+def get_expected_portfolio_timeframe_by_startyear() -> pd.Series:
     """returns expected_portfolio_timeframe_by_startyear read from excel file"""
     dataframe = pd.read_excel(_TEST_DATA_PATH,
                               "portfolio_timeframe_by_startyear",
                               index_col='Year',
-                              usecols=['Year', 'Timeframe'])
+                              usecols=['Year', 'Timeframe'],
+                              squeeze=True)
     return dataframe.dropna()
 
 
-def get_expected_portfolio_timeframe_by_startyear_with_contributions() -> pd.DataFrame:
+def get_expected_portfolio_timeframe_by_startyear_with_contributions() -> pd.Series:
     """returns expected_portfolio_timeframe_by_startyear_with_contributions read from excel file"""
     dataframe = pd.read_excel(_TEST_DATA_PATH,
                               "portfolio_timeframe_by_startyear_with_contributions",
                               index_col='Year',
-                              usecols=['Year', 'Timeframe'])
+                              usecols=['Year', 'Timeframe'],
+                              squeeze=True)
     return dataframe.dropna()

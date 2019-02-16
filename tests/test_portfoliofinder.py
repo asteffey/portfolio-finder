@@ -84,7 +84,7 @@ def test_get_portfolio_value_by_startyear():
         portfolio_returns, timeframe)
 
     expected = dtt.get_expected_portfolio_value_by_startyear()
-    assert_frame_equal(actual_portfolio_value_by_startyear, expected)
+    assert_series_equal(actual_portfolio_value_by_startyear, expected)
 
 
 def test_get_portfolio_value_by_startyear_with_contributions():
@@ -99,7 +99,7 @@ def test_get_portfolio_value_by_startyear_with_contributions():
         portfolio_returns, timeframe, contributions)
 
     expected = dtt.get_expected_portfolio_value_by_startyear_with_contributions()
-    assert_frame_equal(actual_portfolio_value_by_startyear, expected)
+    assert_series_equal(actual_portfolio_value_by_startyear, expected)
 
 
 def test_get_portfolio_timeframe_by_startyear():
@@ -110,7 +110,7 @@ def test_get_portfolio_timeframe_by_startyear():
         portfolio_returns, target_value)
 
     expected = dtt.get_expected_portfolio_timeframe_by_startyear()
-    assert_frame_equal(actual_portfolio_timeframe_by_startyear, expected)
+    assert_series_equal(actual_portfolio_timeframe_by_startyear, expected)
 
 
 def test_get_portfolio_timeframe_by_startyear_with_contributions():
@@ -125,7 +125,7 @@ def test_get_portfolio_timeframe_by_startyear_with_contributions():
         portfolio_returns, target_value, contributions)
 
     expected = dtt.get_expected_portfolio_timeframe_by_startyear_with_contributions()
-    assert_frame_equal(actual_portfolio_timeframe_by_startyear, expected)
+    assert_series_equal(actual_portfolio_timeframe_by_startyear, expected)
 
 
 #TODO test get_statistics_for_portfolio(portfolio_timeframe_by_startyear, statistic_list)
