@@ -28,7 +28,25 @@ def create_portfolio_allocations(symbols, step):
     return list(named_range_of_allocations(step, symbols))
 
 
-#TODO get_inflation_adjusted_returns (returns, inflation_rates)
+def get_inflation_adjusted_returns (returns, inflation_rates):
+    if isinstance(returns, pd.DataFrame):
+        return _get_inflation_adjusted_returns_for_dataframe(returns, inflation_rates)
+    elif isinstance(returns, pd.Series):
+        return _get_inflation_adjusted_returns_for_series(returns, inflation_rates)
+    else:
+        raise TypeError("returns must be pandas.DataFrame or pandas.Series")
+
+def _get_inflation_adjusted_returns_for_series (returns: pd.Series, inflation_rates):
+    adjusted_returns = (returns + 1) / (inflation_rates + 1) - 1
+    adjusted_returns.name = returns.name
+    return adjusted_returns
+
+def _get_inflation_adjusted_returns_for_dataframe (returns: pd.DataFrame, inflation_rates):
+    def adjust_for_inflation(returns):
+        inflation_rate = inflation_rates[returns.name]
+        return (returns + 1) / (inflation_rate + 1) - 1
+    return returns.apply(adjust_for_inflation, axis=1)
+
 
 def get_portfolio_returns_by_allocation(portfolio_allocations, returns):
     symbols = list(portfolio_allocations[0]._fields)

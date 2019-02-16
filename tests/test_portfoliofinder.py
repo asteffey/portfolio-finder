@@ -4,6 +4,7 @@ pytests for portfoliofinder module
 
 from pandas.util.testing import assert_frame_equal
 from pandas.util.testing import assert_series_equal
+import pytest
 
 import portfoliofinder as pf
 import data_to_test as dtt
@@ -49,16 +50,31 @@ def test_get_portfolio_returns_by_allocation():
     assert_series_equal(actual_portfolio_returns, expected)
 
 
-def test_get_inflation_adjusted_returns():
+def test_get_inflation_adjusted_returns_for_dataframe():
     """tests get_inflation_adjusted_returns"""
     specific_returns = dtt.get_expected_specific_returns()
     inflation_rates = dtt.get_expected_inflation_rates()
     actual_inflation_adjusted_returns = pf.get_inflation_adjusted_returns(
         specific_returns, inflation_rates)
 
-    expected = dtt.get_expected_inflation_adjusted_returns()
+    expected = dtt.get_expected_inflation_adjusted_specific_returns()
     assert_frame_equal(actual_inflation_adjusted_returns, expected)
 
+
+def test_get_inflation_adjusted_returns_for_series():
+    """tests get_inflation_adjusted_returns"""
+    portfolio_returns = dtt.get_expected_portfolio_returns()
+    inflation_rates = dtt.get_expected_inflation_rates()
+    actual_inflation_adjusted_returns = pf.get_inflation_adjusted_returns(
+        portfolio_returns, inflation_rates)
+
+    expected = dtt.get_expected_inflation_adjusted_portfolio_returns()
+    assert_series_equal(actual_inflation_adjusted_returns, expected)
+
+def test_get_inflation_adjusted_returns_raises_typeerror():
+    inflation_rates = dtt.get_expected_inflation_rates()
+    with pytest.raises(TypeError) as e_info:
+        pf.get_inflation_adjusted_returns(0, inflation_rates)
 
 def test_get_portfolio_value_by_startyear():
     """tests get_portfolio_value_by_startyear"""

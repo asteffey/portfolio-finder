@@ -13,6 +13,7 @@ TODO: reorganize test_portfoliofinder and this class into seperate tests for eac
 from collections import namedtuple
 import pandas as pd
 from portfoliofinder.contributions import ScheduledContributions
+from typing import List
 
 ALL_FUNDS = ['USA_TSM', 'GLD', 'EM', 'USA_INF', 'RISK_FREE']
 
@@ -34,7 +35,7 @@ MY_TARGET_WITH_CONTRIBUTIONS = 10000
 _TEST_DATA_PATH = "tests/test_results.xlsx"
 
 
-def get_expected_all_returns():
+def get_expected_all_returns() -> pd.DataFrame:
     """returns expected_all_returns read from excel file"""
 
     return pd.read_excel(_TEST_DATA_PATH,
@@ -42,28 +43,37 @@ def get_expected_all_returns():
                          index_col=0)
 
 
-def get_expected_specific_returns():
+def get_expected_specific_returns() -> pd.DataFrame:
     """returns expected_specific_returns read from excel file"""
     return pd.read_excel(_TEST_DATA_PATH,
                          "specific_returns",
                          index_col=0)
 
 
-def get_expected_inflation_rates():
+def get_expected_inflation_rates() -> pd.Series:
     """returns expected_inflation_rates read from excel file"""
     return pd.read_excel(_TEST_DATA_PATH,
                          "inflation_rates",
-                         index_col=0)
+                         index_col=0,
+                         squeeze=True)
 
 
-def get_expected_inflation_adjusted_returns():
-    """returns expected_inflation_adjusted_returns read from excel file"""
+def get_expected_inflation_adjusted_specific_returns() -> pd.DataFrame:
+    """returns expected_inflation_adjusted_specific_returns read from excel file"""
     return pd.read_excel(_TEST_DATA_PATH,
-                         "inflation_adjusted_returns",
+                         "inflation_adjusted_specific_returns",
                          index_col=0)
 
 
-def get_expected_portfolio_allocations():
+def get_expected_inflation_adjusted_portfolio_returns() -> pd.Series:
+    """returns inflation_adjusted_portfolio_returns read from excel file"""
+    return pd.read_excel(_TEST_DATA_PATH,
+                         "inflation_adjusted_portfolio_returns",
+                         index_col=0,
+                         squeeze=True)
+
+
+def get_expected_portfolio_allocations() -> List[PortfolioAllocation]:
     """returns expected_portfolio_allocation read from excel file"""
     dataframe = pd.read_excel(_TEST_DATA_PATH,
                               "portfolio_allocation",
@@ -71,7 +81,7 @@ def get_expected_portfolio_allocations():
     return [PortfolioAllocation(*row[1:]) for row in dataframe.itertuples()]
 
 
-def get_expected_portfolio_returns():
+def get_expected_portfolio_returns() -> pd.Series:
     """returns expected_portfolio_returns read from excel file"""
     return pd.read_excel(_TEST_DATA_PATH,
                          "portfolio_returns",
@@ -79,7 +89,7 @@ def get_expected_portfolio_returns():
                          squeeze=True)
 
 
-def get_expected_portfolio_value_by_startyear():
+def get_expected_portfolio_value_by_startyear() -> pd.DataFrame:
     """returns expected_portfolio_value_by_startyear read from excel file"""
     return pd.read_excel(_TEST_DATA_PATH,
                          "portfolio_value_by_startyear",
@@ -87,7 +97,7 @@ def get_expected_portfolio_value_by_startyear():
                          usecols=['Year', 'Value'])
 
 
-def get_expected_portfolio_value_by_startyear_with_contributions():
+def get_expected_portfolio_value_by_startyear_with_contributions() -> pd.DataFrame:
     """returns expected_portfolio_value_by_startyear_with_contributions read from excel file"""
     return pd.read_excel(_TEST_DATA_PATH,
                          "portfolio_value_by_startyear_with_contributions",
@@ -95,7 +105,7 @@ def get_expected_portfolio_value_by_startyear_with_contributions():
                          usecols=['Year', 'Value'])
 
 
-def get_expected_portfolio_timeframe_by_startyear():
+def get_expected_portfolio_timeframe_by_startyear() -> pd.DataFrame:
     """returns expected_portfolio_timeframe_by_startyear read from excel file"""
     dataframe = pd.read_excel(_TEST_DATA_PATH,
                               "portfolio_timeframe_by_startyear",
@@ -104,7 +114,7 @@ def get_expected_portfolio_timeframe_by_startyear():
     return dataframe.dropna()
 
 
-def get_expected_portfolio_timeframe_by_startyear_with_contributions():
+def get_expected_portfolio_timeframe_by_startyear_with_contributions() -> pd.DataFrame:
     """returns expected_portfolio_timeframe_by_startyear_with_contributions read from excel file"""
     dataframe = pd.read_excel(_TEST_DATA_PATH,
                               "portfolio_timeframe_by_startyear_with_contributions",
