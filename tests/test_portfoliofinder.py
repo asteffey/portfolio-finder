@@ -74,7 +74,7 @@ def test_get_inflation_adjusted_returns_for_series():
 
 def test_get_inflation_adjusted_returns_raises_typeerror():
     inflation_rates = dtt.get_expected_inflation_rates()
-    with pytest.raises(TypeError) as e_info:
+    with pytest.raises(TypeError):
         pf.get_inflation_adjusted_returns(0, inflation_rates)
 
 def test_get_portfolio_value_by_startyear():
