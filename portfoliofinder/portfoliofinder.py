@@ -73,23 +73,11 @@ def _get_portfolio_returns(portfolio_allocation, returns_by_symbol: pd.DataFrame
 
 #TODO get_portfolio_value_by_startyear (portfolio_returns, timeframe, contributions)
 def get_portfolio_value_by_startyear(portfolio_returns, timeframe, contributions: Contributions = DEFAULT_CONTRIBUTION):
-    first_year = portfolio_returns.index[0]
-    last_year = portfolio_returns.index[-1] - (timeframe - 1)
-    start_years = _inclusive_range(first_year, last_year)
+    start_years = get_start_years(portfolio_returns.index, timeframe)
     
     values = []
     for start_year in start_years:
-        investment_years = range(start_year, start_year + timeframe)
-        returns_over_timeframe = portfolio_returns.loc[investment_years]
-    
-        timeframe_iter = iter(range(timeframe))
-        def reduce_to_portfolio_value(prev_value, current_return):
-            investment_year = next(timeframe_iter)
-            contribution = contributions.get_contribution_for_year(investment_year)
-            value = prev_value + contribution
-            return value * (1 + current_return)
-        
-        value = reduce(reduce_to_portfolio_value, returns_over_timeframe, 0)
+        value = get_portfolio_value_for_startyear(start_year, portfolio_returns, timeframe, contributions)
         values.append(value)
     
     return pd.Series(data=values,
@@ -97,8 +85,28 @@ def get_portfolio_value_by_startyear(portfolio_returns, timeframe, contributions
                      name="Portfolio Value")
 
 
+def get_start_years(years: pd.Index, timeframe):
+    first_year = years[0]
+    last_year = years[-1] - (timeframe - 1)
+    return _inclusive_range(first_year, last_year)
+
+
 def _inclusive_range(start, stop, step=1):
     return range(start, (stop + 1) if step >= 0 else (stop - 1), step)
+
+
+def get_portfolio_value_for_startyear(start_year, portfolio_returns: pd.Series, timeframe, contributions: Contributions):
+    investment_years = range(start_year, start_year + timeframe)
+    returns_over_timeframe = portfolio_returns.loc[investment_years]
+
+    timeframe_iter = iter(range(timeframe))
+    def reduce_to_portfolio_value(prev_value, current_return):
+        investment_year = next(timeframe_iter)
+        contribution = contributions.get_contribution_for_year(investment_year)
+        value = prev_value + contribution
+        return value * (1 + current_return)
+    
+    return reduce(reduce_to_portfolio_value, returns_over_timeframe, 0)
 
 #TODO get_portfolio_timeframe_by_startyear
 
