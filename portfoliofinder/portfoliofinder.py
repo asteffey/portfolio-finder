@@ -2,7 +2,7 @@ import pandas as pd
 from functools import reduce
 
 from .combinatorics import named_range_of_allocations
-from 
+from .contributions import Contributions, DEFAULT_CONTRIBUTION
 
 """
 Workflow:
@@ -72,20 +72,24 @@ def _get_portfolio_returns(portfolio_allocation, returns_by_symbol: pd.DataFrame
 
 
 #TODO get_portfolio_value_by_startyear (portfolio_returns, timeframe, contributions)
-def get_portfolio_value_by_startyear(portfolio_returns, timeframe):
+def get_portfolio_value_by_startyear(portfolio_returns, timeframe, contributions: Contributions = DEFAULT_CONTRIBUTION):
     first_year = portfolio_returns.index[0]
     last_year = portfolio_returns.index[-1] - (timeframe - 1)
     start_years = _inclusive_range(first_year, last_year)
     
-    def reduce_to_portfolio_value(value, current_return):
-        return value * (1 + current_return)
-
     values = []
     for start_year in start_years:
         investment_years = range(start_year, start_year + timeframe)
         returns_over_timeframe = portfolio_returns.loc[investment_years]
     
-        value = reduce(reduce_to_portfolio_value, returns_over_timeframe, 1)
+        timeframe_iter = iter(range(timeframe))
+        def reduce_to_portfolio_value(prev_value, current_return):
+            investment_year = next(timeframe_iter)
+            contribution = contributions.get_contribution_for_year(investment_year)
+            value = prev_value + contribution
+            return value * (1 + current_return)
+        
+        value = reduce(reduce_to_portfolio_value, returns_over_timeframe, 0)
         values.append(value)
     
     return pd.Series(data=values,

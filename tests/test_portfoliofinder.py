@@ -10,6 +10,7 @@ import portfoliofinder as pf
 import data_to_test as dtt
 
 
+
 def test_fetch_all_returns_from_csv():
     """tests fetch_all_returns_from_csv"""
     actual_returns = pf.fetch_all_returns_from_csv("tests/test_data.csv")
