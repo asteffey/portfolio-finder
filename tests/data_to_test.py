@@ -12,6 +12,7 @@ TODO: reorganize test_portfoliofinder and this class into seperate tests for eac
 
 from collections import namedtuple
 import pandas as pd
+import numpy as np
 from portfoliofinder.contributions import ScheduledContributions
 from typing import List
 
@@ -113,9 +114,9 @@ def get_expected_portfolio_timeframe_by_startyear() -> pd.Series:
     dataframe = pd.read_excel(_TEST_DATA_PATH,
                               "portfolio_timeframe_by_startyear",
                               index_col='Year',
-                              usecols=['Year', 'Timeframe'],
+                              usecols=['Year', 'Portfolio Timeframe'],
                               squeeze=True)
-    return dataframe.dropna()
+    return dataframe.dropna().astype(int)
 
 
 def get_expected_portfolio_timeframe_by_startyear_with_contributions() -> pd.Series:
@@ -123,6 +124,6 @@ def get_expected_portfolio_timeframe_by_startyear_with_contributions() -> pd.Ser
     dataframe = pd.read_excel(_TEST_DATA_PATH,
                               "portfolio_timeframe_by_startyear_with_contributions",
                               index_col='Year',
-                              usecols=['Year', 'Timeframe'],
+                              usecols=['Year', 'Portfolio Timeframe'],
                               squeeze=True)
-    return dataframe.dropna()
+    return dataframe.dropna().astype(int)

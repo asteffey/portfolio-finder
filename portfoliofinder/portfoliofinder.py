@@ -73,7 +73,7 @@ def _get_portfolio_returns(portfolio_allocation, returns_by_symbol: pd.DataFrame
 
 #TODO get_portfolio_value_by_startyear (portfolio_returns, timeframe, contributions)
 def get_portfolio_value_by_startyear(portfolio_returns, timeframe, contributions: Contributions = DEFAULT_CONTRIBUTION):
-    start_years = get_start_years(portfolio_returns.index, timeframe)
+    start_years = get_start_years_for_timeframe(portfolio_returns.index, timeframe)
     
     values = []
     for start_year in start_years:
@@ -85,7 +85,7 @@ def get_portfolio_value_by_startyear(portfolio_returns, timeframe, contributions
                      name="Portfolio Value")
 
 
-def get_start_years(years: pd.Index, timeframe):
+def get_start_years_for_timeframe(years: pd.Index, timeframe):
     first_year = years[0]
     last_year = years[-1] - (timeframe - 1)
     return _inclusive_range(first_year, last_year)
@@ -108,6 +108,29 @@ def get_portfolio_value_for_startyear(start_year, portfolio_returns: pd.Series, 
     
     return reduce(reduce_to_portfolio_value, returns_over_timeframe, 0)
 
-#TODO get_portfolio_timeframe_by_startyear
+def get_portfolio_timeframe_by_startyear(portfolio_returns, target_value, contributions: Contributions = DEFAULT_CONTRIBUTION):
+    all_years = portfolio_returns.index
+    
+    timeframes = []
+    start_years = []
+    for start_year in all_years:
+        value = 0
+        investment_year = 0
+        while value < target_value and start_year + investment_year <= all_years[-1]:
+            contribution = contributions.get_contribution_for_year(investment_year)
+            current_return = portfolio_returns.loc[start_year + investment_year]
+            value = (value + contribution) * (1 + current_return)
+
+            investment_year += 1
+        
+        if value >= target_value:
+            timeframes.append(investment_year)
+            start_years.append(start_year)
+        
+    
+    timeframe_by_startyear = pd.Series(data=timeframes,
+                                       index=pd.Index(start_years, name='Year'),
+                                       name="Portfolio Timeframe")
+    return timeframe_by_startyear.dropna()
 
 #TODO get_statistics_for_portfolio(portfolio_timeframe_by_startyear, statistic_list)
