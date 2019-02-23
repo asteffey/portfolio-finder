@@ -2,13 +2,12 @@
 pytests for portfoliofinder module
 """
 
+import pytest
 from pandas.util.testing import assert_frame_equal
 from pandas.util.testing import assert_series_equal
-import pytest
 
 import portfoliofinder as pf
 import data_to_test as dtt
-
 
 
 def test_fetch_all_returns_from_csv():
@@ -73,6 +72,7 @@ def test_get_inflation_adjusted_returns_for_series():
     assert_series_equal(actual_inflation_adjusted_returns, expected)
 
 def test_get_inflation_adjusted_returns_raises_typeerror():
+    """tests get_expected_inflation_rates raises TypeError when passed incorrect type"""
     inflation_rates = dtt.get_expected_inflation_rates()
     with pytest.raises(TypeError):
         pf.get_inflation_adjusted_returns(0, inflation_rates)
@@ -129,4 +129,21 @@ def test_get_portfolio_timeframe_by_startyear_with_contributions():
     assert_series_equal(actual_portfolio_timeframe_by_startyear, expected)
 
 
-#TODO test get_statistics_for_portfolio(portfolio_timeframe_by_startyear, statistic_list)
+def test_get_default_statistics_for_portfolio_values():
+    """tests get_statistics_for_portfolio_values with default statistics"""
+    portfolio_values = dtt.get_expected_portfolio_value_by_startyear()
+    actual_portfolio_stats = pf.get_statistics_for_portfolio_values(portfolio_values)
+
+    expected = dtt.get_expected_default_statistics_for_portfolio_values()
+    assert_series_equal(actual_portfolio_stats, expected)
+
+
+#TODO test_get_statistics_for_portfolio_values_with_custom_statistics()
+    #"""tests get_statistics_for_portfolio_values with custom statistics"""
+
+#TODO test_get_default_statistics_for_portfolio_timefframes()
+
+#TODO test_get_statistics_for_portfolio_timeframes_with_custom_statistics()
+
+#TODO deal with set of portfolios by allocation
+#pd.concat([row1_series,row2_series], axis=1).T

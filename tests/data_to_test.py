@@ -127,3 +127,10 @@ def get_expected_portfolio_timeframe_by_startyear_with_contributions() -> pd.Ser
                               usecols=['Year', 'Portfolio Timeframe'],
                               squeeze=True)
     return dataframe.dropna().astype(int)
+
+def get_expected_default_statistics_for_portfolio_values() -> pd.Series:
+    return pd.read_excel(_TEST_DATA_PATH,
+                         "default_statistics_for_value",
+                         index_col='Statistic',
+                         usecols=['Statistic', 'Portfolio'],
+                         squeeze=True)

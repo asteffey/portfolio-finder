@@ -3,6 +3,7 @@ from functools import reduce
 
 from .combinatorics import named_range_of_allocations
 from .contributions import Contributions, DEFAULT_CONTRIBUTION
+from .stats import DEFAULT_STATS
 
 """
 Workflow:
@@ -134,3 +135,10 @@ def get_portfolio_timeframe_by_startyear(portfolio_returns, target_value, contri
     return timeframe_by_startyear.dropna()
 
 #TODO get_statistics_for_portfolio(portfolio_timeframe_by_startyear, statistic_list)
+def get_statistics_for_portfolio_values(portfolio_values : pd.Series) -> pd.Series:
+    ret = portfolio_values.agg(DEFAULT_STATS)
+    ret.name = "Portfolio"
+    ret.index.name = "Statistic"
+    return ret
+
+#foo.agg([percentile(.1),percentile(.5)])
