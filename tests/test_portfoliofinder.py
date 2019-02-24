@@ -132,7 +132,7 @@ def test_get_portfolio_timeframe_by_startyear_with_contributions():
 def test_get_default_statistics_for_portfolio_values():
     """tests get_statistics_for_portfolio_values with default statistics"""
     portfolio_values = dtt.get_expected_portfolio_value_by_startyear()
-    actual_portfolio_stats = pf.get_statistics_for_portfolio_values(portfolio_values)
+    actual_portfolio_stats = pf.get_statistics(portfolio_values)
 
     expected = dtt.get_expected_default_statistics_for_portfolio_values()
     assert_series_equal(actual_portfolio_stats, expected)
@@ -141,14 +141,29 @@ def test_get_default_statistics_for_portfolio_values():
 def test_get_statistics_for_portfolio_values_with_custom_statistics():
     """tests get_statistics_for_portfolio_values with custom statistics"""
     portfolio_values = dtt.get_expected_portfolio_value_by_startyear()
-    actual_portfolio_stats = pf.get_statistics_for_portfolio_values(portfolio_values, dtt.CUSTOM_STATISTICS)
+    actual_portfolio_stats = pf.get_statistics(portfolio_values, dtt.CUSTOM_STATISTICS)
 
     expected = dtt.get_expected_custom_statistics_for_portfolio_values()
     assert_series_equal(actual_portfolio_stats, expected)
 
-#TODO test_get_default_statistics_for_portfolio_timeframes()
+#TODO test getting just getting gmean to ensure only 1 row returned
 
-#TODO test_get_statistics_for_portfolio_timeframes_with_custom_statistics()
+def test_get_default_statistics_for_portfolio_timeframes():
+    """tests get_statistics with portfolio_timeframes and default statistics"""
+    portfolio_timeframes = dtt.get_expected_portfolio_timeframe_by_startyear()
+    actual_portfolio_stats = pf.get_statistics(portfolio_timeframes)
+
+    expected = dtt.get_expected_default_statistics_for_portfolio_timeframes()
+    assert_series_equal(actual_portfolio_stats, expected)
+
+
+def test_get_statistics_for_portfolio_timeframes_with_custom_statistics():
+    """tests get_statistics with portfolio_timeframes and custom statistics"""
+    portfolio_timeframes = dtt.get_expected_portfolio_timeframe_by_startyear()
+    actual_portfolio_stats = pf.get_statistics(portfolio_timeframes, dtt.CUSTOM_STATISTICS)
+
+    expected = dtt.get_expected_custom_statistics_for_portfolio_timeframes()
+    assert_series_equal(actual_portfolio_stats, expected)
 
 #TODO deal with set of portfolios by allocation
 #pd.concat([row1_series,row2_series], axis=1).T

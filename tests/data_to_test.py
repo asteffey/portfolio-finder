@@ -145,3 +145,18 @@ def get_expected_custom_statistics_for_portfolio_values() -> pd.Series:
                          index_col='Statistic',
                          usecols=['Statistic', 'Portfolio'],
                          squeeze=True)
+
+def get_expected_default_statistics_for_portfolio_timeframes() -> pd.Series:
+    return pd.read_excel(_TEST_DATA_PATH,
+                         "default_statistics_for_timeframe",
+                         index_col='Statistic',
+                         usecols=['Statistic', 'Portfolio'],
+                         squeeze=True)
+
+def get_expected_custom_statistics_for_portfolio_timeframes() -> pd.Series:
+    return pd.read_excel(_TEST_DATA_PATH,
+                         "custom_statistics_for_timeframe",
+                         index_col='Statistic',
+                         usecols=['Statistic', 'Portfolio'],
+                         squeeze=True)
+
