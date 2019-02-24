@@ -138,10 +138,15 @@ def test_get_default_statistics_for_portfolio_values():
     assert_series_equal(actual_portfolio_stats, expected)
 
 
-#TODO test_get_statistics_for_portfolio_values_with_custom_statistics()
-    #"""tests get_statistics_for_portfolio_values with custom statistics"""
+def test_get_statistics_for_portfolio_values_with_custom_statistics():
+    """tests get_statistics_for_portfolio_values with custom statistics"""
+    portfolio_values = dtt.get_expected_portfolio_value_by_startyear()
+    actual_portfolio_stats = pf.get_statistics_for_portfolio_values(portfolio_values, dtt.CUSTOM_STATISTICS)
 
-#TODO test_get_default_statistics_for_portfolio_timefframes()
+    expected = dtt.get_expected_custom_statistics_for_portfolio_values()
+    assert_series_equal(actual_portfolio_stats, expected)
+
+#TODO test_get_default_statistics_for_portfolio_timeframes()
 
 #TODO test_get_statistics_for_portfolio_timeframes_with_custom_statistics()
 

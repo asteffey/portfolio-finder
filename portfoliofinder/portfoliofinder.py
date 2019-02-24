@@ -135,8 +135,8 @@ def get_portfolio_timeframe_by_startyear(portfolio_returns, target_value, contri
     return timeframe_by_startyear.dropna()
 
 #TODO get_statistics_for_portfolio(portfolio_timeframe_by_startyear, statistic_list)
-def get_statistics_for_portfolio_values(portfolio_values : pd.Series) -> pd.Series:
-    ret = portfolio_values.agg(DEFAULT_STATS)
+def get_statistics_for_portfolio_values(portfolio_values : pd.Series, statistics = DEFAULT_STATS) -> pd.Series:
+    ret = portfolio_values.agg(statistics)
     ret.name = "Portfolio"
     ret.index.name = "Statistic"
     return ret

@@ -16,6 +16,8 @@ import numpy as np
 from portfoliofinder.contributions import ScheduledContributions
 from typing import List
 
+import portfoliofinder.stats as stats
+
 ALL_FUNDS = ['USA_TSM', 'GLD', 'EM', 'USA_INF', 'RISK_FREE']
 
 SPECIFIC_FUNDS = ['USA_TSM', 'GLD', 'EM']
@@ -32,6 +34,8 @@ MY_SCHEDULED_CONTRIBUTIONS = ScheduledContributions(
     {n: (1000 if n in (0, 5) else 10) for n in range(0, 100)})
 
 MY_TARGET_WITH_CONTRIBUTIONS = 10000
+
+CUSTOM_STATISTICS = ['min',stats.percentile_for(10),stats.gmean]
 
 _TEST_DATA_PATH = "tests/test_results.xlsx"
 
@@ -131,6 +135,13 @@ def get_expected_portfolio_timeframe_by_startyear_with_contributions() -> pd.Ser
 def get_expected_default_statistics_for_portfolio_values() -> pd.Series:
     return pd.read_excel(_TEST_DATA_PATH,
                          "default_statistics_for_value",
+                         index_col='Statistic',
+                         usecols=['Statistic', 'Portfolio'],
+                         squeeze=True)
+
+def get_expected_custom_statistics_for_portfolio_values() -> pd.Series:
+    return pd.read_excel(_TEST_DATA_PATH,
+                         "custom_statistics_for_value",
                          index_col='Statistic',
                          usecols=['Statistic', 'Portfolio'],
                          squeeze=True)
