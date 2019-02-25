@@ -8,7 +8,7 @@ from pandas.util.testing import assert_series_equal
 
 import portfoliofinder as pf
 import data_to_test as dtt
-
+from scipy.stats import gmean
 
 def test_fetch_all_returns_from_csv():
     """tests fetch_all_returns_from_csv"""
@@ -147,6 +147,11 @@ def test_get_statistics_for_portfolio_values_with_custom_statistics():
     assert_series_equal(actual_portfolio_stats, expected)
 
 #TODO test getting just getting gmean to ensure only 1 row returned
+def test_get_statistic_for_gmean_returns_one_result():
+    values = dtt.pd.Series([1,2,3,4])
+    stats = pf.get_statistics(values, [gmean])
+    assert stats.size == 1
+
 
 def test_get_default_statistics_for_portfolio_timeframes():
     """tests get_statistics with portfolio_timeframes and default statistics"""

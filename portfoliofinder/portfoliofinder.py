@@ -1,5 +1,5 @@
 import pandas as pd
-from functools import reduce
+from functools import reduce, wraps
 
 from .combinatorics import named_range_of_allocations
 from .contributions import Contributions, DEFAULT_CONTRIBUTION
@@ -134,11 +134,19 @@ def get_portfolio_timeframe_by_startyear(portfolio_returns, target_value, contri
                                        name="Portfolio Timeframe")
     return timeframe_by_startyear.dropna()
 
-#TODO get_statistics_for_portfolio(portfolio_timeframe_by_startyear, statistic_list)
 def get_statistics(portfolio_values : pd.Series, statistics = DEFAULT_STATS) -> pd.Series:
+    statistics = list(map(lambda stat: typecheck_series(stat) if callable(stat) else stat, statistics))
     ret = portfolio_values.agg(statistics)
     ret.name = "Portfolio"
     ret.index.name = "Statistic"
     return ret
 
+def typecheck_series(func):
+    @wraps(func)
+    def wrapper(series):
+        if isinstance(series, pd.Series):
+            return func(series)
+        else:
+            raise TypeError
+    return wrapper
 #foo.agg([percentile(.1),percentile(.5)])
