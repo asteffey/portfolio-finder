@@ -166,7 +166,7 @@ def test_get_portfolio_timeframe_by_startyear_by_allocation():
 
     actual_portfolio_timeframe_by_startyear = actual_portfolio_timeframe_by_startyear_by_allocation[dtt.MY_ALLOCATION]
     
-    expected = dtt.get_expected_portfolio_value_by_startyear()
+    expected = dtt.get_expected_portfolio_timeframe_by_startyear()
     assert_series_equal(actual_portfolio_timeframe_by_startyear, expected)
 
 
