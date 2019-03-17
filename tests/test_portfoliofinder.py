@@ -5,6 +5,7 @@ pytests for portfoliofinder module
 import pytest
 from pandas.util.testing import assert_frame_equal
 from pandas.util.testing import assert_series_equal
+import pandas as pd
 
 import portfoliofinder as pf
 import data_to_test as dtt
@@ -227,6 +228,15 @@ def test_get_statistics_by_allocation():
     expected = dtt.get_expected_default_statistics_for_portfolio_timeframes()
     assert_series_equal(actual_portfolio_stats, expected)
 
+def test_convert_to_dataframe_by_allocation():
+    allocation1 = dtt.PortfolioAllocation(0, 1, 0)
+    allocation2 = dtt.PortfolioAllocation(1, 0, 0)
+    series_dict_by_allocation = {allocation1: pd.Series([1]), allocation2: pd.Series(['a'])}
+    
+    actual_dataframe_by_allocation = pf.convert_to_dataframe_by_allocation(series_dict_by_allocation)
+
+    assert actual_dataframe_by_allocation.loc[allocation1].loc[0] == 1
+    assert actual_dataframe_by_allocation.loc[allocation2].loc[0] == 'a'
 
 
 
