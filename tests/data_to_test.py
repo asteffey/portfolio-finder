@@ -48,6 +48,10 @@ def read_series(sheet_name, index_col=0, usecols=None):
 def read_dataframe_raw(sheet_name):
     return pd.read_excel(_TEST_DATA_PATH, sheet_name, header=None)
 
+
+EXPECTED_PORTFOLIO_ALLOCATIONS_DF = read_dataframe_raw('portfolio_allocation')
+EXPECTED_PORTFOLIO_ALLOCATIONS = [PortfolioAllocation(*row[1:]) for row in EXPECTED_PORTFOLIO_ALLOCATIONS_DF.itertuples()]
+
 def get_expected_all_returns() -> pd.DataFrame:
     """returns expected_all_returns read from excel file"""
 
