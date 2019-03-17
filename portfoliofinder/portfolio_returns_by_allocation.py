@@ -20,16 +20,6 @@ class PortfolioReturnsByAllocation():
         return _convert_to_dataframe_by_allocation(self.portfolio_returns_by_allocation)
 
 
-
-def _get_portfolio_returns(portfolio_allocation, returns_by_symbol: pd.DataFrame) -> pd.Series:
-    portfolio_returns = []
-    for row in returns_by_symbol.iterrows():
-        return_by_symbol = row[1]
-        return_for_year = sum(return_by_symbol * portfolio_allocation)
-        portfolio_returns.append(return_for_year)
-    years = returns_by_symbol.axes[0]
-    return pd.Series(portfolio_returns, index=years, name="Portfolio Return")
-
 def _convert_to_dataframe_by_allocation(series_dict_by_allocation):
     df = pd.concat(series_dict_by_allocation, axis=1).T
     
