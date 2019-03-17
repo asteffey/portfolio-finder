@@ -62,6 +62,12 @@ def get_portfolio_returns_by_allocation(portfolio_allocations, returns):
         portfolio_returns_by_allocation[allocation] = portfolio_returns
     return portfolio_returns_by_allocation
 
+def get_portfolio_returns_for_allocation(portfolio_allocation, returns):
+    symbols = list(portfolio_allocation._fields)
+    returns_by_symbol = get_specific_returns(returns, symbols)
+
+    return _get_portfolio_returns(portfolio_allocation, returns_by_symbol)
+
 def _get_portfolio_returns(portfolio_allocation, returns_by_symbol: pd.DataFrame):
     portfolio_returns = []
     for row in returns_by_symbol.iterrows():
