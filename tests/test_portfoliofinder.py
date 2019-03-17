@@ -11,31 +11,31 @@ import portfoliofinder as pf
 import data_to_test as dtt
 from scipy.stats import gmean
 
-def test_fetch_all_returns_from_csv():
-    """tests fetch_all_returns_from_csv"""
-    actual_returns = pf.fetch_all_returns_from_csv("tests/test_data.csv")
+# def test_fetch_all_returns_from_csv():
+#     """tests fetch_all_returns_from_csv"""
+#     actual_returns = pf.fetch_all_returns_from_csv("tests/test_data.csv")
 
-    expected = dtt.get_expected_all_returns()
-    assert_frame_equal(actual_returns, expected)
-
-
-def test_get_specific_returns():
-    """tests get_specific_returns"""
-    all_returns = dtt.get_expected_all_returns()
-    actual_specific_returns = pf.get_specific_returns(
-        all_returns, dtt.SPECIFIC_FUNDS)
-
-    expected = dtt.get_expected_specific_returns()
-    assert_frame_equal(actual_specific_returns, expected)
+#     expected = dtt.get_expected_all_returns()
+#     assert_frame_equal(actual_returns, expected)
 
 
-def test_create_portfolio_allocations():
-    """tests create_portfolio_allocations"""
-    actual_allocations = pf.create_portfolio_allocations(
-        0.25, dtt.SPECIFIC_FUNDS)
+# def test_get_specific_returns():
+#     """tests get_specific_returns"""
+#     all_returns = dtt.get_expected_all_returns()
+#     actual_specific_returns = pf.get_specific_returns(
+#         all_returns, dtt.SPECIFIC_FUNDS)
 
-    expected = dtt.get_expected_portfolio_allocations()
-    assert sorted(actual_allocations) == sorted(expected)
+#     expected = dtt.get_expected_specific_returns()
+#     assert_frame_equal(actual_specific_returns, expected)
+
+
+# def test_create_portfolio_allocations():
+#     """tests create_portfolio_allocations"""
+#     actual_allocations = pf.create_portfolio_allocations(
+#         0.25, dtt.SPECIFIC_FUNDS)
+
+#     expected = dtt.get_expected_portfolio_allocations()
+#     assert sorted(actual_allocations) == sorted(expected)
 
 def test_get_portfolio_returns_for_allocation():
     """tests get_portfolio_returns_for_allocation"""
@@ -61,32 +61,32 @@ def test_get_portfolio_returns_by_allocation():
     assert_series_equal(actual_portfolio_returns, expected)
 
 
-def test_get_inflation_adjusted_returns_for_dataframe():
-    """tests get_inflation_adjusted_returns"""
-    specific_returns = dtt.get_expected_specific_returns()
-    inflation_rates = dtt.get_expected_inflation_rates()
-    actual_inflation_adjusted_returns = pf.get_inflation_adjusted_returns(
-        specific_returns, inflation_rates)
+# def test_get_inflation_adjusted_returns_for_dataframe():
+#     """tests get_inflation_adjusted_returns"""
+#     specific_returns = dtt.get_expected_specific_returns()
+#     inflation_rates = dtt.get_expected_inflation_rates()
+#     actual_inflation_adjusted_returns = pf.get_inflation_adjusted_returns(
+#         specific_returns, inflation_rates)
 
-    expected = dtt.get_expected_inflation_adjusted_specific_returns()
-    assert_frame_equal(actual_inflation_adjusted_returns, expected)
+#     expected = dtt.get_expected_inflation_adjusted_specific_returns()
+#     assert_frame_equal(actual_inflation_adjusted_returns, expected)
 
 
-def test_get_inflation_adjusted_returns_for_series():
-    """tests get_inflation_adjusted_returns"""
-    portfolio_returns = dtt.get_expected_portfolio_returns()
-    inflation_rates = dtt.get_expected_inflation_rates()
-    actual_inflation_adjusted_returns = pf.get_inflation_adjusted_returns(
-        portfolio_returns, inflation_rates)
+# def test_get_inflation_adjusted_returns_for_series():
+#     """tests get_inflation_adjusted_returns"""
+#     portfolio_returns = dtt.get_expected_portfolio_returns()
+#     inflation_rates = dtt.get_expected_inflation_rates()
+#     actual_inflation_adjusted_returns = pf.get_inflation_adjusted_returns(
+#         portfolio_returns, inflation_rates)
 
-    expected = dtt.get_expected_inflation_adjusted_portfolio_returns()
-    assert_series_equal(actual_inflation_adjusted_returns, expected)
+#     expected = dtt.get_expected_inflation_adjusted_portfolio_returns()
+#     assert_series_equal(actual_inflation_adjusted_returns, expected)
 
-def test_get_inflation_adjusted_returns_raises_typeerror():
-    """tests get_expected_inflation_rates raises TypeError when passed incorrect type"""
-    inflation_rates = dtt.get_expected_inflation_rates()
-    with pytest.raises(TypeError):
-        pf.get_inflation_adjusted_returns(0, inflation_rates)
+# def test_get_inflation_adjusted_returns_raises_typeerror():
+#     """tests get_expected_inflation_rates raises TypeError when passed incorrect type"""
+#     inflation_rates = dtt.get_expected_inflation_rates()
+#     with pytest.raises(TypeError):
+#         pf.get_inflation_adjusted_returns(0, inflation_rates)
 
 def test_get_portfolio_value_by_startyear():
     """tests get_portfolio_value_by_startyear"""
