@@ -2,9 +2,7 @@ from collections import namedtuple
 
 import portfoliofinder as pf
 from data_to_test import read_dataframe_raw
-
-SPECIFIC_FUNDS = ['USA_TSM', 'GLD', 'EM']
-PortfolioAllocation = namedtuple('PortfolioAllocation', SPECIFIC_FUNDS)
+from data_to_test import SPECIFIC_FUNDS, PortfolioAllocation
 
 EXPECTED_PORTFOLIO_ALLOCATIONS_DF = read_dataframe_raw('portfolio_allocation')
 EXPECTED_PORTFOLIO_ALLOCATIONS = [PortfolioAllocation(*row[1:]) for row in EXPECTED_PORTFOLIO_ALLOCATIONS_DF.itertuples()]

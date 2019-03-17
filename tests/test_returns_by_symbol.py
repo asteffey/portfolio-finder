@@ -11,8 +11,7 @@ import portfoliofinder as pf
 
 from data_to_test import read_dataframe
 from data_to_test import read_series
-
-SPECIFIC_FUNDS = ['USA_TSM', 'GLD', 'EM']
+from data_to_test import SPECIFIC_FUNDS
 
 EXPECTED_ALL_RETURNS = read_dataframe('all_returns')
 EXPECTED_SPECIFIC_RETURNS = read_dataframe('specific_returns')
