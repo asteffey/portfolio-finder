@@ -46,6 +46,10 @@ EXPECTED_PORTFOLIO_ALLOCATIONS = [PortfolioAllocation(*row[1:]) for row in EXPEC
 EXPECTED_SPECIFIC_RETURNS = read_dataframe('specific_returns')
 EXPECTED_PORTFOLIO_RETURNS = read_series('portfolio_returns')
 
+EXPECTED_PORTFOLIO_VALUE_BY_STARTYEAR = read_series('portfolio_value_by_startyear', usecols=['Year', 'Portfolio Value'])
+EXPECTED_PORTFOLIO_VALUE_BY_STARTYEAR_WITH_CONTRIBUTIONS = read_series('portfolio_value_by_startyear_with_contributions', usecols=['Year', 'Portfolio Value'])
+
+
 def get_expected_all_returns() -> pd.DataFrame:
     """returns expected_all_returns read from excel file"""
 

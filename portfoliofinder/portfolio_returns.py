@@ -1,5 +1,8 @@
 import pandas as pd
 
+from .portfolio_value_by_startyear import PortfolioValuesByStartYear
+from .contributions import Contributions, DEFAULT_CONTRIBUTION
+
 class PortfolioReturns():
 
     def __init__(self, returns_by_symbol: pd.Series, allocation):
@@ -8,6 +11,9 @@ class PortfolioReturns():
 
     def to_series(self) -> pd.Series:
         return self._returns
+
+    def to_portfolio_value_by_startyear(self, timeframe, contributions: Contributions = DEFAULT_CONTRIBUTION):
+        return PortfolioValuesByStartYear(self._returns, timeframe, contributions)
 
 
 
