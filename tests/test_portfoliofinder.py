@@ -113,6 +113,21 @@ def test_get_portfolio_value_by_startyear_with_contributions():
     assert_series_equal(actual_portfolio_value_by_startyear, expected)
 
 
+def test_get_portfolio_value_by_startyear_by_allocation():
+    """tests get_portfolio_value_by_startyear_by_allocation"""
+    portfolio_allocations = dtt.get_expected_portfolio_allocations()
+    returns = dtt.get_expected_specific_returns()
+    portfolio_returns_by_allocation = pf.get_portfolio_returns_by_allocation(portfolio_allocations, returns)
+
+    actual_portfolio_value_by_startyear_by_allocation = pf.get_portfolio_value_by_startyear_by_allocation(portfolio_returns_by_allocation, dtt.MY_TIMEFRAME)
+    assert len(actual_portfolio_value_by_startyear_by_allocation) == len(portfolio_allocations)
+
+    actual_portfolio_value_by_startyear = actual_portfolio_value_by_startyear_by_allocation[dtt.MY_ALLOCATION]
+    
+    expected = dtt.get_expected_portfolio_value_by_startyear()
+    assert_series_equal(actual_portfolio_value_by_startyear, expected)
+
+
 def test_get_portfolio_timeframe_by_startyear():
     """tests get_portfolio_timeframe_by_startyear"""
     portfolio_returns = dtt.get_expected_portfolio_returns()
@@ -136,6 +151,21 @@ def test_get_portfolio_timeframe_by_startyear_with_contributions():
         portfolio_returns, target_value, contributions)
 
     expected = dtt.get_expected_portfolio_timeframe_by_startyear_with_contributions()
+    assert_series_equal(actual_portfolio_timeframe_by_startyear, expected)
+
+
+def test_get_portfolio_timeframe_by_startyear_by_allocation():
+    """tests get_portfolio_value_by_startyear_by_allocation"""
+    portfolio_allocations = dtt.get_expected_portfolio_allocations()
+    returns = dtt.get_expected_specific_returns()
+    portfolio_returns_by_allocation = pf.get_portfolio_returns_by_allocation(portfolio_allocations, returns)
+
+    actual_portfolio_timeframe_by_startyear_by_allocation = pf.get_portfolio_timeframe_by_startyear_by_allocation(portfolio_returns_by_allocation, dtt.MY_DEFAULT_TARGET)
+    assert len(actual_portfolio_timeframe_by_startyear_by_allocation) == len(portfolio_allocations)
+
+    actual_portfolio_timeframe_by_startyear = actual_portfolio_timeframe_by_startyear_by_allocation[dtt.MY_ALLOCATION]
+    
+    expected = dtt.get_expected_portfolio_value_by_startyear()
     assert_series_equal(actual_portfolio_timeframe_by_startyear, expected)
 
 
@@ -180,5 +210,24 @@ def test_get_statistics_for_portfolio_timeframes_with_custom_statistics():
     expected = dtt.get_expected_custom_statistics_for_portfolio_timeframes()
     assert_series_equal(actual_portfolio_stats, expected)
 
-#TODO deal with set of portfolios by allocation
+
+def test_get_statistics_by_allocation():
+    """tests get_statistics_by_allocation"""
+    portfolio_allocations = dtt.get_expected_portfolio_allocations()
+    returns = dtt.get_expected_specific_returns()
+    portfolio_returns_by_allocation = pf.get_portfolio_returns_by_allocation(portfolio_allocations, returns)
+    portfolio_timeframe_by_startyear_by_allocation = pf.get_portfolio_timeframe_by_startyear_by_allocation(portfolio_returns_by_allocation, dtt.MY_DEFAULT_TARGET)
+    
+    actual_statistics_by_allocation = pf.get_statistics_by_allocation(portfolio_timeframe_by_startyear_by_allocation)
+    
+    assert len(actual_statistics_by_allocation) == len(portfolio_allocations)
+
+    actual_portfolio_stats = actual_statistics_by_allocation[dtt.MY_ALLOCATION]
+    
+    expected = dtt.get_expected_default_statistics_for_portfolio_timeframes()
+    assert_series_equal(actual_portfolio_stats, expected)
+
+
+
+
 #pd.concat([row1_series,row2_series], axis=1).T

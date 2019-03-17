@@ -77,6 +77,12 @@ def _get_portfolio_returns(portfolio_allocation, returns_by_symbol: pd.DataFrame
     years = returns_by_symbol.axes[0]
     return pd.Series(portfolio_returns, index=years, name="Portfolio Return")
 
+def get_portfolio_value_by_startyear_by_allocation(portfolio_returns_by_allocations, timeframe, contributions: Contributions = DEFAULT_CONTRIBUTION):   
+    portfolio_value_by_startyear_by_allocation = {}
+    for allocation in portfolio_returns_by_allocations.keys():
+        portfolio_value_by_startyear = get_portfolio_value_by_startyear(portfolio_returns_by_allocations[allocation], timeframe, contributions)
+        portfolio_value_by_startyear_by_allocation[allocation] = portfolio_value_by_startyear
+    return portfolio_value_by_startyear_by_allocation
 
 def get_portfolio_value_by_startyear(portfolio_returns, timeframe, contributions: Contributions = DEFAULT_CONTRIBUTION):
     start_years = _get_start_years_for_timeframe(portfolio_returns.index, timeframe)
@@ -114,6 +120,13 @@ def _get_portfolio_value_for_startyear(start_year, portfolio_returns: pd.Series,
     
     return reduce(reduce_to_portfolio_value, returns_over_timeframe, 0)
 
+def get_portfolio_timeframe_by_startyear_by_allocation(portfolio_returns_by_allocations, target_value, contributions: Contributions = DEFAULT_CONTRIBUTION):   
+    portfolio_timeframe_by_startyear_by_allocation = {}
+    for allocation in portfolio_returns_by_allocations.keys():
+        portfolio_timeframe_by_startyear = get_portfolio_timeframe_by_startyear(portfolio_returns_by_allocations[allocation], target_value, contributions)
+        portfolio_timeframe_by_startyear_by_allocation[allocation] = portfolio_timeframe_by_startyear
+    return portfolio_timeframe_by_startyear_by_allocation
+
 def get_portfolio_timeframe_by_startyear(portfolio_returns, target_value, contributions: Contributions = DEFAULT_CONTRIBUTION):
     all_years = portfolio_returns.index
     
@@ -138,6 +151,13 @@ def get_portfolio_timeframe_by_startyear(portfolio_returns, target_value, contri
                                        index=pd.Index(start_years, name='Year'),
                                        name="Portfolio Timeframe")
     return timeframe_by_startyear.dropna()
+
+def get_statistics_by_allocation(portfolio_values_by_allocations, statistics = DEFAULT_STATS):   
+    tatistics_by_allocation = {}
+    for allocation in portfolio_values_by_allocations.keys():
+        portfolio_timeframe_by_startyear = get_statistics(portfolio_values_by_allocations[allocation], statistics)
+        tatistics_by_allocation[allocation] = portfolio_timeframe_by_startyear
+    return tatistics_by_allocation
 
 def get_statistics(portfolio_values : pd.Series, statistics = DEFAULT_STATS) -> pd.Series:
     statistics = list(map(lambda stat: typecheck_series(stat) if callable(stat) else stat, statistics))
