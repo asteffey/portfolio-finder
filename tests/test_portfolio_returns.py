@@ -17,8 +17,12 @@ EXPECTED_PORTFOLIO_RETURNS = read_series('portfolio_returns')
 
 
 def test_init():
-    specific_returns = pf.ReturnsBySymbol(EXPECTED_SPECIFIC_RETURNS)
-    actual_portfolio_returns = pf.PortfolioReturns(specific_returns, MY_ALLOCATION)
+    actual_portfolio_returns = pf.PortfolioReturns(EXPECTED_SPECIFIC_RETURNS, MY_ALLOCATION)
 
     assert_series_equal(actual_portfolio_returns.to_series(), EXPECTED_PORTFOLIO_RETURNS)
 
+def test_from_returns_by_symbol():
+    specific_returns = pf.ReturnsBySymbol(EXPECTED_SPECIFIC_RETURNS)
+    actual_portfolio_returns = specific_returns.to_portfolio_returns(MY_ALLOCATION)
+
+    assert_series_equal(actual_portfolio_returns.to_series(), EXPECTED_PORTFOLIO_RETURNS)

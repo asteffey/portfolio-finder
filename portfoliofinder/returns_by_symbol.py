@@ -1,4 +1,5 @@
 import pandas as pd
+from .portfolio_returns import PortfolioReturns
 
 class ReturnsBySymbol():
     def __init__(self, returns_by_symbol: pd.DataFrame):
@@ -20,3 +21,6 @@ class ReturnsBySymbol():
             inflation_rate = inflation_rates[year]
             return (returns_for_year + 1) / (inflation_rate + 1) - 1
         return ReturnsBySymbol(self.returns_by_symbol.apply(_adjust_for_inflation, axis=1))
+
+    def to_portfolio_returns(self, allocation) -> PortfolioReturns:
+        return PortfolioReturns(self.returns_by_symbol, allocation)
