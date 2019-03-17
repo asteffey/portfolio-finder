@@ -88,45 +88,45 @@ from scipy.stats import gmean
 #     with pytest.raises(TypeError):
 #         pf.get_inflation_adjusted_returns(0, inflation_rates)
 
-def test_get_portfolio_value_by_startyear():
-    """tests get_portfolio_value_by_startyear"""
-    portfolio_returns = dtt.get_expected_portfolio_returns()
-    timeframe = dtt.MY_TIMEFRAME
-    actual_portfolio_value_by_startyear = pf.get_portfolio_value_by_startyear(
-        portfolio_returns, timeframe)
+# def test_get_portfolio_value_by_startyear():
+#     """tests get_portfolio_value_by_startyear"""
+#     portfolio_returns = dtt.get_expected_portfolio_returns()
+#     timeframe = dtt.MY_TIMEFRAME
+#     actual_portfolio_value_by_startyear = pf.get_portfolio_value_by_startyear(
+#         portfolio_returns, timeframe)
 
-    expected = dtt.get_expected_portfolio_value_by_startyear()
-    assert_series_equal(actual_portfolio_value_by_startyear, expected)
-
-
-def test_get_portfolio_value_by_startyear_with_contributions():
-    """
-    tests get_portfolio_value_by_startyear with an optional contributions
-    argument passed
-    """
-    portfolio_returns = dtt.get_expected_portfolio_returns()
-    timeframe = dtt.MY_TIMEFRAME
-    contributions = dtt.MY_SCHEDULED_CONTRIBUTIONS
-    actual_portfolio_value_by_startyear = pf.get_portfolio_value_by_startyear(
-        portfolio_returns, timeframe, contributions)
-
-    expected = dtt.get_expected_portfolio_value_by_startyear_with_contributions()
-    assert_series_equal(actual_portfolio_value_by_startyear, expected)
+#     expected = dtt.get_expected_portfolio_value_by_startyear()
+#     assert_series_equal(actual_portfolio_value_by_startyear, expected)
 
 
-def test_get_portfolio_value_by_startyear_by_allocation():
-    """tests get_portfolio_value_by_startyear_by_allocation"""
-    portfolio_allocations = dtt.get_expected_portfolio_allocations()
-    returns = dtt.get_expected_specific_returns()
-    portfolio_returns_by_allocation = pf.get_portfolio_returns_by_allocation(portfolio_allocations, returns)
+# def test_get_portfolio_value_by_startyear_with_contributions():
+#     """
+#     tests get_portfolio_value_by_startyear with an optional contributions
+#     argument passed
+#     """
+#     portfolio_returns = dtt.get_expected_portfolio_returns()
+#     timeframe = dtt.MY_TIMEFRAME
+#     contributions = dtt.MY_SCHEDULED_CONTRIBUTIONS
+#     actual_portfolio_value_by_startyear = pf.get_portfolio_value_by_startyear(
+#         portfolio_returns, timeframe, contributions)
 
-    actual_portfolio_value_by_startyear_by_allocation = pf.get_portfolio_value_by_startyear_by_allocation(portfolio_returns_by_allocation, dtt.MY_TIMEFRAME)
-    assert len(actual_portfolio_value_by_startyear_by_allocation) == len(portfolio_allocations)
+#     expected = dtt.get_expected_portfolio_value_by_startyear_with_contributions()
+#     assert_series_equal(actual_portfolio_value_by_startyear, expected)
 
-    actual_portfolio_value_by_startyear = actual_portfolio_value_by_startyear_by_allocation[dtt.MY_ALLOCATION]
+
+# def test_get_portfolio_value_by_startyear_by_allocation():
+#     """tests get_portfolio_value_by_startyear_by_allocation"""
+#     portfolio_allocations = dtt.get_expected_portfolio_allocations()
+#     returns = dtt.get_expected_specific_returns()
+#     portfolio_returns_by_allocation = pf.get_portfolio_returns_by_allocation(portfolio_allocations, returns)
+
+#     actual_portfolio_value_by_startyear_by_allocation = pf.get_portfolio_value_by_startyear_by_allocation(portfolio_returns_by_allocation, dtt.MY_TIMEFRAME)
+#     assert len(actual_portfolio_value_by_startyear_by_allocation) == len(portfolio_allocations)
+
+#     actual_portfolio_value_by_startyear = actual_portfolio_value_by_startyear_by_allocation[dtt.MY_ALLOCATION]
     
-    expected = dtt.get_expected_portfolio_value_by_startyear()
-    assert_series_equal(actual_portfolio_value_by_startyear, expected)
+#     expected = dtt.get_expected_portfolio_value_by_startyear()
+#     assert_series_equal(actual_portfolio_value_by_startyear, expected)
 
 
 def test_get_portfolio_timeframe_by_startyear():

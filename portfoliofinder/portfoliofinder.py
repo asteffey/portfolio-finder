@@ -20,33 +20,33 @@ Workflow:
 """
 
 
-def fetch_all_returns_from_csv(csv_file):
-    return pd.read_csv(csv_file, index_col=0)
+# def fetch_all_returns_from_csv(csv_file):
+#     return pd.read_csv(csv_file, index_col=0)
 
 
 def get_specific_returns(returns, symbols):
     return returns[symbols]
 
 
-def get_inflation_adjusted_returns (returns, inflation_rates):
-    if isinstance(returns, pd.DataFrame):
-        return _get_inflation_adjusted_returns_for_dataframe(returns, inflation_rates)
-    elif isinstance(returns, pd.Series):
-        return _get_inflation_adjusted_returns_for_series(returns, inflation_rates)
-    else:
-        raise TypeError("returns must be pandas.DataFrame or pandas.Series")
+# def get_inflation_adjusted_returns (returns, inflation_rates):
+#     if isinstance(returns, pd.DataFrame):
+#         return _get_inflation_adjusted_returns_for_dataframe(returns, inflation_rates)
+#     elif isinstance(returns, pd.Series):
+#         return _get_inflation_adjusted_returns_for_series(returns, inflation_rates)
+#     else:
+#         raise TypeError("returns must be pandas.DataFrame or pandas.Series")
 
-def _get_inflation_adjusted_returns_for_series (returns: pd.Series, inflation_rates):
-    adjusted_returns = (returns + 1) / (inflation_rates + 1) - 1
-    adjusted_returns.name = returns.name
-    return adjusted_returns
+# def _get_inflation_adjusted_returns_for_series (returns: pd.Series, inflation_rates):
+#     adjusted_returns = (returns + 1) / (inflation_rates + 1) - 1
+#     adjusted_returns.name = returns.name
+#     return adjusted_returns
 
-def _get_inflation_adjusted_returns_for_dataframe (returns: pd.DataFrame, inflation_rates):
-    def adjust_for_inflation(returns_for_year):
-        year = returns_for_year.name
-        inflation_rate = inflation_rates[year]
-        return (returns_for_year + 1) / (inflation_rate + 1) - 1
-    return returns.apply(adjust_for_inflation, axis=1)
+# def _get_inflation_adjusted_returns_for_dataframe (returns: pd.DataFrame, inflation_rates):
+#     def adjust_for_inflation(returns_for_year):
+#         year = returns_for_year.name
+#         inflation_rate = inflation_rates[year]
+#         return (returns_for_year + 1) / (inflation_rate + 1) - 1
+#     return returns.apply(adjust_for_inflation, axis=1)
 
 
 def get_portfolio_returns_by_allocation(portfolio_allocations, returns):
@@ -59,11 +59,11 @@ def get_portfolio_returns_by_allocation(portfolio_allocations, returns):
         portfolio_returns_by_allocation[allocation] = portfolio_returns
     return portfolio_returns_by_allocation
 
-def get_portfolio_returns_for_allocation(portfolio_allocation, returns):
-    symbols = list(portfolio_allocation._fields)
-    returns_by_symbol = get_specific_returns(returns, symbols)
+# def get_portfolio_returns_for_allocation(portfolio_allocation, returns):
+#     symbols = list(portfolio_allocation._fields)
+#     returns_by_symbol = get_specific_returns(returns, symbols)
 
-    return _get_portfolio_returns(portfolio_allocation, returns_by_symbol)
+#     return _get_portfolio_returns(portfolio_allocation, returns_by_symbol)
 
 def _get_portfolio_returns(portfolio_allocation, returns_by_symbol: pd.DataFrame):
     portfolio_returns = []
@@ -74,48 +74,48 @@ def _get_portfolio_returns(portfolio_allocation, returns_by_symbol: pd.DataFrame
     years = returns_by_symbol.axes[0]
     return pd.Series(portfolio_returns, index=years, name="Portfolio Return")
 
-def get_portfolio_value_by_startyear_by_allocation(portfolio_returns_by_allocations, timeframe, contributions: Contributions = DEFAULT_CONTRIBUTION):   
-    portfolio_value_by_startyear_by_allocation = {}
-    for allocation in portfolio_returns_by_allocations.keys():
-        portfolio_value_by_startyear = get_portfolio_value_by_startyear(portfolio_returns_by_allocations[allocation], timeframe, contributions)
-        portfolio_value_by_startyear_by_allocation[allocation] = portfolio_value_by_startyear
-    return portfolio_value_by_startyear_by_allocation
+# def get_portfolio_value_by_startyear_by_allocation(portfolio_returns_by_allocations, timeframe, contributions: Contributions = DEFAULT_CONTRIBUTION):   
+#     portfolio_value_by_startyear_by_allocation = {}
+#     for allocation in portfolio_returns_by_allocations.keys():
+#         portfolio_value_by_startyear = get_portfolio_value_by_startyear(portfolio_returns_by_allocations[allocation], timeframe, contributions)
+#         portfolio_value_by_startyear_by_allocation[allocation] = portfolio_value_by_startyear
+#     return portfolio_value_by_startyear_by_allocation
 
-def get_portfolio_value_by_startyear(portfolio_returns, timeframe, contributions: Contributions = DEFAULT_CONTRIBUTION):
-    start_years = _get_start_years_for_timeframe(portfolio_returns.index, timeframe)
+# def get_portfolio_value_by_startyear(portfolio_returns, timeframe, contributions: Contributions = DEFAULT_CONTRIBUTION):
+#     start_years = _get_start_years_for_timeframe(portfolio_returns.index, timeframe)
     
-    values = []
-    for start_year in start_years:
-        value = _get_portfolio_value_for_startyear(start_year, portfolio_returns, timeframe, contributions)
-        values.append(value)
+#     values = []
+#     for start_year in start_years:
+#         value = _get_portfolio_value_for_startyear(start_year, portfolio_returns, timeframe, contributions)
+#         values.append(value)
     
-    return pd.Series(data=values,
-                     index=pd.Index(start_years, name='Year'),
-                     name="Portfolio Value")
+#     return pd.Series(data=values,
+#                      index=pd.Index(start_years, name='Year'),
+#                      name="Portfolio Value")
 
 
-def _get_start_years_for_timeframe(years: pd.Index, timeframe):
-    first_year = years[0]
-    last_year = years[-1] - (timeframe - 1)
-    return _inclusive_range(first_year, last_year)
+# def _get_start_years_for_timeframe(years: pd.Index, timeframe):
+#     first_year = years[0]
+#     last_year = years[-1] - (timeframe - 1)
+#     return _inclusive_range(first_year, last_year)
 
 
-def _inclusive_range(start, stop, step=1):
-    return range(start, (stop + 1) if step >= 0 else (stop - 1), step)
+# def _inclusive_range(start, stop, step=1):
+#     return range(start, (stop + 1) if step >= 0 else (stop - 1), step)
 
 
-def _get_portfolio_value_for_startyear(start_year, portfolio_returns: pd.Series, timeframe, contributions: Contributions):
-    investment_years = range(start_year, start_year + timeframe)
-    returns_over_timeframe = portfolio_returns.loc[investment_years]
+# def _get_portfolio_value_for_startyear(start_year, portfolio_returns: pd.Series, timeframe, contributions: Contributions):
+#     investment_years = range(start_year, start_year + timeframe)
+#     returns_over_timeframe = portfolio_returns.loc[investment_years]
 
-    timeframe_iter = iter(range(timeframe))
-    def reduce_to_portfolio_value(prev_value, current_return):
-        investment_year = next(timeframe_iter)
-        contribution = contributions.get_contribution_for_year(investment_year)
-        value = prev_value + contribution
-        return value * (1 + current_return)
+#     timeframe_iter = iter(range(timeframe))
+#     def reduce_to_portfolio_value(prev_value, current_return):
+#         investment_year = next(timeframe_iter)
+#         contribution = contributions.get_contribution_for_year(investment_year)
+#         value = prev_value + contribution
+#         return value * (1 + current_return)
     
-    return reduce(reduce_to_portfolio_value, returns_over_timeframe, 0)
+#     return reduce(reduce_to_portfolio_value, returns_over_timeframe, 0)
 
 def get_portfolio_timeframe_by_startyear_by_allocation(portfolio_returns_by_allocations, target_value, contributions: Contributions = DEFAULT_CONTRIBUTION):   
     portfolio_timeframe_by_startyear_by_allocation = {}
