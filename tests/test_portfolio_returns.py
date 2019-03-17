@@ -10,10 +10,7 @@ import portfoliofinder as pf
 
 from data_to_test import read_dataframe
 from data_to_test import read_series
-from data_to_test import SPECIFIC_FUNDS, MY_ALLOCATION
-
-EXPECTED_SPECIFIC_RETURNS = read_dataframe('specific_returns')
-EXPECTED_PORTFOLIO_RETURNS = read_series('portfolio_returns')
+from data_to_test import SPECIFIC_FUNDS, MY_ALLOCATION, EXPECTED_SPECIFIC_RETURNS, EXPECTED_PORTFOLIO_RETURNS
 
 
 def test_init():

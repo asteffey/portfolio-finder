@@ -43,6 +43,9 @@ CUSTOM_STATISTICS = ['min',stats.percentile_for(10),stats.gmean]
 EXPECTED_PORTFOLIO_ALLOCATIONS_DF = read_dataframe_raw('portfolio_allocation')
 EXPECTED_PORTFOLIO_ALLOCATIONS = [PortfolioAllocation(*row[1:]) for row in EXPECTED_PORTFOLIO_ALLOCATIONS_DF.itertuples()]
 
+EXPECTED_SPECIFIC_RETURNS = read_dataframe('specific_returns')
+EXPECTED_PORTFOLIO_RETURNS = read_series('portfolio_returns')
+
 def get_expected_all_returns() -> pd.DataFrame:
     """returns expected_all_returns read from excel file"""
 
