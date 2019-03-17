@@ -1,6 +1,9 @@
 import pandas as pd
 
 from .portfolio_returns import _get_allocation_symbols, _get_portfolio_returns
+from .contributions import Contributions, DEFAULT_CONTRIBUTION
+from .portfolio_value_by_startyear_by_allocation import PortfolioValuesByStartYearByAllocation
+from ._convert_to_dataframe_by_allocation import _convert_to_dataframe_by_allocation
 
 class PortfolioReturnsByAllocation():
 
@@ -19,12 +22,5 @@ class PortfolioReturnsByAllocation():
     def to_dataframe(self) -> pd.DataFrame:
         return _convert_to_dataframe_by_allocation(self.portfolio_returns_by_allocation)
 
-
-def _convert_to_dataframe_by_allocation(series_dict_by_allocation):
-    df = pd.concat(series_dict_by_allocation, axis=1).T
-    
-    an_allocation = list(series_dict_by_allocation.keys())[0]
-    allocation_symbols = list(an_allocation._asdict().keys())
-    df.index.names = allocation_symbols
-    
-    return df
+    def to_portfolio_value_by_startyear_by_allocation(self, timeframe, contributions: Contributions = DEFAULT_CONTRIBUTION):
+        return PortfolioValuesByStartYearByAllocation(self.portfolio_returns_by_allocation, timeframe, contributions)
