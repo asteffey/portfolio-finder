@@ -78,7 +78,6 @@ def _get_portfolio_returns(portfolio_allocation, returns_by_symbol: pd.DataFrame
     return pd.Series(portfolio_returns, index=years, name="Portfolio Return")
 
 
-#TODO get_portfolio_value_by_startyear (portfolio_returns, timeframe, contributions)
 def get_portfolio_value_by_startyear(portfolio_returns, timeframe, contributions: Contributions = DEFAULT_CONTRIBUTION):
     start_years = _get_start_years_for_timeframe(portfolio_returns.index, timeframe)
     
