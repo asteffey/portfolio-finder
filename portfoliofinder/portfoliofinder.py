@@ -28,10 +28,6 @@ def get_specific_returns(returns, symbols):
     return returns[symbols]
 
 
-def create_portfolio_allocations(symbols, step):
-    return list(named_range_of_allocations(step, symbols))
-
-
 def get_inflation_adjusted_returns (returns, inflation_rates):
     if isinstance(returns, pd.DataFrame):
         return _get_inflation_adjusted_returns_for_dataframe(returns, inflation_rates)

@@ -32,7 +32,7 @@ def test_get_specific_returns():
 def test_create_portfolio_allocations():
     """tests create_portfolio_allocations"""
     actual_allocations = pf.create_portfolio_allocations(
-        dtt.SPECIFIC_FUNDS, 0.25)
+        0.25, dtt.SPECIFIC_FUNDS)
 
     expected = dtt.get_expected_portfolio_allocations()
     assert sorted(actual_allocations) == sorted(expected)
