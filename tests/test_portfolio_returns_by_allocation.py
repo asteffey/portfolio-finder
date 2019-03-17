@@ -17,14 +17,14 @@ EXPECTED_PORTFOLIO_RETURNS = read_series('portfolio_returns')
 
 
 def test_get_portfolio_returns():
-    actual_portfolio_returns_group = pf.PortfolioReturnsGroup(EXPECTED_SPECIFIC_RETURNS, EXPECTED_PORTFOLIO_ALLOCATIONS)
+    actual_portfolio_returns_group = pf.PortfolioReturnsByAllocation(EXPECTED_SPECIFIC_RETURNS, EXPECTED_PORTFOLIO_ALLOCATIONS)
 
     actual_portfolio_returns = actual_portfolio_returns_group.get_series(MY_ALLOCATION)
 
     assert_series_equal(actual_portfolio_returns, EXPECTED_PORTFOLIO_RETURNS)
 
 def test_to_dataframe():
-    actual_portfolio_returns_group = pf.PortfolioReturnsGroup(EXPECTED_SPECIFIC_RETURNS, EXPECTED_PORTFOLIO_ALLOCATIONS)
+    actual_portfolio_returns_group = pf.PortfolioReturnsByAllocation(EXPECTED_SPECIFIC_RETURNS, EXPECTED_PORTFOLIO_ALLOCATIONS)
     actual_portfolio_returns = actual_portfolio_returns_group.to_dataframe().loc[MY_ALLOCATION]
     
     expected = EXPECTED_PORTFOLIO_RETURNS.copy()

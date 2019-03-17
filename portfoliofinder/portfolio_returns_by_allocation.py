@@ -2,7 +2,7 @@ import pandas as pd
 
 from .portfolio_returns import _get_allocation_symbols, _get_portfolio_returns
 
-class PortfolioReturnsGroup():
+class PortfolioReturnsByAllocation():
 
     def __init__(self, returns_by_symbol: pd.Series, allocations):
         allocation_symbols = _get_allocation_symbols(allocations[0])
