@@ -1,5 +1,6 @@
 import pandas as pd
 from .portfolio_returns import PortfolioReturns
+from .portfolio_returns_group import PortfolioReturnsGroup
 
 class ReturnsBySymbol():
     def __init__(self, returns_by_symbol: pd.DataFrame):
@@ -24,3 +25,6 @@ class ReturnsBySymbol():
 
     def to_portfolio_returns(self, allocation) -> PortfolioReturns:
         return PortfolioReturns(self.returns_by_symbol, allocation)
+
+    def to_portfolio_returns_group(self, allocations) -> PortfolioReturnsGroup:
+        return PortfolioReturnsGroup(self.returns_by_symbol, allocations)
