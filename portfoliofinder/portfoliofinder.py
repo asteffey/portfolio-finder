@@ -83,7 +83,7 @@ def get_portfolio_value_by_startyear(portfolio_returns, timeframe, contributions
     
     values = []
     for start_year in start_years:
-        value = get_portfolio_value_for_startyear(start_year, portfolio_returns, timeframe, contributions)
+        value = _get_portfolio_value_for_startyear(start_year, portfolio_returns, timeframe, contributions)
         values.append(value)
     
     return pd.Series(data=values,
@@ -101,7 +101,7 @@ def _inclusive_range(start, stop, step=1):
     return range(start, (stop + 1) if step >= 0 else (stop - 1), step)
 
 
-def get_portfolio_value_for_startyear(start_year, portfolio_returns: pd.Series, timeframe, contributions: Contributions):
+def _get_portfolio_value_for_startyear(start_year, portfolio_returns: pd.Series, timeframe, contributions: Contributions):
     investment_years = range(start_year, start_year + timeframe)
     returns_over_timeframe = portfolio_returns.loc[investment_years]
 
