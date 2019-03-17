@@ -17,15 +17,15 @@ EXPECTED_PORTFOLIO_RETURNS = read_series('portfolio_returns')
 
 
 def test_get_portfolio_returns():
-    actual_portfolio_returns_group = pf.PortfolioReturnsByAllocation(EXPECTED_SPECIFIC_RETURNS, EXPECTED_PORTFOLIO_ALLOCATIONS)
+    actual_portfolio_returns_by_allocation = pf.PortfolioReturnsByAllocation(EXPECTED_SPECIFIC_RETURNS, EXPECTED_PORTFOLIO_ALLOCATIONS)
 
-    actual_portfolio_returns = actual_portfolio_returns_group.get_series(MY_ALLOCATION)
+    actual_portfolio_returns = actual_portfolio_returns_by_allocation.get_series(MY_ALLOCATION)
 
     assert_series_equal(actual_portfolio_returns, EXPECTED_PORTFOLIO_RETURNS)
 
 def test_to_dataframe():
-    actual_portfolio_returns_group = pf.PortfolioReturnsByAllocation(EXPECTED_SPECIFIC_RETURNS, EXPECTED_PORTFOLIO_ALLOCATIONS)
-    actual_portfolio_returns = actual_portfolio_returns_group.to_dataframe().loc[MY_ALLOCATION]
+    actual_portfolio_returns_by_allocation = pf.PortfolioReturnsByAllocation(EXPECTED_SPECIFIC_RETURNS, EXPECTED_PORTFOLIO_ALLOCATIONS)
+    actual_portfolio_returns = actual_portfolio_returns_by_allocation.to_dataframe().loc[MY_ALLOCATION]
     
     expected = EXPECTED_PORTFOLIO_RETURNS.copy()
     expected.name = MY_ALLOCATION
@@ -34,8 +34,8 @@ def test_to_dataframe():
 
 def test_from_returns_by_symbol():
     specific_returns = pf.ReturnsBySymbol(EXPECTED_SPECIFIC_RETURNS)
-    actual_portfolio_returns_group = specific_returns.to_portfolio_returns_group(EXPECTED_PORTFOLIO_ALLOCATIONS)
+    actual_portfolio_returns_by_allocation = specific_returns.to_portfolio_returns_by_allocation(EXPECTED_PORTFOLIO_ALLOCATIONS)
 
-    actual_portfolio_returns = actual_portfolio_returns_group.get_series(MY_ALLOCATION)
+    actual_portfolio_returns = actual_portfolio_returns_by_allocation.get_series(MY_ALLOCATION)
 
     assert_series_equal(actual_portfolio_returns, EXPECTED_PORTFOLIO_RETURNS)
