@@ -18,5 +18,5 @@ class ReturnsBySymbol():
         def _adjust_for_inflation(returns_for_year):
             year = returns_for_year.name
             inflation_rate = inflation_rates[year]
-            return (self.returns_by_symbol + 1) / (inflation_rate + 1) - 1
+            return (returns_for_year + 1) / (inflation_rate + 1) - 1
         return ReturnsBySymbol(self.returns_by_symbol.apply(_adjust_for_inflation, axis=1))

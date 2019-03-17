@@ -49,7 +49,7 @@ def _get_inflation_adjusted_returns_for_dataframe (returns: pd.DataFrame, inflat
     def adjust_for_inflation(returns_for_year):
         year = returns_for_year.name
         inflation_rate = inflation_rates[year]
-        return (returns + 1) / (inflation_rate + 1) - 1
+        return (returns_for_year + 1) / (inflation_rate + 1) - 1
     return returns.apply(adjust_for_inflation, axis=1)
 
 
