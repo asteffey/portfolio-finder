@@ -37,14 +37,14 @@ from scipy.stats import gmean
 #     expected = dtt.get_expected_portfolio_allocations()
 #     assert sorted(actual_allocations) == sorted(expected)
 
-def test_get_portfolio_returns_for_allocation():
-    """tests get_portfolio_returns_for_allocation"""
-    returns = dtt.get_expected_specific_returns()
-    actual_portfolio_returns = pf.get_portfolio_returns_for_allocation(
-        dtt.MY_ALLOCATION, returns)
+# def test_get_portfolio_returns_for_allocation():
+#     """tests get_portfolio_returns_for_allocation"""
+#     returns = dtt.get_expected_specific_returns()
+#     actual_portfolio_returns = pf.get_portfolio_returns_for_allocation(
+#         dtt.MY_ALLOCATION, returns)
 
-    expected = dtt.get_expected_portfolio_returns()
-    assert_series_equal(actual_portfolio_returns, expected)
+#     expected = dtt.get_expected_portfolio_returns()
+#     assert_series_equal(actual_portfolio_returns, expected)
 
 def test_get_portfolio_returns_by_allocation():
     """tests get_portfolio_returns_by_allocation"""
