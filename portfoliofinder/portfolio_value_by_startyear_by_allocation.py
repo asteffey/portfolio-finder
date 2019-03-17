@@ -3,6 +3,7 @@ from functools import reduce
 
 from .contributions import Contributions
 from .portfolio_value_by_startyear import _get_portfolio_value_by_startyear
+from ._convert_to_dataframe_by_allocation import _convert_to_dataframe_by_allocation
 
 class PortfolioValuesByStartYearByAllocation():
 
@@ -12,6 +13,9 @@ class PortfolioValuesByStartYearByAllocation():
 
     def to_series(self, allocation) -> pd.Series:
         return self._portfolio_value_by_startyear_by_allocation[allocation]
+
+    def to_dataframe(self) -> pd.DataFrame:
+        return _convert_to_dataframe_by_allocation(self._portfolio_value_by_startyear_by_allocation)
 
 
 def _get_portfolio_value_by_startyear_by_allocation(portfolio_returns_by_allocations, timeframe, contributions):
