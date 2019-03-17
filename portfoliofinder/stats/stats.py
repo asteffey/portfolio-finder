@@ -9,4 +9,3 @@ def percentile_for(percentile):
 
 
 DEFAULT_STATS = ['min'] + [percentile_for(x) for x in range(10,91,10)] + ['max', 'mean', gmean]
-#DEFAULT_STATS = ['min', 'max', 'mean', gmean]
