@@ -149,4 +149,3 @@ def typecheck_series(func):
         else:
             raise TypeError
     return wrapper
-#foo.agg([percentile(.1),percentile(.5)])
