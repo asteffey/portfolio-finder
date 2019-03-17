@@ -80,7 +80,7 @@ def _get_portfolio_returns(portfolio_allocation, returns_by_symbol: pd.DataFrame
 
 #TODO get_portfolio_value_by_startyear (portfolio_returns, timeframe, contributions)
 def get_portfolio_value_by_startyear(portfolio_returns, timeframe, contributions: Contributions = DEFAULT_CONTRIBUTION):
-    start_years = get_start_years_for_timeframe(portfolio_returns.index, timeframe)
+    start_years = _get_start_years_for_timeframe(portfolio_returns.index, timeframe)
     
     values = []
     for start_year in start_years:
@@ -92,7 +92,7 @@ def get_portfolio_value_by_startyear(portfolio_returns, timeframe, contributions
                      name="Portfolio Value")
 
 
-def get_start_years_for_timeframe(years: pd.Index, timeframe):
+def _get_start_years_for_timeframe(years: pd.Index, timeframe):
     first_year = years[0]
     last_year = years[-1] - (timeframe - 1)
     return _inclusive_range(first_year, last_year)
