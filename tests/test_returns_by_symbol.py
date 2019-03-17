@@ -1,5 +1,5 @@
 """
-pytests for portfoliofinder module
+pytests for returns_by_symbol module
 """
 
 import pytest
