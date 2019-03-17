@@ -9,3 +9,6 @@ from .portfolio_returns_by_allocation import PortfolioReturnsByAllocation
 
 from .portfolio_value_by_startyear import PortfolioValuesByStartYear
 from .portfolio_value_by_startyear_by_allocation import PortfolioValuesByStartYearByAllocation
+
+from .portfolio_timeframe_by_startyear import PortfolioTimeframesByStartYear
+from .portfolio_timeframe_by_startyear_by_allocation import PortfolioTimeframesByStartYearByAllocation

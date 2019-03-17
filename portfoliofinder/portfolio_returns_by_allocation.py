@@ -3,7 +3,9 @@ import pandas as pd
 from .portfolio_returns import _get_allocation_symbols, _get_portfolio_returns
 from .contributions import Contributions, DEFAULT_CONTRIBUTION
 from .portfolio_value_by_startyear_by_allocation import PortfolioValuesByStartYearByAllocation
+from .portfolio_timeframe_by_startyear_by_allocation import PortfolioTimeframesByStartYearByAllocation
 from ._convert_to_dataframe_by_allocation import _convert_to_dataframe_by_allocation
+
 
 class PortfolioReturnsByAllocation():
 
@@ -24,3 +26,6 @@ class PortfolioReturnsByAllocation():
 
     def to_portfolio_value_by_startyear_by_allocation(self, timeframe, contributions: Contributions = DEFAULT_CONTRIBUTION):
         return PortfolioValuesByStartYearByAllocation(self.portfolio_returns_by_allocation, timeframe, contributions)
+
+    def to_portfolio_timeframe_by_startyear_by_allocation(self, target_value, contributions: Contributions = DEFAULT_CONTRIBUTION):
+        return PortfolioTimeframesByStartYearByAllocation(self.portfolio_returns_by_allocation, target_value, contributions)
