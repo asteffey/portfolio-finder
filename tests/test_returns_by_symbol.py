@@ -9,14 +9,15 @@ import pandas as pd
 
 import portfoliofinder as pf
 
-from data_to_test import read_dataframe
-from data_to_test import read_series
-from data_to_test import SPECIFIC_FUNDS
+from testdata_reader import read_dataframe, read_dataframe_raw, read_series
 
+SPECIFIC_FUNDS = ['USA_TSM', 'GLD', 'EM']
 EXPECTED_ALL_RETURNS = read_dataframe('all_returns')
 EXPECTED_SPECIFIC_RETURNS = read_dataframe('specific_returns')
 EXPECTED_INFLATION_RATES = read_series('inflation_rates')
 EXPECTED_INFLATION_ADJUSTED_SPECIFIC_RETURNS = read_dataframe('inflation_adjusted_specific_returns')
+
+DEFAULT_SPECIFIC_RETURNS_BY_SYMBOL = pf.ReturnsBySymbol(EXPECTED_SPECIFIC_RETURNS)
 
 def test_init():
     df = pd.DataFrame({'a':[1],'b':[2]})
@@ -43,7 +44,6 @@ def test_get_specific_returns():
 
 def test_adjust_for_inflation():
     """tests get_inflation_adjusted_returns"""
-    specific_returns = pf.ReturnsBySymbol(EXPECTED_SPECIFIC_RETURNS)
-    actual_inflation_adjusted_returns = specific_returns.adjust_for_inflation(EXPECTED_INFLATION_RATES)   
+    actual_inflation_adjusted_returns = DEFAULT_SPECIFIC_RETURNS_BY_SYMBOL.adjust_for_inflation(EXPECTED_INFLATION_RATES)
 
     assert_frame_equal(actual_inflation_adjusted_returns.to_dataframe(), EXPECTED_INFLATION_ADJUSTED_SPECIFIC_RETURNS)

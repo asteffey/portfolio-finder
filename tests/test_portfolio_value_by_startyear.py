@@ -8,12 +8,19 @@ from pandas.util.testing import assert_series_equal
 
 import portfoliofinder as pf
 
-from data_to_test import read_dataframe
-from data_to_test import read_series
-from data_to_test import MY_ALLOCATION, MY_TIMEFRAME, EXPECTED_SPECIFIC_RETURNS, EXPECTED_PORTFOLIO_RETURNS, MY_SCHEDULED_CONTRIBUTIONS
-from data_to_test import EXPECTED_PORTFOLIO_VALUE_BY_STARTYEAR, EXPECTED_PORTFOLIO_VALUE_BY_STARTYEAR_WITH_CONTRIBUTIONS
-from data_to_test import EXPECTED_DEFAULT_STATISTICS_FOR_PORTFOLIO_VALUES, EXPECTED_DEFAULT_STATISTICS_FOR_PORTFOLIO_VALUES_WITH_CUSTOM_STATS
-from data_to_test import CUSTOM_STATISTICS
+from testdata_reader import read_dataframe, read_series
+from test_portfolio_returns import MY_ALLOCATION, EXPECTED_SPECIFIC_RETURNS, EXPECTED_PORTFOLIO_RETURNS
+from test_portfolio_returns import DEFAULT_PORTFOLIO_RETURNS, EXPECTED_PORTFOLIO_RETURNS, MY_ALLOCATION
+from test_portfolio_timeframe_by_startyear import CUSTOM_STATISTICS, MY_SCHEDULED_CONTRIBUTIONS
+
+MY_TIMEFRAME = 10
+
+EXPECTED_PORTFOLIO_VALUE_BY_STARTYEAR = read_series('portfolio_value_by_startyear', usecols=['Year', 'Portfolio Value'])
+EXPECTED_PORTFOLIO_VALUE_BY_STARTYEAR_WITH_CONTRIBUTIONS = read_series('portfolio_value_by_startyear_with_contributions', usecols=['Year', 'Portfolio Value'])
+
+EXPECTED_DEFAULT_STATISTICS_FOR_PORTFOLIO_VALUES = read_series('default_statistics_for_value', usecols=['Statistic', 'Portfolio Value'])
+EXPECTED_DEFAULT_STATISTICS_FOR_PORTFOLIO_VALUES_WITH_CUSTOM_STATS = read_series('custom_statistics_for_value', usecols=['Statistic', 'Portfolio Value'])
+
 
 def test_init_with_default_contributions():
     actual_portfolio_value_by_startyear = pf.PortfolioValuesByStartYear(

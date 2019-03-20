@@ -8,13 +8,22 @@ from pandas.util.testing import assert_series_equal
 
 import portfoliofinder as pf
 
-from data_to_test import read_dataframe
-from data_to_test import read_series
-from data_to_test import MY_ALLOCATION, MY_DEFAULT_TARGET, MY_TARGET_WITH_CONTRIBUTIONS
-from data_to_test import EXPECTED_SPECIFIC_RETURNS, EXPECTED_PORTFOLIO_RETURNS, MY_SCHEDULED_CONTRIBUTIONS
-from data_to_test import EXPECTED_PORTFOLIO_TIMEFRAME_BY_STARTYEAR, EXPECTED_PORTFOLIO_TIMEFRAME_BY_STARTYEAR_WITH_CONTRIBUTIONS
-from data_to_test import EXPECTED_DEFAULT_STATISTICS_FOR_PORTFOLIO_TIMEFRAMES, EXPECTED_DEFAULT_STATISTICS_FOR_PORTFOLIO_TIMEFRAMES_WITH_CUSTOM_STATS
-from data_to_test import CUSTOM_STATISTICS
+from testdata_reader import read_dataframe, read_series
+from test_portfolio_returns import DEFAULT_PORTFOLIO_RETURNS, EXPECTED_PORTFOLIO_RETURNS, MY_ALLOCATION
+
+MY_SCHEDULED_CONTRIBUTIONS = pf.contributions.ScheduledContributions(
+    {n: (1000 if n in (0, 5) else 10) for n in range(0, 100)})
+
+MY_DEFAULT_TARGET = 4
+MY_TARGET_WITH_CONTRIBUTIONS = 10000
+
+EXPECTED_PORTFOLIO_TIMEFRAME_BY_STARTYEAR = read_series('portfolio_timeframe_by_startyear', usecols=['Year', 'Portfolio Timeframe']).dropna()
+EXPECTED_PORTFOLIO_TIMEFRAME_BY_STARTYEAR_WITH_CONTRIBUTIONS = read_series('portfolio_timeframe_by_startyear_with_contributions', usecols=['Year', 'Portfolio Timeframe']).dropna()
+
+CUSTOM_STATISTICS = ['min',pf.stats.percentile_for(10),pf.stats.gmean]
+EXPECTED_DEFAULT_STATISTICS_FOR_PORTFOLIO_TIMEFRAMES = read_series('default_statistics_for_timeframe', usecols=['Statistic', 'Portfolio Timeframe'])
+EXPECTED_DEFAULT_STATISTICS_FOR_PORTFOLIO_TIMEFRAMES_WITH_CUSTOM_STATS = read_series('custom_statistics_for_timeframe', usecols=['Statistic', 'Portfolio Timeframe'])
+
 
 def test_init_with_default_contributions():
     actual_portfolio_timeframe_by_startyear = pf.PortfolioTimeframesByStartYear(
@@ -25,9 +34,7 @@ def test_init_with_default_contributions():
 
 
 def test_from_portfolio_returns_with_default_contributions():
-    portfolio_returns = pf.PortfolioReturns(
-        EXPECTED_SPECIFIC_RETURNS, MY_ALLOCATION)
-    actual_portfolio_timeframe_by_startyear = portfolio_returns.to_portfolio_timeframe_by_startyear(
+    actual_portfolio_timeframe_by_startyear = DEFAULT_PORTFOLIO_RETURNS.to_portfolio_timeframe_by_startyear(
         MY_DEFAULT_TARGET)
 
     assert_series_equal(actual_portfolio_timeframe_by_startyear.to_series(),
@@ -38,9 +45,7 @@ def test_from_portfolio_returns_with_custom_contributions():
     """
     tests get_portfolio_value_by_startyear with custom contributions
     """
-    portfolio_returns = pf.PortfolioReturns(
-        EXPECTED_SPECIFIC_RETURNS, MY_ALLOCATION)
-    actual_portfolio_timeframe_by_startyear = portfolio_returns.to_portfolio_timeframe_by_startyear(
+    actual_portfolio_timeframe_by_startyear = DEFAULT_PORTFOLIO_RETURNS.to_portfolio_timeframe_by_startyear(
         MY_TARGET_WITH_CONTRIBUTIONS, MY_SCHEDULED_CONTRIBUTIONS)
 
     assert_series_equal(actual_portfolio_timeframe_by_startyear.to_series(),
