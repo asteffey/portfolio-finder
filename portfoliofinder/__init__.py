@@ -1,5 +1,4 @@
 from .stats import *
-from .portfoliofinder import *
 from .combinatorics import create_portfolio_allocations
 
 from .returns_by_symbol import ReturnsBySymbol

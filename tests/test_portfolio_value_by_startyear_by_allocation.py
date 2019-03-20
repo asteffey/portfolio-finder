@@ -18,7 +18,7 @@ from data_to_test import CUSTOM_STATISTICS
 
 def test_init_with_default_contributions():
     portfolio_value_by_startyear_by_allocation = pf.PortfolioValuesByStartYearByAllocation(
-        {MY_ALLOCATION: EXPECTED_PORTFOLIO_RETURNS}, MY_TIMEFRAME, pf.DEFAULT_CONTRIBUTION)
+        {MY_ALLOCATION: EXPECTED_PORTFOLIO_RETURNS}, MY_TIMEFRAME, pf.contributions.DEFAULT_CONTRIBUTION)
 
     actual_portfolio_value_by_startyear = portfolio_value_by_startyear_by_allocation.to_series(MY_ALLOCATION)
 

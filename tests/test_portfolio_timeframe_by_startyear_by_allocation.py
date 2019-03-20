@@ -20,7 +20,7 @@ from data_to_test import CUSTOM_STATISTICS
 
 def test_init_with_default_contributions():
     portfolio_timeframe_by_startyear_by_allocation = pf.PortfolioTimeframesByStartYearByAllocation(
-        {MY_ALLOCATION: EXPECTED_PORTFOLIO_RETURNS}, MY_DEFAULT_TARGET, pf.DEFAULT_CONTRIBUTION)
+        {MY_ALLOCATION: EXPECTED_PORTFOLIO_RETURNS}, MY_DEFAULT_TARGET, pf.contributions.DEFAULT_CONTRIBUTION)
 
     actual_portfolio_timeframe_by_startyear = portfolio_timeframe_by_startyear_by_allocation.to_series(MY_ALLOCATION)
 
