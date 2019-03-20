@@ -170,73 +170,72 @@ from scipy.stats import gmean
 #     assert_series_equal(actual_portfolio_timeframe_by_startyear, expected)
 
 
-def test_get_default_statistics_for_portfolio_values():
-    """tests get_statistics_for_portfolio_values with default statistics"""
-    portfolio_values = dtt.get_expected_portfolio_value_by_startyear()
-    actual_portfolio_stats = pf.get_statistics(portfolio_values)
+# def test_get_default_statistics_for_portfolio_values():
+#     """tests get_statistics_for_portfolio_values with default statistics"""
+#     portfolio_values = dtt.get_expected_portfolio_value_by_startyear()
+#     actual_portfolio_stats = pf.get_statistics(portfolio_values)
 
-    expected = dtt.get_expected_default_statistics_for_portfolio_values()
-    assert_series_equal(actual_portfolio_stats, expected)
-
-
-def test_get_statistics_for_portfolio_values_with_custom_statistics():
-    """tests get_statistics_for_portfolio_values with custom statistics"""
-    portfolio_values = dtt.get_expected_portfolio_value_by_startyear()
-    actual_portfolio_stats = pf.get_statistics(portfolio_values, dtt.CUSTOM_STATISTICS)
-
-    expected = dtt.get_expected_custom_statistics_for_portfolio_values()
-    assert_series_equal(actual_portfolio_stats, expected)
-
-#TODO test getting just getting gmean to ensure only 1 row returned
-def test_get_statistic_for_gmean_returns_one_result():
-    values = dtt.pd.Series([1,2,3,4])
-    stats = pf.get_statistics(values, [gmean])
-    assert stats.size == 1
+#     expected = dtt.get_expected_default_statistics_for_portfolio_values()
+#     assert_series_equal(actual_portfolio_stats, expected)
 
 
-def test_get_default_statistics_for_portfolio_timeframes():
-    """tests get_statistics with portfolio_timeframes and default statistics"""
-    portfolio_timeframes = dtt.get_expected_portfolio_timeframe_by_startyear()
-    actual_portfolio_stats = pf.get_statistics(portfolio_timeframes)
+# def test_get_statistics_for_portfolio_values_with_custom_statistics():
+#     """tests get_statistics_for_portfolio_values with custom statistics"""
+#     portfolio_values = dtt.get_expected_portfolio_value_by_startyear()
+#     actual_portfolio_stats = pf.get_statistics(portfolio_values, dtt.CUSTOM_STATISTICS)
 
-    expected = dtt.get_expected_default_statistics_for_portfolio_timeframes()
-    assert_series_equal(actual_portfolio_stats, expected)
+#     expected = dtt.get_expected_custom_statistics_for_portfolio_values()
+#     assert_series_equal(actual_portfolio_stats, expected)
 
-
-def test_get_statistics_for_portfolio_timeframes_with_custom_statistics():
-    """tests get_statistics with portfolio_timeframes and custom statistics"""
-    portfolio_timeframes = dtt.get_expected_portfolio_timeframe_by_startyear()
-    actual_portfolio_stats = pf.get_statistics(portfolio_timeframes, dtt.CUSTOM_STATISTICS)
-
-    expected = dtt.get_expected_custom_statistics_for_portfolio_timeframes()
-    assert_series_equal(actual_portfolio_stats, expected)
+# def test_get_statistic_for_gmean_returns_one_result():
+#     values = dtt.pd.Series([1,2,3,4])
+#     stats = pf.get_statistics(values, [gmean])
+#     assert stats.size == 1
 
 
-def test_get_statistics_by_allocation():
-    """tests get_statistics_by_allocation"""
-    portfolio_allocations = dtt.get_expected_portfolio_allocations()
-    returns = dtt.get_expected_specific_returns()
-    portfolio_returns_by_allocation = pf.get_portfolio_returns_by_allocation(portfolio_allocations, returns)
-    portfolio_timeframe_by_startyear_by_allocation = pf.get_portfolio_timeframe_by_startyear_by_allocation(portfolio_returns_by_allocation, dtt.MY_DEFAULT_TARGET)
+# def test_get_default_statistics_for_portfolio_timeframes():
+#     """tests get_statistics with portfolio_timeframes and default statistics"""
+#     portfolio_timeframes = dtt.get_expected_portfolio_timeframe_by_startyear()
+#     actual_portfolio_stats = pf.get_statistics(portfolio_timeframes)
+
+#     expected = dtt.get_expected_default_statistics_for_portfolio_timeframes()
+#     assert_series_equal(actual_portfolio_stats, expected)
+
+
+# def test_get_statistics_for_portfolio_timeframes_with_custom_statistics():
+#     """tests get_statistics with portfolio_timeframes and custom statistics"""
+#     portfolio_timeframes = dtt.get_expected_portfolio_timeframe_by_startyear()
+#     actual_portfolio_stats = pf.get_statistics(portfolio_timeframes, dtt.CUSTOM_STATISTICS)
+
+#     expected = dtt.get_expected_custom_statistics_for_portfolio_timeframes()
+#     assert_series_equal(actual_portfolio_stats, expected)
+
+
+# def test_get_statistics_by_allocation():
+#     """tests get_statistics_by_allocation"""
+#     portfolio_allocations = dtt.get_expected_portfolio_allocations()
+#     returns = dtt.get_expected_specific_returns()
+#     portfolio_returns_by_allocation = pf.get_portfolio_returns_by_allocation(portfolio_allocations, returns)
+#     portfolio_timeframe_by_startyear_by_allocation = pf.get_portfolio_timeframe_by_startyear_by_allocation(portfolio_returns_by_allocation, dtt.MY_DEFAULT_TARGET)
     
-    actual_statistics_by_allocation = pf.get_statistics_by_allocation(portfolio_timeframe_by_startyear_by_allocation)
+#     actual_statistics_by_allocation = pf.get_statistics_by_allocation(portfolio_timeframe_by_startyear_by_allocation)
     
-    assert len(actual_statistics_by_allocation) == len(portfolio_allocations)
+#     assert len(actual_statistics_by_allocation) == len(portfolio_allocations)
 
-    actual_portfolio_stats = actual_statistics_by_allocation[dtt.MY_ALLOCATION]
+#     actual_portfolio_stats = actual_statistics_by_allocation[dtt.MY_ALLOCATION]
     
-    expected = dtt.get_expected_default_statistics_for_portfolio_timeframes()
-    assert_series_equal(actual_portfolio_stats, expected)
+#     expected = dtt.get_expected_default_statistics_for_portfolio_timeframes()
+#     assert_series_equal(actual_portfolio_stats, expected)
 
-def test_convert_to_dataframe_by_allocation():
-    allocation1 = dtt.PortfolioAllocation(0, 1, 0)
-    allocation2 = dtt.PortfolioAllocation(1, 0, 0)
-    series_dict_by_allocation = {allocation1: pd.Series([1]), allocation2: pd.Series(['a'])}
+# def test_convert_to_dataframe_by_allocation():
+#     allocation1 = dtt.PortfolioAllocation(0, 1, 0)
+#     allocation2 = dtt.PortfolioAllocation(1, 0, 0)
+#     series_dict_by_allocation = {allocation1: pd.Series([1]), allocation2: pd.Series(['a'])}
     
-    actual_dataframe_by_allocation = pf.convert_to_dataframe_by_allocation(series_dict_by_allocation)
+#     actual_dataframe_by_allocation = pf.convert_to_dataframe_by_allocation(series_dict_by_allocation)
 
-    assert actual_dataframe_by_allocation.loc[allocation1].loc[0] == 1
-    assert actual_dataframe_by_allocation.loc[allocation2].loc[0] == 'a'
+#     assert actual_dataframe_by_allocation.loc[allocation1].loc[0] == 1
+#     assert actual_dataframe_by_allocation.loc[allocation2].loc[0] == 'a'
 
 
 
