@@ -1,7 +1,9 @@
 import pandas as pd
 from functools import reduce
+from functools import wraps
 
 from .contributions import Contributions
+from .stats import DEFAULT_STATS
 
 class PortfolioTimeframesByStartYear():
 
@@ -11,6 +13,10 @@ class PortfolioTimeframesByStartYear():
 
     def to_series(self) -> pd.Series:
         return self._portfolio_timeframe_by_startyear
+
+    def get_statistics(self, statistics = DEFAULT_STATS) -> pd.Series:
+        return _get_statistics(self._portfolio_timeframe_by_startyear, statistics)
+
 
 
 def _get_portfolio_timeframe_by_startyear(portfolio_returns, target_value, contributions: Contributions):
@@ -38,3 +44,19 @@ def _get_portfolio_timeframe_by_startyear(portfolio_returns, target_value, contr
                                        name="Portfolio Timeframe")
     return timeframe_by_startyear.dropna().astype(float)
 
+
+def _get_statistics(portfolio_values : pd.Series, statistics) -> pd.Series:
+    statistics = list(map(lambda stat: _typecheck_series(stat) if callable(stat) else stat, statistics))
+    ret = portfolio_values.agg(statistics)
+    ret.name = "Portfolio Timeframe"
+    ret.index.name = "Statistic"
+    return ret
+
+def _typecheck_series(func):
+    @wraps(func)
+    def wrapper(series):
+        if isinstance(series, pd.Series):
+            return func(series)
+        else:
+            raise TypeError
+    return wrapper

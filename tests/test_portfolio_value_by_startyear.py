@@ -12,7 +12,8 @@ from data_to_test import read_dataframe
 from data_to_test import read_series
 from data_to_test import MY_ALLOCATION, MY_TIMEFRAME, EXPECTED_SPECIFIC_RETURNS, EXPECTED_PORTFOLIO_RETURNS, MY_SCHEDULED_CONTRIBUTIONS
 from data_to_test import EXPECTED_PORTFOLIO_VALUE_BY_STARTYEAR, EXPECTED_PORTFOLIO_VALUE_BY_STARTYEAR_WITH_CONTRIBUTIONS
-
+from data_to_test import EXPECTED_DEFAULT_STATISTICS_FOR_PORTFOLIO_VALUES, EXPECTED_DEFAULT_STATISTICS_FOR_PORTFOLIO_VALUES_WITH_CUSTOM_STATS
+from data_to_test import CUSTOM_STATISTICS
 
 def test_init_with_default_contributions():
     actual_portfolio_value_by_startyear = pf.PortfolioValuesByStartYear(
@@ -43,3 +44,20 @@ def test_from_portfolio_returns_with_custom_contributions():
 
     assert_series_equal(actual_portfolio_value_by_startyear.to_series(),
                         EXPECTED_PORTFOLIO_VALUE_BY_STARTYEAR_WITH_CONTRIBUTIONS)
+
+def test_get_statistics_with_default():
+    """tests get_statistics with default statistics"""
+    portfolio_value_by_startyear = pf.PortfolioValuesByStartYear(
+        EXPECTED_PORTFOLIO_RETURNS, MY_TIMEFRAME, pf.DEFAULT_CONTRIBUTION)
+    actual_statistics = portfolio_value_by_startyear.get_statistics()
+
+    assert_series_equal(actual_statistics, EXPECTED_DEFAULT_STATISTICS_FOR_PORTFOLIO_VALUES)
+
+
+def test_get_statistics_with_custom():
+    """tests get_statistics with custom statistics"""
+    portfolio_value_by_startyear = pf.PortfolioValuesByStartYear(
+        EXPECTED_PORTFOLIO_RETURNS, MY_TIMEFRAME, pf.DEFAULT_CONTRIBUTION)
+    actual_statistics = portfolio_value_by_startyear.get_statistics(CUSTOM_STATISTICS)
+
+    assert_series_equal(actual_statistics, EXPECTED_DEFAULT_STATISTICS_FOR_PORTFOLIO_VALUES_WITH_CUSTOM_STATS)

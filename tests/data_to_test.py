@@ -52,6 +52,12 @@ EXPECTED_PORTFOLIO_VALUE_BY_STARTYEAR_WITH_CONTRIBUTIONS = read_series('portfoli
 EXPECTED_PORTFOLIO_TIMEFRAME_BY_STARTYEAR = read_series('portfolio_timeframe_by_startyear', usecols=['Year', 'Portfolio Timeframe']).dropna()
 EXPECTED_PORTFOLIO_TIMEFRAME_BY_STARTYEAR_WITH_CONTRIBUTIONS = read_series('portfolio_timeframe_by_startyear_with_contributions', usecols=['Year', 'Portfolio Timeframe']).dropna()
 
+EXPECTED_DEFAULT_STATISTICS_FOR_PORTFOLIO_VALUES = read_series('default_statistics_for_value', usecols=['Statistic', 'Portfolio Value'])
+EXPECTED_DEFAULT_STATISTICS_FOR_PORTFOLIO_VALUES_WITH_CUSTOM_STATS = read_series('custom_statistics_for_value', usecols=['Statistic', 'Portfolio Value'])
+
+EXPECTED_DEFAULT_STATISTICS_FOR_PORTFOLIO_TIMEFRAMES = read_series('default_statistics_for_timeframe', usecols=['Statistic', 'Portfolio Timeframe'])
+EXPECTED_DEFAULT_STATISTICS_FOR_PORTFOLIO_TIMEFRAMES_WITH_CUSTOM_STATS = read_series('custom_statistics_for_timeframe', usecols=['Statistic', 'Portfolio Timeframe'])
+
 def get_expected_all_returns() -> pd.DataFrame:
     """returns expected_all_returns read from excel file"""
 
