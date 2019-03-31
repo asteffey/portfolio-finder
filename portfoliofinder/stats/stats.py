@@ -16,7 +16,6 @@ def get_statistics(portfolio_values : pd.Series, statistics) -> pd.Series:
     statistics = list(map(lambda stat: _typecheck_series(stat) if callable(stat) else stat, statistics))
     statistics = portfolio_values.agg(statistics)
     statistics.index.name = "Statistic"
-    statistics.name = "Portfolio" #TODO: fix me
     return statistics
 
 
