@@ -14,9 +14,5 @@ TODO: Accept the following inputs
     -- [optional] contributions_csv_file
 """
 
-#TODO OUT: find best portfolio given a certain timeframe
-#TODO OUT: find best portfolio given a target value
-
-
 if __name__ == '__main__':
     main()
