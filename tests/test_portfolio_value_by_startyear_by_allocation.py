@@ -68,7 +68,7 @@ def test_get_statistics_by_allocation_with_default():
     portfolio_value_by_startyear_by_allocation = DEFAULT_PORTFOLIO_RETURNS_BY_ALLOCATION.to_portfolio_value_by_startyear_by_allocation(
         MY_TIMEFRAME)
 
-    actual_statistics_by_allocation = portfolio_value_by_startyear_by_allocation.get_statistics()
+    actual_statistics_by_allocation = portfolio_value_by_startyear_by_allocation.get_statistics().to_dataframe()
     
     assert len(actual_statistics_by_allocation) == len(DEFAULT_PORTFOLIO_RETURNS_BY_ALLOCATION.to_dataframe())
 
@@ -81,7 +81,7 @@ def test_get_statistics_by_allocation_with_custom():
     portfolio_value_by_startyear_by_allocation = DEFAULT_PORTFOLIO_RETURNS_BY_ALLOCATION.to_portfolio_value_by_startyear_by_allocation(
         MY_TIMEFRAME)
 
-    actual_statistics_by_allocation = portfolio_value_by_startyear_by_allocation.get_statistics(CUSTOM_STATISTICS)
+    actual_statistics_by_allocation = portfolio_value_by_startyear_by_allocation.get_statistics(CUSTOM_STATISTICS).to_dataframe()
     
     assert len(actual_statistics_by_allocation) == len(DEFAULT_PORTFOLIO_RETURNS_BY_ALLOCATION.to_dataframe())
 
