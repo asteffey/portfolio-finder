@@ -52,6 +52,6 @@ def test_get_statistics_with_custom():
     """tests get_statistics with custom statistics"""
     portfolio_value_by_startyear = pf.PortfolioValuesByStartYear(
         EXPECTED_PORTFOLIO_RETURNS, MY_TIMEFRAME, pf.contributions.DEFAULT_CONTRIBUTION)
-    actual_statistics = portfolio_value_by_startyear.get_statistics(CUSTOM_STATISTICS)
+    actual_statistics = portfolio_value_by_startyear.get_statistics(MY_CUSTOM_STATISTICS)
 
     assert_series_equal(actual_statistics, EXPECTED_DEFAULT_STATISTICS_FOR_PORTFOLIO_VALUES_WITH_CUSTOM_STATS)

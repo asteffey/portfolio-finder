@@ -36,6 +36,7 @@ def test_get_specific_returns():
 
 def test_adjust_for_inflation():
     """tests get_inflation_adjusted_returns"""
-    actual_inflation_adjusted_returns = DEFAULT_SPECIFIC_RETURNS_BY_SYMBOL.adjust_for_inflation(EXPECTED_INFLATION_RATES)
+    returns_by_symbol = portfoliofinder.ReturnsBySymbol(EXPECTED_SPECIFIC_RETURNS)
+    actual_inflation_adjusted_returns = returns_by_symbol.adjust_for_inflation(EXPECTED_INFLATION_RATES)
 
     assert_frame_equal(actual_inflation_adjusted_returns.to_dataframe(), EXPECTED_INFLATION_ADJUSTED_SPECIFIC_RETURNS)

@@ -59,34 +59,3 @@ def test_from_portfolio_returns_by_allocation_with_custom_contributions():
 
     assert_series_equal(actual_portfolio_timeframe_by_startyear,
                         EXPECTED_PORTFOLIO_TIMEFRAME_BY_STARTYEAR_WITH_CONTRIBUTIONS)
-
-
-def test_get_statistics_by_allocation_with_default():
-    """tests get_statistics_by_allocation"""
-    portfolio_returns_by_allocation = pf.PortfolioReturnsByAllocation(
-        EXPECTED_SPECIFIC_RETURNS, EXPECTED_PORTFOLIO_ALLOCATIONS)
-    portfolio_timeframe_by_startyear_by_allocation = portfolio_returns_by_allocation.to_portfolio_timeframe_by_startyear_by_allocation(
-        MY_DEFAULT_TARGET)
-
-    actual_statistics_by_allocation = portfolio_timeframe_by_startyear_by_allocation.get_statistics().to_dataframe()
-    
-    assert len(actual_statistics_by_allocation) == len(EXPECTED_PORTFOLIO_ALLOCATIONS)
-
-    actual_portfolio_stats = actual_statistics_by_allocation.loc[MY_ALLOCATION]
-    actual_portfolio_stats.name = "Portfolio Timeframe"
-    assert_series_equal(actual_portfolio_stats, EXPECTED_DEFAULT_STATISTICS_FOR_PORTFOLIO_TIMEFRAMES)
-
-def test_get_statistics_by_allocation_with_custom():
-    """tests get_statistics_by_allocation"""
-    portfolio_returns_by_allocation = pf.PortfolioReturnsByAllocation(
-        EXPECTED_SPECIFIC_RETURNS, EXPECTED_PORTFOLIO_ALLOCATIONS)
-    portfolio_timeframe_by_startyear_by_allocation = portfolio_returns_by_allocation.to_portfolio_timeframe_by_startyear_by_allocation(
-        MY_DEFAULT_TARGET)
-
-    actual_statistics_by_allocation = portfolio_timeframe_by_startyear_by_allocation.get_statistics(CUSTOM_STATISTICS).to_dataframe()
-    
-    assert len(actual_statistics_by_allocation) == len(EXPECTED_PORTFOLIO_ALLOCATIONS)
-
-    actual_portfolio_stats = actual_statistics_by_allocation.loc[MY_ALLOCATION]
-    actual_portfolio_stats.name = "Portfolio Timeframe"
-    assert_series_equal(actual_portfolio_stats, EXPECTED_DEFAULT_STATISTICS_FOR_PORTFOLIO_TIMEFRAMES_WITH_CUSTOM_STATS)
