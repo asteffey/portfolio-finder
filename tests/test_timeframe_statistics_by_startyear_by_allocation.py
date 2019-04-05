@@ -34,3 +34,15 @@ def test_get_with_custom_from_portfolio_timeframe_by_startyear_by_allocation():
     actual_portfolio_stats = actual_statistics_by_allocation.loc[MY_ALLOCATION]
     actual_portfolio_stats.name = "Portfolio Timeframe"
     assert_series_equal(actual_portfolio_stats, EXPECTED_DEFAULT_STATISTICS_FOR_PORTFOLIO_TIMEFRAMES_WITH_CUSTOM_STATS)
+
+
+def test_get_max_for_each_statistic():
+    portfolio_returns_by_allocation = pf.PortfolioReturnsByAllocation(
+        EXPECTED_SPECIFIC_RETURNS, EXPECTED_PORTFOLIO_ALLOCATIONS)
+    portfolio_timeframe_by_startyear_by_allocation = portfolio_returns_by_allocation.to_portfolio_timeframe_by_startyear_by_allocation(
+        MY_DEFAULT_TARGET)
+
+    statistics_by_allocation = portfolio_timeframe_by_startyear_by_allocation.get_statistics()
+
+    res = statistics_by_allocation.get_allocations_which_max_each_statistic()
+    print(res)
