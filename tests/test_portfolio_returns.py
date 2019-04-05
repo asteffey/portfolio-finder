@@ -9,16 +9,7 @@ from collections import namedtuple
 
 import portfoliofinder as pf
 
-from testdata_reader import read_dataframe, read_dataframe_raw, read_series
-from test_returns_by_symbol import SPECIFIC_FUNDS, DEFAULT_SPECIFIC_RETURNS_BY_SYMBOL
-
-PortfolioAllocation = namedtuple('PortfolioAllocation', SPECIFIC_FUNDS)
-MY_ALLOCATION = PortfolioAllocation(0, 0.75, 0.25)
-
-EXPECTED_SPECIFIC_RETURNS = read_dataframe('specific_returns')
-EXPECTED_PORTFOLIO_RETURNS = read_series('portfolio_returns')
-
-DEFAULT_PORTFOLIO_RETURNS = pf.PortfolioReturns(EXPECTED_SPECIFIC_RETURNS, MY_ALLOCATION)
+from testdata_constants import *
 
 def test_init():
     assert_series_equal(DEFAULT_PORTFOLIO_RETURNS.to_series(), EXPECTED_PORTFOLIO_RETURNS)

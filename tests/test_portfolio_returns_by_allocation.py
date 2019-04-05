@@ -8,12 +8,7 @@ from pandas.util.testing import assert_series_equal
 
 import portfoliofinder as pf
 
-from testdata_reader import read_dataframe, read_dataframe_raw, read_series
-from test_portfolio_returns import EXPECTED_SPECIFIC_RETURNS, MY_ALLOCATION, EXPECTED_PORTFOLIO_RETURNS, PortfolioAllocation
-
-EXPECTED_PORTFOLIO_ALLOCATIONS = [PortfolioAllocation(*row[1:]) for row in read_dataframe_raw('portfolio_allocation').itertuples()]
-
-DEFAULT_PORTFOLIO_RETURNS_BY_ALLOCATION = pf.PortfolioReturnsByAllocation(EXPECTED_SPECIFIC_RETURNS, EXPECTED_PORTFOLIO_ALLOCATIONS)
+from testdata_constants import *
 
 def test_get_portfolio_returns():
     actual_portfolio_returns = DEFAULT_PORTFOLIO_RETURNS_BY_ALLOCATION.get_series(MY_ALLOCATION)

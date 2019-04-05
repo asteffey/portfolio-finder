@@ -8,21 +8,7 @@ from pandas.util.testing import assert_series_equal
 
 import portfoliofinder as pf
 
-from testdata_reader import read_dataframe, read_series
-from test_portfolio_returns import DEFAULT_PORTFOLIO_RETURNS, EXPECTED_PORTFOLIO_RETURNS, MY_ALLOCATION
-
-MY_SCHEDULED_CONTRIBUTIONS = pf.contributions.ScheduledContributions(
-    {n: (1000 if n in (0, 5) else 10) for n in range(0, 100)})
-
-MY_DEFAULT_TARGET = 4
-MY_TARGET_WITH_CONTRIBUTIONS = 10000
-
-EXPECTED_PORTFOLIO_TIMEFRAME_BY_STARTYEAR = read_series('portfolio_timeframe_by_startyear', usecols=['Year', 'Portfolio Timeframe']).dropna()
-EXPECTED_PORTFOLIO_TIMEFRAME_BY_STARTYEAR_WITH_CONTRIBUTIONS = read_series('portfolio_timeframe_by_startyear_with_contributions', usecols=['Year', 'Portfolio Timeframe']).dropna()
-
-CUSTOM_STATISTICS = ['min',pf.stats.percentile_for(10),pf.stats.gmean]
-EXPECTED_DEFAULT_STATISTICS_FOR_PORTFOLIO_TIMEFRAMES = read_series('default_statistics_for_timeframe', usecols=['Statistic', 'Portfolio Timeframe'])
-EXPECTED_DEFAULT_STATISTICS_FOR_PORTFOLIO_TIMEFRAMES_WITH_CUSTOM_STATS = read_series('custom_statistics_for_timeframe', usecols=['Statistic', 'Portfolio Timeframe'])
+from testdata_constants import *
 
 
 def test_init_with_default_contributions():
