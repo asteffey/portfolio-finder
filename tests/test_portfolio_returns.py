@@ -2,12 +2,7 @@
 pytests for portfolio_returns module
 """
 
-import pytest
-from pandas.util.testing import assert_frame_equal
 from pandas.util.testing import assert_series_equal
-from collections import namedtuple
-
-import portfoliofinder as pf
 
 from testdata_constants import *
 

@@ -1,5 +1,3 @@
-from collections import namedtuple
-
 import portfoliofinder as pf
 from test_returns_by_symbol import SPECIFIC_FUNDS
 from test_portfolio_returns_by_allocation import EXPECTED_PORTFOLIO_ALLOCATIONS

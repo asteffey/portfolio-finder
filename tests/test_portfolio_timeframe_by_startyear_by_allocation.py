@@ -2,8 +2,6 @@
 pytests for portfolio_timeframe_by_startyear_by_allocation module
 """
 
-import pytest
-from pandas.util.testing import assert_frame_equal
 from pandas.util.testing import assert_series_equal
 
 import portfoliofinder as pf
