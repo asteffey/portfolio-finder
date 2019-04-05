@@ -17,7 +17,8 @@ class DataByStartYearByAllocation():
         return _convert_to_dataframe_by_allocation(self._data)
 
     def get_statistics(self, statistics = DEFAULT_STATS) -> pd.Series:
-        return get_statistics_by_allocation(self._data, statistics)
+        statistics = get_statistics_by_allocation(self._data, statistics)
+        return _convert_to_dataframe_by_allocation(statistics)
 
 
 def _get_data_by_startyear_by_allocation(data_func, data_by_allocations, *argv):
