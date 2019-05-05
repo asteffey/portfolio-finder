@@ -11,3 +11,7 @@ from .portfolio_value_by_startyear_by_allocation import PortfolioValuesByStartYe
 
 from .portfolio_timeframe_by_startyear import PortfolioTimeframesByStartYear
 from .portfolio_timeframe_by_startyear_by_allocation import PortfolioTimeframesByStartYearByAllocation
+
+# TODO: ratio function
+# TODO: for set of statistics, find best ratio using different statistic results as inputs
+

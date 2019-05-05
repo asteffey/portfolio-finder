@@ -45,4 +45,25 @@ def test_get_max_for_each_statistic():
     statistics_by_allocation = portfolio_timeframe_by_startyear_by_allocation.get_statistics()
 
     res = statistics_by_allocation.get_allocations_which_max_each_statistic()
-    print(res)
+    assert len(res) == len(pf.DEFAULT_STATS)
+    assert res.loc['min']['Portfolio Timeframe'] == max(statistics_by_allocation.to_dataframe()['min'])
+    assert res.loc['max']['Portfolio Timeframe'] == max(statistics_by_allocation.to_dataframe()['max'])
+    assert res.loc['gmean']['Portfolio Timeframe'] == max(statistics_by_allocation.to_dataframe()['gmean'])
+    assert res.loc['percentile_30']['Portfolio Timeframe'] == max(statistics_by_allocation.to_dataframe()['percentile_30'])
+
+
+def test_get_min_for_each_statistic():
+    portfolio_returns_by_allocation = pf.PortfolioReturnsByAllocation(
+        EXPECTED_SPECIFIC_RETURNS, EXPECTED_PORTFOLIO_ALLOCATIONS)
+    portfolio_timeframe_by_startyear_by_allocation = portfolio_returns_by_allocation.to_portfolio_timeframe_by_startyear_by_allocation(
+        MY_DEFAULT_TARGET)
+
+    statistics_by_allocation = portfolio_timeframe_by_startyear_by_allocation.get_statistics()
+
+    res = statistics_by_allocation.get_allocations_which_min_each_statistic()
+    assert len(res) == len(pf.DEFAULT_STATS)
+    assert res.loc['min']['Portfolio Timeframe'] == min(statistics_by_allocation.to_dataframe()['min'])
+    assert res.loc['max']['Portfolio Timeframe'] == min(statistics_by_allocation.to_dataframe()['max'])
+    assert res.loc['gmean']['Portfolio Timeframe'] == min(statistics_by_allocation.to_dataframe()['gmean'])
+    assert res.loc['percentile_30']['Portfolio Timeframe'] == min(statistics_by_allocation.to_dataframe()['percentile_30'])
+
