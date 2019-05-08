@@ -1,4 +1,5 @@
 import pandas as pd
+import progressbar
 
 from ._convert_to_dataframe_by_allocation import _convert_to_dataframe_by_allocation
 from .stats import DEFAULT_STATS
@@ -22,7 +23,7 @@ class DataByStartYearByAllocation():
 
 def _get_data_by_startyear_by_allocation(data_func, data_by_allocations, *argv):
     data_by_startyear_by_allocation = {}
-    for allocation in data_by_allocations.keys():
+    for allocation in progressbar.progressbar(data_by_allocations.keys()):
         data_by_startyear = data_func(data_by_allocations[allocation], *argv)
         data_by_startyear_by_allocation[allocation] = data_by_startyear
     return data_by_startyear_by_allocation

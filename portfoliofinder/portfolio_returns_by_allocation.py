@@ -1,4 +1,5 @@
 import pandas as pd
+import progressbar
 
 from .portfolio_returns import _get_allocation_symbols, _get_portfolio_returns
 from .contributions import Contributions, DEFAULT_CONTRIBUTION
@@ -14,7 +15,7 @@ class PortfolioReturnsByAllocation():
         returns_by_symbol = returns_by_symbol[allocation_symbols]
 
         self.portfolio_returns_by_allocation = {}
-        for allocation in allocations:
+        for allocation in progressbar.progressbar(allocations):
             portfolio_returns = _get_portfolio_returns(allocation, returns_by_symbol)
             self.portfolio_returns_by_allocation[allocation] = portfolio_returns
 
