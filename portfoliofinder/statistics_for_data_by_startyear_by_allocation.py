@@ -1,6 +1,6 @@
 import pandas as pd
 from .stats import get_statistics_by_allocation
-
+from collections import namedtuple
 
 from ._convert_to_dataframe_by_allocation import _convert_to_dataframe_by_allocation
 
@@ -12,6 +12,7 @@ class StatisticsForDataByStartYearByAllocation():
 
         data_type = next(iter(self._dict.values())).name
         allocation_symbols = list(next(iter(self._dict.keys()))._fields)
+        self._Allocation = namedtuple('Allocation', allocation_symbols)
         self._to_allocation_symbols_and_value = generate_to_allocation_symbols_and_value_method(allocation_symbols, data_type)
 
     def to_dataframe(self) -> pd.DataFrame:
@@ -34,12 +35,17 @@ class StatisticsForDataByStartYearByAllocation():
         allocation_and_value_for_each_statistic.columns.name = ''
         return allocation_and_value_for_each_statistic
 
-    def get_allocations_which_max_ratio(self, risk_index_func) -> pd.DataFrame:
-        # TODO: implement get_allocations_which_max_ratio
-        # calc ratio for each stat / risk_index
-        # then select max for each of the ratio values
-        # and should then be similar to get_allocations_which_max_each_statistic
-        pass
+    def get_allocation_which_min_statistic(self, statistic) -> pd.Series:
+        allocation_which_min_statistic = self._df.idxmin().loc[statistic]
+        res = self._df.loc[allocation_which_min_statistic]
+        res.name = str(self._Allocation(*res.name))
+        return res
+
+    def get_allocation_which_max_statistic(self, statistic) -> pd.Series:
+        allocation_which_max_statistic = self._df.idxmax().loc[statistic]
+        res = self._df.loc[allocation_which_max_statistic]
+        res.name = str(self._Allocation(*res.name))
+        return res
 
 def generate_to_allocation_symbols_and_value_method(allocation_symbols, data_type):
     def to_allocation_symbols_and_value(row):
