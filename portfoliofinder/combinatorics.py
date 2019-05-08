@@ -41,4 +41,4 @@ class named_range_of_allocations:
         return self._namedtuple_type(*next(self._range_of_allocations))
 
 def create_portfolio_allocations(step, symbols):
-    return list(named_range_of_allocations(step, symbols))
+    return named_range_of_allocations(step, symbols)
