@@ -3,8 +3,10 @@ import pandas as pd
 from .portfolio_value_by_startyear import PortfolioValuesByStartYear
 from .portfolio_timeframe_by_startyear import PortfolioTimeframesByStartYear
 from .contributions import Contributions, DEFAULT_CONTRIBUTION
+from .self_pickling import SelfPickling
 
-class PortfolioReturns():
+
+class PortfolioReturns(SelfPickling):
 
     def __init__(self, returns_by_symbol: pd.Series, allocation):
         allocation_symbols = _get_allocation_symbols(allocation)

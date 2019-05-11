@@ -4,10 +4,10 @@ import progressbar
 from ._convert_to_dataframe_by_allocation import _convert_to_dataframe_by_allocation
 from .stats import DEFAULT_STATS
 from .statistics_for_data_by_startyear_by_allocation import StatisticsForDataByStartYearByAllocation
+from .self_pickling import SelfPickling
 
 
-class DataByStartYearByAllocation():
-
+class DataByStartYearByAllocation(SelfPickling):
     def __init__(self, data_func, data_by_allocation: dict, *argv):
         self._data = _get_data_by_startyear_by_allocation(data_func, data_by_allocation, *argv)
 

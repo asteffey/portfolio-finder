@@ -17,6 +17,7 @@ matplotlib = "*"
 progressbar2 = "*"
 scipy = "*"
 portfoliofinder = {editable = true,path = "."}
+dill = "*"
 
 [requires]
 python_version = "3.6.7"

@@ -1,5 +1,7 @@
 import pandas as pd
 import progressbar
+from .self_pickling import SelfPickling
+
 
 from .portfolio_returns import _get_allocation_symbols, _get_portfolio_returns
 from .contributions import Contributions, DEFAULT_CONTRIBUTION
@@ -8,7 +10,7 @@ from .portfolio_timeframe_by_startyear_by_allocation import PortfolioTimeframesB
 from ._convert_to_dataframe_by_allocation import _convert_to_dataframe_by_allocation
 
 
-class PortfolioReturnsByAllocation():
+class PortfolioReturnsByAllocation(SelfPickling):
 
     def __init__(self, returns_by_symbol: pd.Series, allocations):
         allocation_symbols = _get_allocation_symbols(allocations[0])

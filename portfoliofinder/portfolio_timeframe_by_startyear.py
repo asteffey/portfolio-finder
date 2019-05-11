@@ -1,10 +1,10 @@
 import pandas as pd
-from functools import reduce
+from .self_pickling import SelfPickling
 
 from .contributions import Contributions
 from .stats import DEFAULT_STATS, get_statistics
 
-class PortfolioTimeframesByStartYear():
+class PortfolioTimeframesByStartYear(SelfPickling):
 
     def __init__(self, portfolio_returns: pd.Series, target_value, contributions: Contributions):
         self._portfolio_timeframe_by_startyear = _get_portfolio_timeframe_by_startyear(
