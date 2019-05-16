@@ -6,6 +6,9 @@ verify_ssl = true
 [dev-packages]
 autopep8 = "*"
 pylint = "*"
+pytest = "==4.0.1"
+xlrd = "*"
+rope = "*"
 
 [packages]
 pandas = "*"
@@ -13,7 +16,9 @@ numpy = "*"
 matplotlib = "*"
 progressbar2 = "*"
 scipy = "*"
-itertools = "*"
+portfoliofinder = {editable = true,path = "."}
+dill = "*"
+mplcursors = "*"
 
 [requires]
-python_version = "3.7"
+python_version = "3.6.7"
