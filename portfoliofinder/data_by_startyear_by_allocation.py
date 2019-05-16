@@ -18,7 +18,7 @@ class DataByStartYearByAllocation(SelfPickling):
         return _convert_to_dataframe_by_allocation(self._data)
 
     def get_statistics(self, statistics = DEFAULT_STATS) -> StatisticsForDataByStartYearByAllocation:
-        return StatisticsForDataByStartYearByAllocation(self._data, statistics)
+        return StatisticsForDataByStartYearByAllocation.create_from_data_and_statistics(self._data, statistics)
 
 
 def _get_data_by_startyear_by_allocation(data_func, data_by_allocations, *argv):
