@@ -6,4 +6,4 @@ cache
 *egg-info
 *xlsx#
 .idea
-.p
+*.p
