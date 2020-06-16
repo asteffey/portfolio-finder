@@ -2,7 +2,7 @@
 pytests for portfolio_timeframe_by_startyear module
 """
 
-from pandas.util.testing import assert_series_equal
+from pandas.testing import assert_series_equal
 
 import portfoliofinder as pf
 
