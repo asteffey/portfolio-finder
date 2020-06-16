@@ -4,6 +4,7 @@ pytests for returns_by_symbol module
 
 from pandas.util.testing import assert_frame_equal
 import pandas as pd
+import os
 
 import portfoliofinder as pf
 
@@ -19,9 +20,9 @@ def test_init():
 
     assert_frame_equal(df, actual_df)
 
-def test_from_csv():
+def test_from_csv(pytestconfig):
     """tests fetch_all_returns_from_csv"""
-    actual_returns = pf.ReturnsBySymbol.from_csv("tests/test_data.csv")
+    actual_returns = pf.ReturnsBySymbol.from_csv(os.path.dirname(__file__) + "/test_data.csv")
 
     assert_frame_equal(actual_returns.to_dataframe(), EXPECTED_ALL_RETURNS)
 
