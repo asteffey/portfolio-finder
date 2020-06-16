@@ -1,19 +1,23 @@
-import pandas as pd
-from .stats import get_statistics_by_allocation
-from collections import namedtuple
-from .self_pickling import SelfPickling
-from .stats import percentile_for
+from __future__ import annotations
 
-import mplcursors
+from collections import namedtuple
+from typing import Type, TypeVar
+
 import matplotlib.pyplot as plt
+import mplcursors
+import pandas as pd
 
 from ._convert_to_dataframe_by_allocation import _convert_to_dataframe_by_allocation
-
-from typing import Type, TypeVar
+from .self_pickling import SelfPickling
+from .stats import get_statistics_by_allocation
+from .stats import percentile_for
 
 T = TypeVar('T', bound='StatisticsForDataByStartYearByAllocation')
 
+
 class StatisticsForDataByStartYearByAllocation(SelfPickling):
+    """Statistical results for backtested portfolio data, by allocation mix.
+    """
 
     @classmethod
     def create_from_data_and_statistics(cls: Type[T], data, statistics) -> T:
@@ -21,10 +25,12 @@ class StatisticsForDataByStartYearByAllocation(SelfPickling):
         stats_df = _convert_to_dataframe_by_allocation(stats_by_allocation)
 
         data_type = next(iter(stats_by_allocation.values())).name
-        allocation_symbols = list(next(iter(stats_by_allocation.keys()))._fields)
+        allocation_symbols = list(
+            next(iter(stats_by_allocation.keys()))._fields)
         Allocation_namedtuple = namedtuple('Allocation', allocation_symbols)
-        to_allocation_symbols_and_value_func = generate_to_allocation_symbols_and_value_method(allocation_symbols,
-                                                                                               data_type)
+        to_allocation_symbols_and_value_func = \
+            generate_to_allocation_symbols_and_value_method(allocation_symbols,
+                                                            data_type)
 
         return StatisticsForDataByStartYearByAllocation(stats_df, Allocation_namedtuple,
                                                         to_allocation_symbols_and_value_func)
@@ -34,16 +40,18 @@ class StatisticsForDataByStartYearByAllocation(SelfPickling):
         self._Allocation = allocation_namedtuple
         self._to_allocation_symbols_and_value = to_allocation_symbols_and_value_func
 
-
-    def to_dataframe(self) -> pd.DataFrame:
+    def as_dataframe(self) -> pd.DataFrame:
+        """Gets as pandas DataFrame."""
         return self._df.copy()
 
     def get_allocations_which_max_each_statistic(self) -> pd.DataFrame:
-        allocation_symbols_which_max_each_statistic = self._df[self._df.columns].idxmax()
+        allocation_symbols_which_max_each_statistic = self._df[self._df.columns].idxmax(
+        )
         return self._append_value_for_each_statistic_allocation(allocation_symbols_which_max_each_statistic)
 
     def get_allocations_which_min_each_statistic(self) -> pd.DataFrame:
-        allocation_symbols_which_min_each_statistic = self._df[self._df.columns].idxmin()
+        allocation_symbols_which_min_each_statistic = self._df[self._df.columns].idxmin(
+        )
         return self._append_value_for_each_statistic_allocation(allocation_symbols_which_min_each_statistic)
 
     def _append_value_for_each_statistic_allocation(self, allocation_symbol_for_each_statistic) -> pd.DataFrame:
@@ -69,7 +77,7 @@ class StatisticsForDataByStartYearByAllocation(SelfPickling):
 
     def graph(self, x, y):
         fig, ax = plt.subplots()
-        self._df.plot.scatter(x,y, ax=ax)
+        self._df.plot.scatter(x, y, ax=ax)
         mplcursors.cursor(ax, hover=True).connect(
             "add", lambda sel: sel.annotation.set_text(self._Allocation(*self._df.iloc[sel.target.index].name)))
         plt.show()
@@ -80,29 +88,34 @@ class StatisticsForDataByStartYearByAllocation(SelfPickling):
                                                         self._Allocation,
                                                         self._to_allocation_symbols_and_value)
 
-    def filter_by_min_of(self: Type[T], statistic) -> T:
+    def filter_by_min_of(self, statistic) -> StatisticsForDataByStartYearByAllocation:
         new_df = self._df[self._df[statistic] == min(self._df[statistic])]
         return StatisticsForDataByStartYearByAllocation(new_df,
                                                         self._Allocation,
                                                         self._to_allocation_symbols_and_value)
 
-    def filter_by_max_of(self: Type[T], statistic) -> T:
+    def filter_by_max_of(self, statistic) -> StatisticsForDataByStartYearByAllocation:
         new_df = self._df[self._df[statistic] == max(self._df[statistic])]
         return StatisticsForDataByStartYearByAllocation(new_df,
                                                         self._Allocation,
                                                         self._to_allocation_symbols_and_value)
 
-    def filter_by_gte_percentile_of(self: Type[T], percentile, statistic) -> T:
-        new_df = self._df[self._df[statistic] >= percentile_for(percentile)(self._df[statistic])]
+    def filter_by_gte_percentile_of(self, percentile: int, statistic) \
+            -> StatisticsForDataByStartYearByAllocation:
+        new_df = self._df[self._df[statistic] >=
+                          percentile_for(percentile)(self._df[statistic])]
         return StatisticsForDataByStartYearByAllocation(new_df,
                                                         self._Allocation,
                                                         self._to_allocation_symbols_and_value)
 
-    def filter_by_lte_percentile_of(self: Type[T], percentile, statistic) -> T:
-        new_df = self._df[self._df[statistic] <= percentile_for(percentile)(self._df[statistic])]
+    def filter_by_lte_percentile_of(self, percentile, statistic) \
+            -> StatisticsForDataByStartYearByAllocation:
+        new_df = self._df[self._df[statistic] <=
+                          percentile_for(percentile)(self._df[statistic])]
         return StatisticsForDataByStartYearByAllocation(new_df,
                                                         self._Allocation,
                                                         self._to_allocation_symbols_and_value)
+
 
 def generate_to_allocation_symbols_and_value_method(allocation_symbols, data_type):
     def to_allocation_symbols_and_value(row):
