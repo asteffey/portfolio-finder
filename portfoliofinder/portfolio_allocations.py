@@ -51,13 +51,15 @@ class PortfolioAllocations:
     3  0.75  0.25
     4  1.00  0.00
 
-    >>> PortfolioAllocations.from_combo(0.25, ['A','B','C']).filter(lambda x: (x.A<=0.25) & (x.B>=0.75)).as_dataframe()
+    >>> PortfolioAllocations.from_combo(0.25, ['A','B','C'])\
+    ... .filter(lambda x: (x.A<=0.25) & (x.B>=0.75)).as_dataframe()
           A     B     C
     3  0.00  0.75  0.25
     4  0.00  1.00  0.00
     8  0.25  0.75  0.00
 
-    >>> PortfolioAllocations.from_combo(0.25, ['A','B','C']).filter('A<=0.25 & B>=0.75').as_dataframe()
+    >>> PortfolioAllocations.from_combo(0.25, ['A','B','C'])\
+    ... .filter('A<=0.25 & B>=0.75').as_dataframe()
           A     B     C
     3  0.00  0.75  0.25
     4  0.00  1.00  0.00
@@ -78,7 +80,7 @@ class PortfolioAllocations:
                      (i.e., 0.25 would produce allocations of 0, 0.25, 0.5, 0.75, 1)
         :param symbols: fund symbols for allocations
 
-        :return a range of portfolio allocations
+        :return: a range of portfolio allocations
         """
         values = _RangeOfAllocations(step, len(symbols))
         return cls(pd.DataFrame(values, columns=symbols))
@@ -88,13 +90,13 @@ class PortfolioAllocations:
         return self._allocations
 
     def to_tuples(self):
+        """Iterates over portfolio allocations as namedtuples."""
         return self._allocations.itertuples(name="Allocation", index=False)
 
     def filter(self, expression: Union[Callable[[pd.DataFrame], pd.Series], str]):
         """Filters the range of allocations."""
-        if type(expression) == str:
+        if isinstance(expression, str):
             return PortfolioAllocations(self._allocations.query(expression))
-        elif callable(expression):
+        if callable(expression):
             return PortfolioAllocations(self._allocations[expression(self._allocations)])
-        else:
-            raise ValueError("invalid filter expression")
+        raise ValueError("invalid filter expression")

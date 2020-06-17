@@ -8,5 +8,5 @@ class Contributions(ABC):  # pylint: disable=too-few-public-methods
         """Gets the contribution for the specified year.
 
         :param year: year relative to inception of portfolio (i.e., first year is 0)
-        :return contribution for the specified year
+        :return: contribution for the specified year
         """

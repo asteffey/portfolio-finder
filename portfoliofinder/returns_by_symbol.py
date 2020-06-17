@@ -1,9 +1,10 @@
 from __future__ import annotations
 
-from typing import List, NamedTuple
+from typing import List
 
 import pandas as pd
 
+from .portfolio_allocations import PortfolioAllocations
 from .portfolio_returns import PortfolioReturns
 from .portfolio_returns_by_allocation import PortfolioReturnsByAllocation
 
@@ -51,7 +52,20 @@ class SymbolReturns:
         return SymbolReturns(self.returns_by_symbol.apply(_adjust_for_inflation, axis=1))
 
     def to_portfolio_returns(self, allocation) -> PortfolioReturns:
+        """Creates portfolio returns, by year, for a specific allocation mix,
+        based on these fund returns.
+
+        :param allocation: the allocation mix
+        :return: portfolio returns, by year, for a specific allocation mix
+        """
         return PortfolioReturns(self.returns_by_symbol, allocation)
 
-    def to_portfolio_returns_by_allocation(self, allocations: NamedTuple) -> PortfolioReturnsByAllocation:
+    def to_portfolio_returns_by_allocation(self, allocations: PortfolioAllocations) \
+            -> PortfolioReturnsByAllocation:
+        """Creates portfolio returns by year for a set of allocation mixes,
+        based on these fund returns.
+
+        :param allocations: a range of portfolio allocations
+        :return: portfolio returns by year for a set of allocation mixes
+        """
         return PortfolioReturnsByAllocation(self.returns_by_symbol, allocations)

@@ -15,7 +15,7 @@ def read_dataframe(sheet_name: str, index_col=None, usecols: List[str] = None) -
     :param index_col: column to use as row label
     :param usecols: the column names to use
 
-    :return a DataFrame of the sheet
+    :return: a DataFrame of the sheet
     """
     return pd.read_excel(_TEST_DATA_PATH, sheet_name, index_col=index_col, usecols=usecols)
 
@@ -25,6 +25,6 @@ def read_series(sheet_name, usecols=None) -> pd.Series:
     :param sheet_name: the Excel sheet name
     :param usecols: the column names to use
 
-    :return a Series of the sheet
+    :return: a Series of the sheet
     """
     return pd.read_excel(_TEST_DATA_PATH, sheet_name, index_col=0, usecols=usecols, squeeze=True)

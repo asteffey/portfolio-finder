@@ -2,7 +2,7 @@ import pandas as pd
 from .self_pickling import SelfPickling
 
 from .contributions import Contributions
-from .stats import DEFAULT_STATS, get_statistics
+from .stats import DEFAULT_STATS, _get_statistics, StatListType
 
 
 class PortfolioTimeframesByStartYear(SelfPickling):
@@ -19,7 +19,7 @@ class PortfolioTimeframesByStartYear(SelfPickling):
         """Gets as pandas Series."""
         return self._portfolio_timeframe_by_startyear
 
-    def get_statistics(self, statistics=DEFAULT_STATS) -> pd.Series:
+    def get_statistics(self, statistics: StatListType = DEFAULT_STATS) -> pd.Series:
         """Gets statistical results for the amount of time required for backtested
         portfolios to achieve a target value given a specific
         allocation mix and contribution schedule.
@@ -32,7 +32,8 @@ class PortfolioTimeframesByStartYear(SelfPickling):
 
 
 def _get_portfolio_timeframe_by_startyear(portfolio_returns, target_value,
-                                          contributions: Contributions):
+                                          contributions: Contributions)\
+        -> pd.Series:
     all_years = portfolio_returns.index
 
     timeframes = []
@@ -61,6 +62,6 @@ def _get_portfolio_timeframe_by_startyear(portfolio_returns, target_value,
 
 
 def _get_portfolio_timeframe_statistics(portfolio_values: pd.Series, statistics) -> pd.Series:
-    statistics = get_statistics(portfolio_values, statistics)
+    statistics = _get_statistics(portfolio_values, statistics)
     statistics.name = "Portfolio Timeframe"
     return statistics

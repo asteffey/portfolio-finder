@@ -1,11 +1,10 @@
 from functools import reduce
-from typing import Callable, Union
 
 import pandas as pd
 
 from .contributions import Contributions
 from .self_pickling import SelfPickling
-from .stats import DEFAULT_STATS, get_statistics
+from .stats import DEFAULT_STATS, _get_statistics, StatListType
 
 
 class PortfolioValuesByStartYear(SelfPickling):
@@ -21,9 +20,7 @@ class PortfolioValuesByStartYear(SelfPickling):
         """Gets as pandas Series."""
         return self._portfolio_value_by_startyear
 
-    def get_statistics(self,
-                       statistics: Union[str, Callable[[pd.Series], pd.Series]] = DEFAULT_STATS) \
-            -> pd.Series:
+    def get_statistics(self, statistics: StatListType = DEFAULT_STATS) -> pd.Series:
         """Gets statistical results for backtested portfolio values for a specific
         allocation mix, timeframe, and contribution schedule.
 
@@ -75,6 +72,6 @@ def _get_portfolio_value_for_startyear(start_year, portfolio_returns: pd.Series,
 
 
 def _get_portfolio_value_statistics(portfolio_values: pd.Series, statistics) -> pd.Series:
-    statistics = get_statistics(portfolio_values, statistics)
+    statistics = _get_statistics(portfolio_values, statistics)
     statistics.name = "Portfolio Value"
     return statistics

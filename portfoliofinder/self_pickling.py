@@ -20,7 +20,7 @@ class SelfPickling:
         """Loads the class.
 
         :param filename_wo_ext: filename without extension
-        :return instance of class read from file
+        :return: instance of class read from file
         """
         with open(cls._add_ext(filename_wo_ext), 'rb') as file:
             return dill.load(file)
