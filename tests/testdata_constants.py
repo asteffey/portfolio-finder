@@ -3,12 +3,14 @@
 from collections import namedtuple
 
 import portfoliofinder
+from portfoliofinder.contributions import InitialContribution
 import testdata_reader as tdr
 
 SPECIFIC_FUNDS = ['USA_TSM', 'GLD', 'EM']
 MY_TIMEFRAME = 10
 PortfolioAllocation = namedtuple('PortfolioAllocation', SPECIFIC_FUNDS)
 MY_ALLOCATION = PortfolioAllocation(0, 0.75, 0.25)
+SINGLE_CONTRIBUTION = InitialContribution(1)
 
 MY_SCHEDULED_CONTRIBUTIONS = portfoliofinder.ScheduledContributions(
     {n: (1000 if n in (0, 5) else 10) for n in range(0, 100)})
@@ -21,7 +23,6 @@ MY_CUSTOM_STATISTICS = ['min', portfoliofinder.stats.percentile_for(
 
 EXPECTED_ALL_RETURNS = tdr.read_dataframe('all_returns', index_col=0)
 EXPECTED_SPECIFIC_RETURNS = tdr.read_dataframe('specific_returns', index_col=0)
-EXPECTED_INFLATION_RATES = tdr.read_series('inflation_rates')
 EXPECTED_INFLATION_ADJUSTED_SPECIFIC_RETURNS = tdr.read_dataframe('inflation_adjusted_specific_returns', index_col=0)
 
 EXPECTED_PORTFOLIO_RETURNS = tdr.read_series('portfolio_returns')

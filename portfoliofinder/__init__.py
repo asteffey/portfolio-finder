@@ -8,14 +8,8 @@ back-testing.
 """
 
 from .contributions import *
-from .portfolio_allocations import PortfolioAllocations
-from .portfolio_returns import PortfolioReturns
-from .portfolio_returns_by_allocation import PortfolioReturnsByAllocation
-from .portfolio_timeframe_by_startyear import PortfolioTimeframesByStartYear
-from .portfolio_timeframe_by_startyear_by_allocation \
-    import PortfolioTimeframesByStartYearByAllocation
-from .portfolio_value_by_startyear import PortfolioValuesByStartYear
-from .portfolio_value_by_startyear_by_allocation import PortfolioValuesByStartYearByAllocation
-from .returns_by_symbol import SymbolReturns
-from .statistics_for_data_by_startyear_by_allocation import StatisticsForDataByStartYearByAllocation
-from .stats import *
+from .portfolio.allocations import Allocations
+from .portfolio.returns import Returns
+from .portfolio.backtested_timeframes import BacktestedTimeframes
+from .portfolio.backtested_values import BacktestedValues
+from .portfolio.backtested_statistics import BacktestedStatistics

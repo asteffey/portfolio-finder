@@ -2,33 +2,20 @@ from functools import reduce
 
 import pandas as pd
 
-from .contributions import Contributions
-from .self_pickling import SelfPickling
-from .stats import DEFAULT_STATS, _get_statistics, StatListType
+from ._backtested_data import _BacktestedData
+from ..contributions import Contributions
 
 
-class PortfolioValuesByStartYear(SelfPickling):
-    """Portfolio values by start year, for a specific allocation mix,
-    timeframe, and contributions schedule.
-    """
+class BacktestedValues(_BacktestedData):
+    """Backtested portfolio values, by start year, after a fixed timeframe."""
 
-    def __init__(self, portfolio_returns: pd.Series, timeframe, contributions: Contributions):
-        self._portfolio_value_by_startyear = _get_portfolio_value_by_startyear(
-            portfolio_returns, timeframe, contributions)
-
-    def as_series(self) -> pd.Series:
-        """Gets as pandas Series."""
-        return self._portfolio_value_by_startyear
-
-    def get_statistics(self, statistics: StatListType = DEFAULT_STATS) -> pd.Series:
-        """Gets statistical results for backtested portfolio values for a specific
-        allocation mix, timeframe, and contribution schedule.
-
-        :param statistics: array of statistic functions for pandas Series
-        :return: A pandas Series containing values for each statistic
-        """
-        return _get_portfolio_value_statistics(self._portfolio_value_by_startyear, statistics)
-
+    def __init__(self, portfolio_returns_by_allocation: dict,
+                 timeframe: int, contributions: Contributions):
+        _BacktestedData.__init__(self,
+                                 _get_portfolio_value_by_startyear,
+                                 portfolio_returns_by_allocation,
+                                 timeframe,
+                                 contributions)
 
 def _get_portfolio_value_by_startyear(portfolio_returns, timeframe, contributions: Contributions):
     start_years = _get_start_years_for_timeframe(
@@ -69,9 +56,3 @@ def _get_portfolio_value_for_startyear(start_year, portfolio_returns: pd.Series,
         return value * (1 + current_return)
 
     return reduce(reduce_to_portfolio_value, returns_over_timeframe, 0)
-
-
-def _get_portfolio_value_statistics(portfolio_values: pd.Series, statistics) -> pd.Series:
-    statistics = _get_statistics(portfolio_values, statistics)
-    statistics.name = "Portfolio Value"
-    return statistics

@@ -4,12 +4,11 @@ from .contributions import Contributions
 
 
 class ScheduledContributions(Contributions):  # pylint: disable=too-few-public-methods
-    """Contributions which occur at specific years in the life of the portfolio."""
-    def __init__(self, scheduled_contributions: Dict[int, float]):
-        """Creates scheduled contributions.
+    """Contributions which occur at specific years in the life of the portfolio.
 
-        :param scheduled_contributions: contributions by year relative to inception of portfolio
-        """
+    :param scheduled_contributions: contributions by year relative to inception of portfolio
+    """
+    def __init__(self, scheduled_contributions: Dict[int, float]):
         self.scheduled_contributions = scheduled_contributions
 
     def get_contribution_for_year(self, year):

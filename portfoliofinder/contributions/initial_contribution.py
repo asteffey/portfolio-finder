@@ -2,14 +2,11 @@ from .contributions import Contributions
 
 
 class InitialContribution(Contributions):  # pylint: disable=too-few-public-methods
-    """This should be used when only a single contribution is made to a portfolio
-    at its inception.
+    """A single contribution that is made to a portfolio at its inception.
+
+    :param starting_value: initial contribution at inception of portfolio
     """
     def __init__(self, starting_value: float):
-        """Creates an initial contribution.
-
-        :param starting_value: initial contribution at inception of portfolio
-        """
         super().__init__()
         self.starting_value = starting_value
 

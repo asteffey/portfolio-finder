@@ -46,5 +46,5 @@ def test_default_contribution():
     verify DEFAULT_CONTRIBUTION is an InitialContribution
     with a starting_value of 1
     """
-    assert DEFAULT_CONTRIBUTION.get_contribution_for_year(0) == 1
+    assert DEFAULT_CONTRIBUTION.get_contribution_for_year(0) == 10000
     assert DEFAULT_CONTRIBUTION.get_contribution_for_year(1) == 0

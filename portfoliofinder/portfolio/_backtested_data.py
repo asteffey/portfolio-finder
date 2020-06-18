@@ -3,13 +3,14 @@ from typing import Dict
 import pandas as pd
 import progressbar
 
-from ._convert_to_dataframe_by_allocation import _convert_to_dataframe_by_allocation
-from .stats import DEFAULT_STATS, StatListType
-from .statistics_for_data_by_startyear_by_allocation import StatisticsForDataByStartYearByAllocation
-from .self_pickling import SelfPickling
+from .backtested_statistics import BacktestedStatistics
+from ..stats import DEFAULT_STATS, StatList
+from ..util.self_pickling import SelfPickling
+from ..util.to_dataframe import to_dataframe
 
 
-class _DataByStartYearByAllocation(SelfPickling):
+class _BacktestedData(SelfPickling):
+    """Base class for backtested data."""
     def __init__(self, data_func, data_by_allocation: dict, *argv):
         self._data = _get_data_by_startyear_by_allocation(
             data_func, data_by_allocation, *argv)
@@ -22,20 +23,19 @@ class _DataByStartYearByAllocation(SelfPickling):
         """
         return self._data[allocation]
 
-    def as_dataframe(self) -> pd.DataFrame:
-        """Gets as pandas DataFrame."""
-        return _convert_to_dataframe_by_allocation(self._data)
+    def to_dataframe(self) -> pd.DataFrame:
+        """Converts this to a pandas DataFrame."""
+        return to_dataframe(self._data)
 
-    def get_statistics(self, statistics: StatListType = DEFAULT_STATS)\
-            -> StatisticsForDataByStartYearByAllocation:
+    def get_statistics(self, statistics: StatList = DEFAULT_STATS)\
+            -> BacktestedStatistics:
         """Gets statistical results for backtested portfolio data, by allocation mix.
 
         :param statistics: array of statistic functions for pandas Series
         :return: A pandas Series containing values for each statistic
         """
 
-        return StatisticsForDataByStartYearByAllocation\
-            .create_from_data_and_statistics(self._data, statistics)
+        return BacktestedStatistics(self._data, statistics)
 
 
 def _get_data_by_startyear_by_allocation(data_func, data_by_allocations, *argv)\
