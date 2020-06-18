@@ -10,6 +10,9 @@ pytest = "~=5.4"
 xlrd = "*"
 rope = "*"
 attrs = "*"
+sphinx = "*"
+sphinx-rtd-theme = "*"
+m2r = "*"
 
 [packages]
 pandas = "*"

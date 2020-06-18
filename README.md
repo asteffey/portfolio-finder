@@ -3,9 +3,11 @@
 A Python library, based primarily around [pandas](https://pandas.pydata.org/docs/index.html), 
 to identify an optimal portfolio allocation through back-testing.
 
+[API Documentation](https://portfolio-finder.readthedocs.io/en/latest/) is available on Read the Docs.
+
 ## Example Usage
 
-Each of these examples make use of [data.csv](/data.csv) which provides returns for a 
+Each of these examples make use of [data.csv](https://github.com/asteffey/portfolio-finder/blob/master/data.csv) which provides returns for a 
 handful of funds over 1970-2019.
 
 ### Find best portfolio allocation to minimize the required timeframe to achieve a target value

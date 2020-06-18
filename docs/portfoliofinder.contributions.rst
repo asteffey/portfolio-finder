@@ -1,18 +1,7 @@
-
-API Documentation
-==============================
-
-.. automodule:: portfoliofinder
-   :members:
-   :imported-members:
-   :show-inheritance:
+Portfolio Finder Contributions API Reference
+============================================
 
 .. automodule:: portfoliofinder.contributions
-   :members:
-   :imported-members:
-   :show-inheritance:
-
-.. automodule:: portfoliofinder.stats
    :members:
    :imported-members:
    :show-inheritance:
