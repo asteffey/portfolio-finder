@@ -3,7 +3,7 @@
 A Python library, based primarily around [pandas](https://pandas.pydata.org/docs/index.html), 
 to identify an optimal portfolio allocation through back-testing.
 
-[API Documentation](https://portfolio-finder.readthedocs.io/en/latest/) is available on Read the Docs.
+[API Documentation](https://portfolio-finder.readthedocs.io/en/stable/) is available on Read the Docs.
 
 ## Example Usage
 

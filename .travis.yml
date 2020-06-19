@@ -1,0 +1,22 @@
+env:
+  global:
+  - secure: TsE2j993HLfxuqh3GqP+To1F/zfnZo94IXaIiCHIwqbZ5C4Ln2O9sgOzC/pg+NqVLfut49kfT0cdd0XpUAlR4WaAko+r8IR5JgR1WmxAAQi3z/cxueHeFXXWGl1wzgMVu27XHNmkNnl9HaP3Qf6McKaD5CBIw/BAQ+NoYfUU/JPKUPtC69afkh1GLewNbe7i+05ozsyk3txjmoQPfQoY9qwMvzD+7z1pMJrplM+vxWPe3HCRrn63E4WDsr3FHBLybyWV9mA+4UCfKOgdERk8jm99Jd3tgF4hpjynpLA5wPwm8rcoceTs8qDb9WagavNRS+fUb2doHtot0FArxNzTCkxs0t/0xm7Ii0XQg/g8fRua/Xn9gCZncQkTpEXwDb12WEFBLQSxFzWNgCluLYqx3O5Rgpf3yRUNzoWUWfRMctOJxKX0yDxa9Q+Fr26S2MmDO9YRME8QhQOCBqUmFIB/mYg6COvsknBk7EimqcHM+Y7YIXACLjZf0xa6NCsNzYR/O3GfMXNL0MzWTMomGBD/pBu1WmU966Sk47upuYa2EvEuo2Whs514YgiuXBgZcWd9JGhQ/gd6M4SUIaXAegslcTvUNpuCGYcqyLIcvobkPgbDYFSs3Zr5udDBHQxcDHGyS3YLtUAMip5qXY/jccWO1sdRsKTvid5KLbEEmcaHH+M=
+  - secure: DXqZ3L2HzFkSy38eHc+yIMClzrQJas84tNXo8wr9+Nj0buQtDf7DdP+NRe8AztDxbOvoqAVU3KF1VpgpeFZ8Wo1X10mBxbIiQR519nLHCoXsw4yCWLc02tlWJlWIOm09RTcdJhrcQjMZzwKa9Q8ryh2bitsxmMiyCVFBqBO9T670eRa2f6ivnbdbSWf9ciJ4LGDZsBkL1k7rpkgnoaR+Thj0gMu/hovzeswBg9BGdmWSW4PipmKAz3QEiuWTBKhxOD2Zqzc/itJFFdeccnSuDeXZ1nLxpCCNbMxoJ5t5qZUIwMkAU5pPR8P0uZjy1WH27Laaew15Zw+lsj1OaICbRynb/tiFu9JyreRQpgeIYXJBK0WoawBpAiKuD803drycO93n5KhxLztB/CsLmvtrSwfliXZ4FliFnXs9azb0l+yGt1dELp/phwUY31ZE4n3u+SjwXPr1BD9uI/3Cg5K52M0MVOU0JdUjKxudUwVla1BcMJisLOQVtsgKLOB4N2GFvMrIwI/B24XBJXU2a+bt0za7ffZUdvW6gym5LLiMVio3KkcEOQE692JICTUDAQWKWl2T8bD7CeQn3Aaw2VvyMeo+2H0wFQLOPb28xZ1mV5f2AKEYp0LNhGrxsNB1wUG40pzm+8BsfsXyOTK/+3QOito71KYkuRtFIxx2aiF2RdM=
+language: python
+python:
+- 3.7
+- 3.8
+script:
+- pylint portfoliofinder
+- pytest
+jobs:
+  include:
+  - stage: deploy
+    if: branch == master
+    python: 3.7
+    install:
+    - pip install python-semantic-release
+    script:
+    - git config --global user.name "release-bot"
+    - git config --global user.email "release@travis"
+    - semantic-release publish -v INFO

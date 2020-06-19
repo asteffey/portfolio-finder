@@ -8,5 +8,8 @@ cache
 .idea
 *.p
 
+dist
+build
+
 venv
 
