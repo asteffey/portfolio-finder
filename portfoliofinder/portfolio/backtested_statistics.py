@@ -39,7 +39,7 @@ class BacktestedStatistics(SelfPickling):
     def _from_stats(cls, stats_df, allocation_namedtuple, to_allocation_symbols_and_value_func)\
             -> BacktestedStatistics:
         new_stats = cls.__new__(cls)
-        super().__init__()
+        super().__init__(new_stats)
         # pylint: disable=protected-access
         new_stats._df = stats_df
         new_stats._allocation_namedtuple = allocation_namedtuple
@@ -110,9 +110,8 @@ class BacktestedStatistics(SelfPickling):
         :param x_axis: statistic label for the x axis (e.g., 'mean')
         :param y_axis: statistic label for the y axis (e.g., 'std')
         """
-        _, axis_object = plt.subplots()
-        self._df.plot.scatter(x_axis, y_axis, axis_object=axis_object)
-        mplcursors.cursor(axis_object, hover=True).connect(
+        self._df.plot.scatter(x_axis, y_axis)
+        mplcursors.cursor(hover=True).connect(
             "add",
             lambda sel: sel.annotation.set_text(
                 self._allocation_namedtuple(*self._df.iloc[sel.target.index].name))
