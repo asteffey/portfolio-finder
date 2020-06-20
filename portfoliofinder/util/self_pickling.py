@@ -8,7 +8,7 @@ class SelfPickling:
     """
 
     def save(self, filename_wo_ext: str):
-        """Saves the class.
+        """Saves the object to a file.
 
         :param filename_wo_ext: filename without extension
         """
@@ -17,7 +17,7 @@ class SelfPickling:
 
     @classmethod
     def load(cls, filename_wo_ext: str):
-        """Loads the class.
+        """Loads an object from a file.
 
         :param filename_wo_ext: filename without extension
         :return: instance of class read from file
