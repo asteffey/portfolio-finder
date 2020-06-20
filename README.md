@@ -1,6 +1,5 @@
 # Porfolio Finder
 
-https://readthedocs.org/projects/pip/badge/
 [![PyPI version fury.io](https://badge.fury.io/py/portfoliofinder.svg)](https://pypi.python.org/pypi/portfoliofinder/)
 [![PyPI pyversions](https://img.shields.io/pypi/pyversions/portfoliofinder.svg)](https://pypi.python.org/pypi/portfoliofinder/)
 [![Build Status](https://travis-ci.org/asteffey/portfolio-finder.svg?branch=master)](https://travis-ci.org/asteffey/portfolio-finder)
@@ -9,7 +8,7 @@ https://readthedocs.org/projects/pip/badge/
 A Python library, based primarily around [pandas](https://pandas.pydata.org/docs/index.html), 
 to identify an optimal portfolio allocation through back-testing.
 
-[API Documentation](https://portfolio-finder.readthedocs.io/en/stable/) is available on Read the Docs.
+[API Documentation](https://portfolio-finder.readthedocs.io/en/latest/) is available on Read the Docs.
 
 ## Example Usage
 
@@ -18,19 +17,17 @@ handful of funds over 1970-2019.
 
 ### Find best portfolio allocation to minimize the required timeframe to achieve a target value
 ```python
-import portfoliofinder as pf
+from portfoliofinder import Allocations
 
-contributions = pf.RegularContributions(100000, 10000)
-
-print(pf.Allocations(0.05, ['USA_TSM', 'WLDx_TSM', 'USA_INT', 'EM'])\
+Allocations(0.05, ['USA_TSM', 'WLDx_TSM', 'USA_INT', 'EM'])\
     .filter('USA_TSM>=0.6 & WLDx_TSM<=0.2 & USA_INT>=0.3')\
     .with_returns(csv="data.csv")\
     .with_regular_contributions(100000, 10000)\
-    .get_backtested_values(timeframe=10)\
+    .get_backtested_timeframes(target_value=1000000)\
     .get_statistics(['min', 'max', 'mean', 'std'])\
     .filter_by_min_of('max')\
     .filter_by_max_of('min')\
-    .get_allocation_which_min_statistic('std'))
+    .get_allocation_which_min_statistic('std')
 ```
 
 **Output**
@@ -45,16 +42,16 @@ Name: Allocation(USA_TSM=0.65, WLDx_TSM=0.0, USA_INT=0.3, EM=0.05), dtype: float
 
 ### Find best portfolio allocation to maximize value with minimal risk over a fixed timeframe
 ```python
-import portfoliofinder as pf
+from portfoliofinder import Allocations
 
-print(pf.Allocations(0.05, ['USA_TSM', 'WLDx_TSM', 'USA_INT', 'EM'])\
+Allocations(0.05, ['USA_TSM', 'WLDx_TSM', 'USA_INT', 'EM'])\
     .filter('USA_TSM>=0.6 & WLDx_TSM<=0.2 & USA_INT>=0.3')\
     .with_returns(csv="data.csv")\
     .with_regular_contributions(100000, 10000)\
     .get_backtested_values(timeframe=10)\
     .get_statistics(['mean', 'std'])\
     .filter_by_gte_percentile_of(90, 'mean')\
-    .get_allocation_which_min_statistic('std'))
+    .get_allocation_which_min_statistic('std')
 ```
 
 **Output**
@@ -68,9 +65,9 @@ Name: Allocation(USA_TSM=0.6, WLDx_TSM=0.0, USA_INT=0.3, EM=0.1), dtype: float64
 ### Graph statistics from multiple portfolio allocations to visualize their efficient frontier
 
 ```python
-import portfoliofinder as pf
+from portfoliofinder import Allocations
 
-allocations = pf.Allocations(0.05, ['USA_TSM', 'WLDx_TSM', 'USA_INT', 'EM'])\
+Allocations(0.05, ['USA_TSM', 'WLDx_TSM', 'USA_INT', 'EM'])\
     .filter('USA_TSM>=0.2 & USA_INT>=0.2')\
     .with_returns(csv="data.csv")\
     .with_regular_contributions(100000, 10000)\
