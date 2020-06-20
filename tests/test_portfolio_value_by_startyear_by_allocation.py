@@ -9,7 +9,7 @@ from testdata_constants import *
 
 def test_init():
     portfolio_value_by_startyear_by_allocation = pf.BacktestedValues(
-        {MY_ALLOCATION: EXPECTED_PORTFOLIO_RETURNS}, MY_TIMEFRAME, SINGLE_CONTRIBUTION)
+        {MY_ALLOCATION: EXPECTED_PORTFOLIO_RETURNS}, MY_TIMEFRAME, False, SINGLE_CONTRIBUTION)
 
     actual_portfolio_value_by_startyear = portfolio_value_by_startyear_by_allocation.get_series(
         MY_ALLOCATION)

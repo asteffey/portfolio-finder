@@ -85,12 +85,15 @@ class Allocations(SelfPickling):
             return Allocations._from_dataframe(self._allocations[expression(self._allocations)])
         raise ValueError("invalid filter expression")
 
-    def with_returns(self, fund_returns: Union[pd.DataFrame, str], risk_free: str = None) -> Returns:
+    def with_returns(self, fund_returns: Union[pd.DataFrame, str], risk_free: str = None,
+                     use_progressbar: bool = False) -> Returns:
         """Adds a collection of fund returns, by year, to these portfolio allocations to
         calculate a set of portfolio returns, by year.
 
         :param fund_returns: a pandas DataFrame or path to CSV file with fund symbols as column headers
         :param risk_free: fund symbol representing the risk free rate from fund_returns
+        :param use_progressbar: whether are not to display a progressbar to provide the status
+                                of large calculations
         :return:
         """
         if isinstance(fund_returns, str):
@@ -101,7 +104,7 @@ class Allocations(SelfPickling):
         if risk_free is not None:
             fund_returns = fund_returns.apply(_adjust_for(fund_returns[risk_free]), axis=1)
 
-        return Returns(fund_returns, self.as_dataframe())
+        return Returns(fund_returns, self.as_dataframe(), use_progressbar)
 
 
 class _CountInBinEnumeration:

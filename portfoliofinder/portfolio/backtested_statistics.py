@@ -7,9 +7,10 @@ from typing import Dict
 import matplotlib.pyplot as plt
 import mplcursors
 import pandas as pd
-import progressbar
 
-from ..stats.functions import percentile_for, StatList
+from ..stats.functions import percentile_for
+from ..stats.types import StatList
+from ..util.progressbar import progressbar
 from ..util.self_pickling import SelfPickling
 from ..util.to_dataframe import to_dataframe
 
@@ -17,14 +18,19 @@ from ..util.to_dataframe import to_dataframe
 class BacktestedStatistics(SelfPickling):
     """Statistical results for backtested portfolio data."""
 
-    def __init__(self, data_by_allocation: Dict[tuple, pd.Series], statistics: StatList):
+    def __init__(self, data_by_allocation: Dict[tuple, pd.Series], statistics: StatList, use_progressbar: bool):
         """Create statistical results for backtested portfolio data.
 
         :param data_by_allocation: backtested portfolio data
         :param statistics: array of statistic functions for pandas Series
         :return: statistical results for the data
         """
-        stats_by_allocation = _get_statistics_by_allocation(data_by_allocation, statistics)
+        stats_by_allocation = {}
+        for allocation in progressbar(data_by_allocation.keys(), use_progressbar):
+            portfolio_timeframe_by_startyear = _get_statistics(
+                data_by_allocation[allocation], statistics)
+            stats_by_allocation[allocation] = portfolio_timeframe_by_startyear
+
         self._df = to_dataframe(stats_by_allocation)
 
         data_type = next(iter(stats_by_allocation.values())).name
@@ -193,12 +199,8 @@ def _generate_to_allocation_symbols_and_value_method(allocation_symbols, data_ty
     return to_allocation_symbols_and_value
 
 
-def _get_statistics_by_allocation(portfolio_values_by_allocations, statistics: StatList):
-    statistics_by_allocation = {}
-    for allocation in progressbar.progressbar(portfolio_values_by_allocations.keys()):
-        portfolio_timeframe_by_startyear = _get_statistics(
-            portfolio_values_by_allocations[allocation], statistics)
-        statistics_by_allocation[allocation] = portfolio_timeframe_by_startyear
+def _get_statistics_by_allocation(portfolio_values_by_allocations, statistics: StatList, use_progressbar):
+
     return statistics_by_allocation
 
 

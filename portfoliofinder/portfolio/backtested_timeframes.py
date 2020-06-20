@@ -9,11 +9,12 @@ class BacktestedTimeframes(_BacktestedData):
     achieve a target value.
     """
 
-    def __init__(self, portfolio_returns_by_allocation: dict,
-                 target_value: float, contributions: Contributions):
+    def __init__(self, portfolio_returns_by_allocation: dict, target_value: float,
+                 use_progressbar: bool, contributions: Contributions):
         _BacktestedData.__init__(self,
                                  _get_portfolio_timeframe_by_startyear,
                                  portfolio_returns_by_allocation,
+                                 use_progressbar,
                                  target_value,
                                  contributions)
 

@@ -9,11 +9,12 @@ from ..contributions import Contributions
 class BacktestedValues(_BacktestedData):
     """Backtested portfolio values, by start year, after a fixed timeframe."""
 
-    def __init__(self, portfolio_returns_by_allocation: dict,
-                 timeframe: int, contributions: Contributions):
+    def __init__(self, portfolio_returns_by_allocation: dict, timeframe: int,
+                 use_progressbar: bool, contributions: Contributions):
         _BacktestedData.__init__(self,
                                  _get_portfolio_value_by_startyear,
                                  portfolio_returns_by_allocation,
+                                 use_progressbar,
                                  timeframe,
                                  contributions)
 

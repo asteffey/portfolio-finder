@@ -1,6 +1,6 @@
 import pandas as pd
-import progressbar
 
+from ..util.progressbar import progressbar
 from ..util.self_pickling import SelfPickling
 from ..util.to_dataframe import to_dataframe
 from .backtested_timeframes import BacktestedTimeframes
@@ -13,12 +13,13 @@ class Returns(SelfPickling):
     """Portfolio returns by year for a set of allocation mixes."""
 
     def __init__(self, returns_by_symbol: pd.DataFrame,
-                 allocations: pd.DataFrame):
+                 allocations: pd.DataFrame,
+                 use_progressbar: bool = False):
         returns_by_symbol = returns_by_symbol[allocations.columns]
 
         self._portfolio_returns_by_allocation = {}
         allocations_tuples = allocations.itertuples(name="Allocation", index=False)
-        for allocation in progressbar.progressbar(allocations_tuples):
+        for allocation in progressbar(allocations_tuples, use_progressbar):
             portfolio_returns = _get_portfolio_returns(
                 allocation, returns_by_symbol)
             self._portfolio_returns_by_allocation[allocation] = portfolio_returns
@@ -82,24 +83,28 @@ class ReturnsWithContributions(Returns):
         self._portfolio_returns_by_allocation = portfolio_returns_by_allocation
         self._contributions = contributions
 
-    def get_backtested_values(self, timeframe: int):
+    def get_backtested_values(self, timeframe: int, use_progressbar: bool = False) -> BacktestedValues:
         """Calculates final portfolio values, by start year, after a fixed timeframe.
 
         :param timeframe: timeframe in years
+        :param use_progressbar: whether are not to display a progressbar to provide the status
+                                of large calculations
         :return: portfolio values, by start year, after a fixed timeframe
         """
         return BacktestedValues(
-            self._portfolio_returns_by_allocation, timeframe, self._contributions)
+            self._portfolio_returns_by_allocation, timeframe, use_progressbar, self._contributions)
 
-    def get_backtested_timeframes(self, target_value: float):
+    def get_backtested_timeframes(self, target_value: float, use_progressbar: bool = False) -> BacktestedTimeframes:
         """Calculates portfolio timeframes, by start year, required to
         achieve a target value.
 
         :param target_value: portfolio value to target
+        :param use_progressbar: whether are not to display a progressbar to provide the status
+                                of large calculations
         :return: portfolio values, by start year, after a fixed timeframe
         """
         return BacktestedTimeframes(
-            self._portfolio_returns_by_allocation, target_value, self._contributions)
+            self._portfolio_returns_by_allocation, target_value, use_progressbar, self._contributions)
 
 
 def _get_portfolio_returns(portfolio_allocation, returns_by_symbol: pd.DataFrame) -> pd.Series:

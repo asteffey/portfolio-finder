@@ -11,7 +11,7 @@ from testdata_constants import *
 
 def test_init():
     portfolio_timeframe_by_startyear_by_allocation = pf.BacktestedTimeframes(
-        {MY_ALLOCATION: EXPECTED_PORTFOLIO_RETURNS}, MY_DEFAULT_TARGET, SINGLE_CONTRIBUTION)
+        {MY_ALLOCATION: EXPECTED_PORTFOLIO_RETURNS}, MY_DEFAULT_TARGET, False, SINGLE_CONTRIBUTION)
 
     actual_portfolio_timeframe_by_startyear = portfolio_timeframe_by_startyear_by_allocation.get_series(
         MY_ALLOCATION)
