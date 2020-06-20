@@ -15,6 +15,12 @@ class _BacktestedData(SelfPickling):
         self._data = _get_data_by_startyear_by_allocation(
             data_func, data_by_allocation, *argv)
 
+    def __repr__(self):
+        return self.to_dataframe().__repr__()
+
+    def __str__(self):
+        return self.to_dataframe().__str__()
+
     def get_series(self, allocation) -> pd.Series:
         """Gets the portfolio returns as a pandas Series for a given
         allocation.
