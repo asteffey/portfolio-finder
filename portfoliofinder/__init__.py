@@ -14,4 +14,4 @@ from .portfolio.backtested_timeframes import BacktestedTimeframes
 from .portfolio.backtested_values import BacktestedValues
 from .portfolio.backtested_statistics import BacktestedStatistics
 
-__version__ = '0.2.0'
+__version__ = '0.2.1'
