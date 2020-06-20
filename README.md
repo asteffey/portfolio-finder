@@ -21,7 +21,7 @@ from portfoliofinder import Allocations
 
 Allocations(0.05, ['USA_TSM', 'WLDx_TSM', 'USA_INT', 'EM'])\
     .filter('USA_TSM>=0.6 & WLDx_TSM<=0.2 & USA_INT>=0.3')\
-    .with_returns(csv="data.csv")\
+    .with_returns("data.csv")\
     .with_regular_contributions(100000, 10000)\
     .get_backtested_timeframes(target_value=1000000)\
     .get_statistics(['min', 'max', 'mean', 'std'])\
@@ -46,7 +46,7 @@ from portfoliofinder import Allocations
 
 Allocations(0.05, ['USA_TSM', 'WLDx_TSM', 'USA_INT', 'EM'])\
     .filter('USA_TSM>=0.6 & WLDx_TSM<=0.2 & USA_INT>=0.3')\
-    .with_returns(csv="data.csv")\
+    .with_returns("data.csv")\
     .with_regular_contributions(100000, 10000)\
     .get_backtested_values(timeframe=10)\
     .get_statistics(['mean', 'std'])\
@@ -69,7 +69,7 @@ from portfoliofinder import Allocations
 
 Allocations(0.05, ['USA_TSM', 'WLDx_TSM', 'USA_INT', 'EM'])\
     .filter('USA_TSM>=0.2 & USA_INT>=0.2')\
-    .with_returns(csv="data.csv")\
+    .with_returns("data.csv")\
     .with_regular_contributions(100000, 10000)\
     .get_backtested_values(timeframe=10)\
     .get_statistics()\
