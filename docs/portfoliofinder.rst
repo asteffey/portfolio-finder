@@ -4,6 +4,7 @@ Portfolio Finder API Reference
 .. automodule:: portfoliofinder
    :members:
    :imported-members:
+   :inherited-members:
    :show-inheritance:
 
 Subpackages
