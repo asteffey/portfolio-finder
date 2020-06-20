@@ -1,5 +1,11 @@
 # Porfolio Finder
 
+https://readthedocs.org/projects/pip/badge/
+[![PyPI version fury.io](https://badge.fury.io/py/portfoliofinder.svg)](https://pypi.python.org/pypi/portfoliofinder/)
+[![PyPI pyversions](https://img.shields.io/pypi/pyversions/portfoliofinder.svg)](https://pypi.python.org/pypi/portfoliofinder/)
+[![Build Status](https://travis-ci.org/asteffey/portfolio-finder.svg?branch=master)](https://travis-ci.org/asteffey/portfolio-finder)
+[![Documentation Status](https://readthedocs.org/projects/portfolio-finder/badge/?version=latest)](https://portfolio-finder.readthedocs.io/en/latest/?badge=latest)
+
 A Python library, based primarily around [pandas](https://pandas.pydata.org/docs/index.html), 
 to identify an optimal portfolio allocation through back-testing.
 
