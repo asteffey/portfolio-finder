@@ -18,7 +18,7 @@ class Returns(SelfPickling):
         returns_by_symbol = returns_by_symbol[allocations.columns]
 
         self._portfolio_returns_by_allocation = {}
-        allocations_tuples = allocations.itertuples(name="Allocation", index=False)
+        allocations_tuples = list(allocations.itertuples(name="Allocation", index=False))
         for allocation in progressbar(allocations_tuples, use_progressbar):
             portfolio_returns = _get_portfolio_returns(
                 allocation, returns_by_symbol)
