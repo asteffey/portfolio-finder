@@ -52,3 +52,4 @@ urllib3==1.25.9
 wcwidth==0.2.4
 wrapt==1.12.1
 xlrd==1.2.0
+tornado==6.1
