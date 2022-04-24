@@ -23,29 +23,29 @@ MY_CUSTOM_STATISTICS = ['min', portfoliofinder.stats.percentile_for(
 
 EXPECTED_ALL_RETURNS = tdr.read_dataframe('all_returns', index_col=0)
 EXPECTED_SPECIFIC_RETURNS = tdr.read_dataframe('specific_returns', index_col=0)
-EXPECTED_INFLATION_ADJUSTED_SPECIFIC_RETURNS = tdr.read_dataframe('inflation_adjusted_specific_returns', index_col=0)
+EXPECTED_INFLATION_ADJUSTED_SPECIFIC_RETURNS = tdr.read_dataframe('infl_adj_specific_returns', index_col=0)
 
 EXPECTED_PORTFOLIO_RETURNS = tdr.read_series('portfolio_returns')
 
 EXPECTED_PORTFOLIO_ALLOCATIONS = tdr.read_dataframe('portfolio_allocation')
 
 EXPECTED_PORTFOLIO_TIMEFRAME_BY_STARTYEAR = tdr.read_series(
-    'portfolio_timeframe_by_startyear', usecols=['Year', 'Portfolio Timeframe']).dropna()
+    'portfolio_timeframes', usecols=['Year', 'Portfolio Timeframe']).dropna()
 EXPECTED_PORTFOLIO_TIMEFRAME_BY_STARTYEAR_WITH_CONTRIBUTIONS = tdr.read_series(
-    'portfolio_timeframe_by_startyear_with_contributions',
+    'portfolio_timeframes_contrib',
     usecols=['Year', 'Portfolio Timeframe']).dropna()
 
 EXPECTED_PORTFOLIO_VALUE_BY_STARTYEAR = tdr.read_series(
-    'portfolio_value_by_startyear', usecols=['Year', 'Portfolio Value'])
+    'portfolio_values', usecols=['Year', 'Portfolio Value'])
 EXPECTED_PORTFOLIO_VALUE_BY_STARTYEAR_WITH_CONTRIBUTIONS = tdr.read_series(
-    'portfolio_value_by_startyear_with_contributions', usecols=['Year', 'Portfolio Value'])
+    'portfolio_values_contrib', usecols=['Year', 'Portfolio Value'])
 
 EXPECTED_DEFAULT_STATISTICS_FOR_PORTFOLIO_TIMEFRAMES = tdr.read_series(
-    'default_statistics_for_timeframe', usecols=['Statistic', 'Portfolio Timeframe'])
+    'default_statistics_timeframes', usecols=['Statistic', 'Portfolio Timeframe'])
 EXPECTED_DEFAULT_STATISTICS_FOR_PORTFOLIO_TIMEFRAMES_WITH_CUSTOM_STATS = tdr.read_series(
-    'custom_statistics_for_timeframe', usecols=['Statistic', 'Portfolio Timeframe'])
+    'custom_statistics_timeframes', usecols=['Statistic', 'Portfolio Timeframe'])
 
 EXPECTED_DEFAULT_STATISTICS_FOR_PORTFOLIO_VALUES = tdr.read_series(
-    'default_statistics_for_value', usecols=['Statistic', 'Portfolio Value'])
+    'default_statistics_values', usecols=['Statistic', 'Portfolio Value'])
 EXPECTED_DEFAULT_STATISTICS_FOR_PORTFOLIO_VALUES_WITH_CUSTOM_STATS = tdr.read_series(
-    'custom_statistics_for_value', usecols=['Statistic', 'Portfolio Value'])
+    'custom_statistics_values', usecols=['Statistic', 'Portfolio Value'])
