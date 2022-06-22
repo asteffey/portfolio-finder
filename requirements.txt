@@ -21,7 +21,7 @@ mccabe==0.6.1
 mistune==0.8.4
 more-itertools==8.4.0
 mplcursors==0.3
-numpy==1.18.5
+numpy==1.22.0
 packaging==20.4
 pandas==1.0.5
 pluggy==0.13.1
