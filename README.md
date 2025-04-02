@@ -1,3 +1,5 @@
+_An updated version of this tool is now available at https://www.backtestedfrontier.com/._
+
 # Porfolio Finder
 
 [![PyPI version fury.io](https://badge.fury.io/py/portfoliofinder.svg)](https://pypi.python.org/pypi/portfoliofinder/)
